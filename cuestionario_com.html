@@ -1,0 +1,2197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cuestionario COM - 2do Parcial (Modo Oscuro)</title>
+<style>
+  :root {
+    --bg: #0b0f19;
+    --bg-card: #131b2e;
+    --bg-card-hover: #1a253e;
+    --border: #23304b;
+    --border-light: #334468;
+    --primary: #6366f1;
+    --primary-hover: #4f46e5;
+    --primary-light: rgba(99, 102, 241, 0.15);
+    --primary-border: #818cf8;
+    --success: #10b981;
+    --success-bg: rgba(16, 185, 129, 0.15);
+    --success-border: #059669;
+    --danger: #ef4444;
+    --danger-bg: rgba(239, 68, 68, 0.15);
+    --danger-border: #dc2626;
+    --warning: #f59e0b;
+    --warning-bg: rgba(245, 158, 11, 0.15);
+    --star: #fbbf24;
+    --text: #f8fafc;
+    --text-muted: #94a3b8;
+    --text-dim: #64748b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+    padding-bottom: 40px;
+  }
+  .container { max-width: 960px; margin: 0 auto; padding: 20px; }
+  
+  /* Header */
+  header {
+    text-align: center;
+    margin-bottom: 22px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border);
+  }
+  h1 {
+    color: #fff;
+    font-size: 2em;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+  .subtitle {
+    color: var(--text-muted);
+    font-size: 1em;
+    margin-top: 5px;
+  }
+  .quick-stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 12px;
+    font-size: 0.88em;
+    flex-wrap: wrap;
+  }
+  .stat-pill {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 4px 12px;
+    border-radius: 20px;
+    color: var(--text-muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .stat-pill strong { color: var(--text); }
+
+  /* Shortcuts Banner */
+  .shortcuts-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    background: rgba(99, 102, 241, 0.08);
+    border: 1px dashed rgba(99, 102, 241, 0.3);
+    border-radius: 10px;
+    padding: 8px 14px;
+    margin-bottom: 20px;
+    font-size: 0.85em;
+    color: #cbd5e1;
+  }
+  .kbd {
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    box-shadow: 0 2px 0 var(--border);
+    padding: 2px 7px;
+    border-radius: 5px;
+    font-family: monospace;
+    font-size: 0.95em;
+    color: var(--primary-border);
+    font-weight: 700;
+  }
+  
+  /* Settings / Controls Card */
+  .settings-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px 22px;
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+  }
+  .settings-title {
+    font-size: 1.05em;
+    font-weight: 700;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .toggles-wrapper {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .toggle-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+    font-size: 0.92em;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 46px;
+    height: 24px;
+  }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #334155;
+    transition: 0.25s;
+    border-radius: 24px;
+    border: 1px solid var(--border-light);
+  }
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.25s;
+    border-radius: 50%;
+  }
+  input:checked + .slider {
+    background-color: var(--primary);
+    border-color: var(--primary-border);
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
+  }
+  input:checked + .slider:before {
+    transform: translateX(22px);
+  }
+
+  /* Menu / Landing */
+  #landing { text-align: center; }
+  .section-title {
+    font-size: 1.2em;
+    color: var(--text);
+    margin: 25px 0 12px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+  }
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 12px;
+    margin-bottom: 25px;
+  }
+  .menu-btn {
+    padding: 14px 18px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text);
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 0.95em;
+    font-weight: 600;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-align: center;
+  }
+  .menu-btn:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--primary-border);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.25);
+  }
+  .menu-btn.all-btn {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+    border: none;
+    color: #fff;
+    font-size: 1.15em;
+    padding: 18px;
+    font-weight: 700;
+    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.35);
+  }
+  .menu-btn.all-btn:hover {
+    background: linear-gradient(135deg, #4338ca 0%, #4f46e5 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(79, 70, 229, 0.5);
+  }
+  .menu-btn.marked-btn {
+    background: var(--bg-card);
+    border-color: var(--warning);
+    color: var(--star);
+  }
+  .menu-btn.marked-btn:hover {
+    background: var(--warning-bg);
+    border-color: var(--star);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(251, 191, 36, 0.25);
+  }
+  .menu-btn.retry-btn {
+    background: var(--bg-card);
+    border-color: var(--danger);
+    color: #f87171;
+  }
+  .menu-btn.retry-btn:hover {
+    background: var(--danger-bg);
+    border-color: var(--danger);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.25);
+  }
+  .menu-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Quiz Area */
+  #quiz-area { display: none; }
+  
+  .quiz-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .progress-info {
+    font-size: 0.95em;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+  .top-actions {
+    display: flex;
+    gap: 8px;
+  }
+  .top-btn {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 0.85em;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .top-btn:hover {
+    background: var(--bg-card-hover);
+    color: var(--text);
+    border-color: var(--border-light);
+  }
+  
+  .progress-bar-container {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    height: 8px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .progress-bar {
+    background: linear-gradient(90deg, #6366f1, #818cf8);
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.3s ease;
+    width: 0%;
+  }
+
+  /* Question Card */
+  .question-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 26px 30px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.4);
+    border-left: 5px solid var(--primary);
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  .question-card.correct { border-left-color: var(--success); }
+  .question-card.incorrect { border-left-color: var(--danger); }
+  
+  .question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .question-type-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.78em;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+  .badge-single { background: rgba(99, 102, 241, 0.18); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.3); }
+  .badge-multi { background: rgba(236, 72, 153, 0.18); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.3); }
+  .badge-tf { background: rgba(16, 185, 129, 0.18); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.3); }
+  .badge-text { background: rgba(245, 158, 11, 0.18); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.3); }
+  
+  .star-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 0.85em;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 600;
+  }
+  .star-btn:hover {
+    border-color: var(--star);
+    color: var(--star);
+    background: var(--warning-bg);
+  }
+  .star-btn.active {
+    background: var(--warning-bg);
+    border-color: var(--star);
+    color: var(--star);
+    box-shadow: 0 0 10px rgba(251, 191, 36, 0.3);
+  }
+  
+  .question-text {
+    font-size: 1.15em;
+    font-weight: 600;
+    margin-bottom: 20px;
+    line-height: 1.55;
+    color: #ffffff;
+  }
+  
+  /* Options & Text Input */
+  .options-list { list-style: none; }
+  .options-list li { margin-bottom: 10px; }
+  .option-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 13px 18px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: rgba(15, 23, 42, 0.6);
+    color: var(--text);
+  }
+  .option-label:hover {
+    border-color: var(--primary-border);
+    background: var(--bg-card-hover);
+  }
+  .option-label input {
+    margin-top: 4px;
+    accent-color: var(--primary);
+    transform: scale(1.15);
+    cursor: pointer;
+  }
+  .option-key-badge {
+    background: #1e293b;
+    border: 1px solid var(--border-light);
+    color: var(--text-muted);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 0.8em;
+    font-family: monospace;
+    font-weight: 700;
+    margin-right: 4px;
+  }
+  .option-label.selected {
+    border-color: var(--primary);
+    background: var(--primary-light);
+    box-shadow: 0 0 0 1px var(--primary);
+  }
+  .option-label.correct-answer {
+    border-color: var(--success) !important;
+    background: var(--success-bg) !important;
+    color: #a7f3d0;
+  }
+  .option-label.wrong-answer {
+    border-color: var(--danger) !important;
+    background: var(--danger-bg) !important;
+    color: #fecaca;
+  }
+  
+  /* Fill-in Text Input Box */
+  .text-input-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 20px 0 15px;
+    flex-wrap: wrap;
+  }
+  .text-input-label {
+    font-size: 1.1em;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .text-input-box {
+    flex: 1;
+    min-width: 260px;
+    max-width: 500px;
+    background: #0f172a;
+    border: 2px solid var(--border-light);
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-size: 1.1em;
+    color: #fff;
+    font-weight: 600;
+    outline: none;
+    transition: all 0.2s;
+  }
+  .text-input-box:focus {
+    border-color: var(--primary-border);
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.35);
+    background: #151e34;
+  }
+  .text-input-box.input-correct {
+    border-color: var(--success) !important;
+    background: var(--success-bg) !important;
+    color: #34d399 !important;
+  }
+  .text-input-box.input-wrong {
+    border-color: var(--danger) !important;
+    background: var(--danger-bg) !important;
+    color: #f87171 !important;
+  }
+  
+  .feedback {
+    margin-top: 18px;
+    padding: 14px 18px;
+    border-radius: 10px;
+    font-weight: 600;
+    display: none;
+    font-size: 0.98em;
+  }
+  .feedback.show { display: block; }
+  .feedback.correct {
+    background: var(--success-bg);
+    border: 1px solid var(--success-border);
+    color: #34d399;
+  }
+  .feedback.incorrect {
+    background: var(--danger-bg);
+    border: 1px solid var(--danger-border);
+    color: #f87171;
+  }
+  .feedback .explanation {
+    font-weight: 400;
+    font-size: 0.92em;
+    margin-top: 8px;
+    color: #e2e8f0;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(255,255,255,0.15);
+  }
+
+  /* Navigation Bar */
+  .nav-controls {
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+    flex-wrap: wrap;
+  }
+  .nav-group-left, .nav-group-right {
+    display: flex;
+    gap: 10px;
+  }
+  .btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.96em;
+    font-weight: 700;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-nav {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+  .btn-nav:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--primary-border);
+    color: #fff;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.35);
+  }
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #4338ca 0%, #4f46e5 100%);
+    box-shadow: 0 6px 20px rgba(79, 70, 229, 0.5);
+  }
+  .btn-success {
+    background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.35);
+  }
+  .btn-success:hover {
+    background: linear-gradient(135deg, #047857 0%, #059669 100%);
+  }
+  .btn-danger {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid var(--danger);
+    color: #f87171;
+  }
+  .btn-danger:hover {
+    background: var(--danger);
+    color: #fff;
+  }
+  .btn-warning {
+    background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+    color: #fff;
+  }
+  .btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Question Jump Palette */
+  .question-palette {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 20px 0;
+    padding: 15px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    max-height: 160px;
+    overflow-y: auto;
+  }
+  .palette-item {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text-muted);
+    font-size: 0.8em;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+  }
+  .palette-item:hover { border-color: var(--primary); color: #fff; }
+  .palette-item.current { border-color: var(--primary-border); background: var(--primary); color: #fff; box-shadow: 0 0 8px rgba(99,102,241,0.6); }
+  .palette-item.answered-correct { background: var(--success-bg); border-color: var(--success); color: #34d399; }
+  .palette-item.answered-wrong { background: var(--danger-bg); border-color: var(--danger); color: #f87171; }
+  .palette-item.starred::after {
+    content: "★";
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    font-size: 9px;
+    color: var(--star);
+  }
+
+  /* Results View */
+  #results { display: none; text-align: center; }
+  .results-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 35px 25px;
+    margin: 20px 0;
+    box-shadow: 0 6px 30px rgba(0,0,0,0.5);
+  }
+  .score-circle {
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 15px auto 25px;
+    font-size: 2.6em;
+    font-weight: 800;
+    border: 8px solid;
+    background: rgba(15, 23, 42, 0.8);
+  }
+  .score-circle.high { border-color: var(--success); color: #34d399; box-shadow: 0 0 25px rgba(16, 185, 129, 0.3); }
+  .score-circle.medium { border-color: var(--warning); color: #fbbf24; box-shadow: 0 0 25px rgba(245, 158, 11, 0.3); }
+  .score-circle.low { border-color: var(--danger); color: #f87171; box-shadow: 0 0 25px rgba(239, 68, 68, 0.3); }
+  .score-circle small { font-size: 0.35em; font-weight: 500; color: var(--text-muted); margin-top: -4px; }
+  
+  .results-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 15px;
+    margin: 25px 0;
+  }
+  .stat-box {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid var(--border);
+    padding: 15px;
+    border-radius: 12px;
+  }
+  .stat-box .val { font-size: 1.8em; font-weight: 800; }
+  .stat-box .lbl { font-size: 0.85em; color: var(--text-muted); margin-top: 4px; }
+
+  /* Responsive */
+  @media (max-width: 650px) {
+    .container { padding: 12px; }
+    .question-card { padding: 18px 18px; }
+    h1 { font-size: 1.5em; }
+    .menu-grid { grid-template-columns: 1fr; }
+    .nav-controls { flex-direction: column; width: 100%; }
+    .nav-group-left, .nav-group-right { width: 100%; justify-content: space-between; }
+    .btn { flex: 1; padding: 12px 14px; font-size: 0.9em; }
+    .settings-card { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>📡 Cuestionario COM <span>2do Parcial</span></h1>
+    <p class="subtitle">Comunicaciones — Universidad Tecnológica Nacional (Modo Oscuro)</p>
+    <div class="quick-stats-bar">
+      <div class="stat-pill">📚 Total: <strong id="header-total">122</strong></div>
+      <div class="stat-pill">⭐ Marcadas: <strong id="header-marked-count">0</strong></div>
+      <div class="stat-pill">❌ Por reintentar: <strong id="header-wrong-count">0</strong></div>
+    </div>
+  </header>
+
+  <!-- SHORTCUTS BANNER -->
+  <div class="shortcuts-banner">
+    <span>⌨️ <strong>Atajos de teclado:</strong></span>
+    <span><span class="kbd">←</span> Anterior</span>
+    <span><span class="kbd">→</span> Siguiente</span>
+    <span><span class="kbd">Enter</span> Verificar / Avanzar</span>
+    <span><span class="kbd">1</span>-<span class="kbd">9</span> Elegir opción</span>
+  </div>
+
+  <!-- SETTINGS / CONFIGURATION PANEL -->
+  <div class="settings-card">
+    <div class="settings-title">
+      <span>⚙️ Opciones de Aleatoriedad:</span>
+    </div>
+    <div class="toggles-wrapper">
+      <label class="toggle-item" title="Cambia el orden en el que aparecen las preguntas">
+        <div class="switch">
+          <input type="checkbox" id="shuffle-questions-toggle" onchange="toggleSetting('shuffleQuestions')">
+          <span class="slider"></span>
+        </div>
+        <span>🔀 Mezclar preguntas</span>
+      </label>
+      <label class="toggle-item" title="Cambia el orden de las opciones/respuestas de cada pregunta">
+        <div class="switch">
+          <input type="checkbox" id="shuffle-options-toggle" onchange="toggleSetting('shuffleOptions')">
+          <span class="slider"></span>
+        </div>
+        <span>🔀 Mezclar respuestas</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- LANDING -->
+  <div id="landing">
+    <div class="section-title">🚀 Modo de Estudio</div>
+    <div class="menu-grid">
+      <button class="menu-btn all-btn" onclick="startQuiz('all')">
+        <span>📋 Todas las preguntas (<span id="total-count">122</span>)</span>
+      </button>
+    </div>
+
+    <!-- ESPECIALES: MARCADAS & ERRORES -->
+    <div class="section-title">⭐ Práctica Especial</div>
+    <div class="menu-grid">
+      <button class="menu-btn marked-btn" id="marked-btn" onclick="startQuiz('marked')" disabled>
+        ⭐ Practicar marcadas (<span id="marked-count-btn">0</span>)
+      </button>
+      <button class="menu-btn retry-btn" id="retry-btn" onclick="startQuiz('retry')" disabled>
+        🔄 Practicar errores (<span id="retry-count-btn">0</span>)
+      </button>
+    </div>
+
+    <!-- GRUPOS DE 10 -->
+    <div class="section-title">📦 Practicar por bloques de 10</div>
+    <div class="menu-grid" id="groups-grid"></div>
+  </div>
+
+  <!-- QUIZ AREA -->
+  <div id="quiz-area">
+    <div class="quiz-top-bar">
+      <div class="progress-info" id="progress-text">Pregunta 1 de 10</div>
+      <div class="top-actions">
+        <button class="top-btn" onclick="togglePaletteView()">🔢 Índice</button>
+        <button class="top-btn" onclick="confirmExit()">🏠 Menú</button>
+      </div>
+    </div>
+
+    <div class="progress-bar-container">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+
+    <!-- Question Palette Drawer -->
+    <div class="question-palette" id="question-palette" style="display:none;"></div>
+
+    <!-- Current Question Card -->
+    <div id="questions-container"></div>
+
+    <!-- Navigation Controls -->
+    <div class="nav-controls">
+      <div class="nav-group-left">
+        <button class="btn btn-nav" id="prev-btn" onclick="prevQuestion()" disabled title="Atajo: Flecha izquierda (←)">
+          ⬅️ Anterior
+        </button>
+      </div>
+      <div class="nav-group-right">
+        <button class="btn btn-primary" id="check-btn" onclick="checkCurrentQuestion()" title="Atajo: Tecla Enter">
+          ✅ Verificar <span class="kbd" style="font-size:0.75em; margin-left:4px;">↵ Enter</span>
+        </button>
+        <button class="btn btn-nav" id="next-btn" onclick="nextQuestion()" title="Atajo: Flecha derecha (→) o Enter tras verificar">
+          Siguiente ➡️
+        </button>
+        <button class="btn btn-warning" id="finish-btn" onclick="showResults()" style="display:none" title="Atajo: Tecla Enter en la última pregunta">
+          📊 Finalizar <span class="kbd" style="font-size:0.75em; margin-left:4px;">↵</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="results">
+    <div class="results-card">
+      <h2 style="font-size: 1.8em; margin-bottom: 5px;">📊 Resumen de Resultados</h2>
+      <p style="color: var(--text-muted); font-size: 0.95em;">Puntuación obtenida en esta sesión</p>
+      
+      <div class="score-circle" id="score-circle">
+        <span id="score-pct">0%</span>
+        <small id="score-detail">0 / 0</small>
+      </div>
+
+      <div class="results-stats">
+        <div class="stat-box">
+          <div class="val" style="color: var(--success)" id="stat-correct">0</div>
+          <div class="lbl">Correctas</div>
+        </div>
+        <div class="stat-box">
+          <div class="val" style="color: var(--danger)" id="stat-incorrect">0</div>
+          <div class="lbl">Incorrectas</div>
+        </div>
+        <div class="stat-box">
+          <div class="val" style="color: var(--text)" id="stat-total">0</div>
+          <div class="lbl">Total preguntas</div>
+        </div>
+      </div>
+
+      <div class="menu-grid" style="margin-top: 25px;">
+        <button class="btn btn-nav" onclick="backToMenu()">🏠 Volver al menú</button>
+        <button class="btn btn-danger" id="results-retry-btn" onclick="startQuiz('retry')">🔄 Reintentar errores</button>
+        <button class="btn btn-primary" onclick="startQuiz(lastMode, lastGroupIndex)">🔁 Repetir mismo set</button>
+        <button class="btn marked-btn" id="results-marked-btn" onclick="startQuiz('marked')">⭐ Practicar marcadas</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// BASE DE DATOS DE PREGUNTAS (122 ÚNICAS)
+// ============================================================
+const ALL_QUESTIONS = [
+  // === FIBRA ÓPTICA ===
+  {
+    id: 1, text: "¿Cuál es el principal motivo por el cual se produce un ensanchamiento del pulso de señal conducido por una fibra óptica?",
+    type: "single",
+    options: ["Dopado de la fibra", "Ancho del núcleo", "Dispersión cromática (modal)", "Tipo de revestimiento de la fibra", "Atenuación"],
+    correct: [2]
+  },
+  {
+    id: 2, text: "El índice de refracción del núcleo de una fibra óptica es mayor al del recubrimiento.",
+    type: "tf",
+    options: ["Verdadero", "Falso"],
+    correct: [0]
+  },
+  {
+    id: 3, text: "¿Qué representa el perfil de una fibra óptica?",
+    type: "single",
+    options: ["(A) La variación del índice de reflexión del núcleo en función del radio", "(B) La variación del índice de refracción del recubrimiento en función del radio", "(C) La variación del índice de refracción del núcleo en función del radio", "(D) La variación del índice de reflexión del recubrimiento en función del radio"],
+    correct: [2]
+  },
+  {
+    id: 4, text: "La dispersión cromática de la FO depende de:",
+    type: "multi",
+    options: ["La regularidad de las distancias interatómicas en el núcleo de la FO", "La variación de las características isotrópicas del núcleo de la FO", "La longitud de la FO", "Ninguna respuesta es correcta"],
+    correct: [0, 1]
+  },
+  {
+    id: 5, text: "La dispersión cromática de la FO depende de (segunda versión):",
+    type: "single",
+    options: ["La longitud de la FO", "La falta de homogeneidad en la FO y CEO emisores", "Ninguna es correcta"],
+    correct: [1]
+  },
+  {
+    id: 6, text: "En una fibra óptica la ley de Snell nos permite:",
+    type: "multi",
+    options: ["e. Encontrar el número de modos de propagación de una FO", "b. Calcular las condiciones de trabajo para no perder luz por el recubrimiento", "d. Definir las ventanas de transmisión para una FO", "c. Ninguna correcta", "a. Encontrar las razones por la cual la luz es absorbida por el núcleo de la FO"],
+    correct: [0, 1]
+  },
+  {
+    id: 7, text: "En una FO la ley de Snell nos permite encontrar:",
+    type: "multi",
+    options: ["Su ángulo de aceptación", "Su apertura numérica", "El ángulo de acoplamiento entre el foco-conversor y la FO", "Ninguna es correcta", "Su reflexión total interna", "El ángulo de acoplamiento entre 2 FO"],
+    correct: [0, 1, 4]
+  },
+  {
+    id: 8, text: "¿Qué implica no cumplir con el ángulo de aceptación de la fibra óptica?",
+    type: "single",
+    options: ["Aumentar la absorción de la luz en el núcleo", "Disminuir la absorción de la luz en el núcleo", "Ganar luz por el recubrimiento", "Perder luz por el recubrimiento", "Posibilitar el acoplamiento con fibras multimodo"],
+    correct: [3]
+  },
+  {
+    id: 9, text: "Cómo se determina el ángulo de aceptación en una fibra óptica:",
+    type: "single",
+    options: ["(A) arccos(n1/n2)", "(B) arccos(n2/n1)", "(C) arcsen(n1/n2)", "(D) arcsen(n2/n1)", "(E) sen(n2/n1)"],
+    correct: [3]
+  },
+  {
+    id: 10, text: "El índice de refracción del núcleo de una fibra óptica representa la relación entre [A/B] = A respecto de B:",
+    type: "single",
+    options: ["a) La velocidad de propagación de la luz en el núcleo de la FO respecto a la velocidad de propagación de la luz en el recubrimiento", "b) La velocidad de propagación de la luz en el vacío respecto a la velocidad de propagación de la luz en el núcleo de la FO", "c) La velocidad de propagación de la luz en el núcleo de la FO respecto a la velocidad de propagación de la luz en el vacío", "d) La velocidad de propagación de la luz en el recubrimiento respecto a la velocidad de propagación de la luz en el núcleo de la FO"],
+    correct: [1]
+  },
+  {
+    id: 11, text: "Indique los distintos tipos de fibras ópticas utilizadas en comunicaciones:",
+    type: "multi",
+    options: ["Multimodo de Índice Gradual (MM)", "Multimodo de Índice Positivo (MM)", "Monomodo (SM)", "De modo Único (UM)", "Multimodo de Salto de Índice (MM)"],
+    correct: [0, 2, 4]
+  },
+  {
+    id: 12, text: "¿Cuáles de los siguientes se pueden considerar factores que aumentan la atenuación en un conductor de fibra óptica?",
+    type: "multi",
+    options: ["Excesiva cantidad de canales multiplexados en WDM", "Radiación nuclear", "Interferencias electromagnéticas externas", "Conductores de fibra óptica próximos que conducen otras señales", "Humedad ambiente", "Radios de curvatura inapropiados (demasiado pequeños)", "Dispersión cromática", "Bandas de absorción"],
+    correct: [1, 5, 6, 7]
+  },
+  {
+    id: 13, text: "¿Cuáles de las siguientes son causas que provocan la atenuación de una señal en un conductor de Fibra óptica?",
+    type: "multi",
+    options: ["Absorción intrínseca", "Cantidad de longitudes de onda multiplexadas dentro de la Fibra Óptica", "Microcurvaturas en la instalación del conductor de fibra óptica", "Material del revestimiento del cable de fibra óptica", "Profundidad de enterramiento del cable de fibra óptica", "Dispersión Rayleigh", "Humedad", "Tipo de terreno donde se instala el conductor de fibra óptica"],
+    correct: [0, 2, 5]
+  },
+  {
+    id: 14, text: "Los factores intrínsecos que determinan la atenuación en la fibra óptica generan la presencia de:",
+    type: "multi",
+    options: ["Dispersión cromática", "Bandas de dispersión cromática", "Variación de la atenuación en función de la frecuencia", "Bandas de absorción", "Bandas de absorción cromática"],
+    correct: [0, 3]
+  },
+  {
+    id: 15, text: "Las ventanas de transmisión para una FO dependen de:",
+    type: "single",
+    options: ["La relación entre los índices de refracción del núcleo y del recubrimiento", "Ninguna respuesta es correcta", "El dopado del núcleo de la FO", "La frecuencia de la señal a transmitir"],
+    correct: [2, 3],
+    explanation: "Dependen del dopado del núcleo y la frecuencia de la señal a transmitir."
+  },
+  {
+    id: 16, text: "Las ventanas de transmisión para una FO dependen de sus características, definidas por:",
+    type: "single",
+    options: ["La presencia de impurezas en el recubrimiento de la FO", "El fenómeno de absorción de la luz en el recubrimiento de la FO", "Ninguna respuesta es correcta", "El dopado del recubrimiento de la FO"],
+    correct: [2],
+    explanation: "Todas las opciones hablan del recubrimiento, cuando lo que debemos tener en cuenta es el núcleo."
+  },
+  {
+    id: 17, text: "¿Cuáles son las zonas del espectro electromagnético donde la atenuación de los sistemas de comunicaciones que utiliza fibra óptica presenta mínimos? (en nm)",
+    type: "multi",
+    options: ["1300", "850", "1330", "900", "730", "1550"],
+    correct: [1, 2, 5]
+  },
+  {
+    id: 18, text: "El parámetro estructural, utilizado para determinar el número de modos, es directamente proporcional a la longitud de onda e inversamente proporcional a la apertura numérica.",
+    type: "tf",
+    options: ["Verdadero", "Falso"],
+    correct: [1],
+    explanation: "Es inversamente proporcional a la longitud de onda y directamente proporcional a la apertura numérica."
+  },
+  {
+    id: 19, text: "Si queremos utilizar una fibra monomodo, ¿qué variable del parámetro estructural conviene modificar?",
+    type: "single",
+    options: ["Apertura numérica", "Frecuencia", "Radio del núcleo", "Longitud de onda"],
+    correct: [2]
+  },
+  {
+    id: 20, text: "Si necesito empalmar dos fibras ópticas del tipo monomodo (SM), deberé utilizar como herramienta:",
+    type: "single",
+    options: ["Un OTDR", "Una pinza crimpeadora", "Podré hacer un empalme mecánico (manual)", "Una fusionadora", "Un probador de cables", "Un destornillador", "Una herramienta de impacto", "Un certificador de cableado"],
+    correct: [3]
+  },
+  {
+    id: 21, text: "Se llama 'perfil de una fibra óptica' a:",
+    type: "single",
+    options: ["(A) Al índice de refracción del conductor de fibra óptica", "(B) A la línea que aparece en el núcleo al cortar una fibra óptica", "(C) A la variación del índice de refracción en función del radio del núcleo de la FO", "(D) Al corte transversal del conductor de fibra óptica"],
+    correct: [2]
+  },
+  // === CABLEADO ESTRUCTURADO ===
+  {
+    id: 22, text: "¿Cuál de los siguientes son instrumentos con los cuales se realiza la certificación de un cableado?",
+    type: "single",
+    options: ["Multímetro digital", "Probadores de cable UTP", "Analizador de espectro", "Certificadores de cableado", "OTDR"],
+    correct: [3]
+  },
+  {
+    id: 23, text: "¿Cuáles de los siguientes son instrumentos con los cuales se puede comprobar si un cable de conexión (patch cord) está correctamente armado?",
+    type: "multi",
+    options: ["Analizador de espectro", "Certificadores de cableado", "OTDR", "Multímetro digital", "Probadores de cable UTP (LAN Tester)"],
+    correct: [1, 4]
+  },
+  {
+    id: 24, text: "Si deseo conectar una PC a un Switch, necesitaré un cable de conexión (patch cord):",
+    type: "single",
+    options: ["Directo", "Cable Canal", "Cruzado", "Coaxil", "De consola"],
+    correct: [0]
+  },
+  {
+    id: 25, text: "Si deseo conectar directamente dos PC entre sí, necesitaré un cable de conexión (patch cord):",
+    type: "single",
+    options: ["Cable Canal", "De consola", "Coaxil", "Directo", "Cruzado"],
+    correct: [4]
+  },
+  {
+    id: 26, text: "¿Qué se logra mediante el trenzado de los hilos en un cable CAT-5?",
+    type: "single",
+    options: ["(E) Ninguna correcta", "(A) El cable queda más delgado", "(D) Permite que 6 pares entren en el espacio de 4 pares", "(C) Reducir la longitud de los conductores y por ende la atenuación", "(B) Es más económico"],
+    correct: [0],
+    explanation: "El trenzado de los hilos en un cable CAT-5 se utiliza para reducir la interferencia electromagnética (EMI) y la diafonía."
+  },
+  {
+    id: 27, text: "Si necesito implementar un sistema de comunicaciones de gran ancho de banda y que posea estabilidad en la tasa de bits de funcionamiento, preferiré instalar una red con cableado estructurado, en lugar de una red inalámbrica.",
+    type: "tf",
+    options: ["Verdadero", "Falso"],
+    correct: [0]
+  },
+  {
+    id: 28, text: "La categoría de mayor ancho de banda utilizada hoy en día en instalaciones de cableado estructurado, es la categoría 6A.",
+    type: "tf",
+    options: ["Verdadero", "Falso"],
+    correct: [0]
+  },
+  {
+    id: 29, text: "La categoría de mayor ancho de banda utilizada hoy en día en instalaciones de cableado estructurado, es la categoría 1.",
+    type: "tf",
+    options: ["Verdadero", "Falso"],
+    correct: [1]
+  },
+  {
+    id: 30, text: "¿Cuáles de los siguientes conductores es más delgado, posee mayor atenuación y tiene menor ancho de banda?",
+    type: "single",
+    options: ["FTP", "STP", "Pares telefónicos", "UTP", "Cables Coaxiles"],
+    correct: [2]
+  },
+  {
+    id: 31, text: "¿Cuál es la longitud máxima que puede tener el enlace permanente? (Indique sólo con números, sin unidades)",
+    type: "text",
+    correctText: ["90", "90m", "90 m", "90 metros"],
+    correctDisplay: "90",
+    placeholder: "Indica sólo el número (ej. 90)"
+  },
+  {
+    id: 32, text: "¿Cuál es la longitud máxima de un cable de categoría 5e que se puede utilizar?",
+    type: "single",
+    options: ["71 metros", "100 metros", "95 metros", "80 metros"],
+    correct: [1]
+  },
+  {
+    id: 33, text: "¿A qué se denomina cableado horizontal?",
+    type: "single",
+    options: ["Se denomina al BackBone de fibra óptica que conecta diferentes pisos de un edificio", "Se denomina al cableado que une diferentes edificios de un Campus", "Se denomina al conjunto de cables y conectores que van desde el armario de comunicaciones (AC), hasta las rosetas del puesto de trabajo"],
+    correct: [2]
+  },
+  {
+    id: 34, text: "¿Cuál es la longitud máxima permitida independientemente del medio de transmisión en el Cableado Horizontal?",
+    type: "single",
+    options: ["105 metros", "45 metros", "58 metros", "90 metros", "100 metros"],
+    correct: [4]
+  },
+  {
+    id: 35, text: "¿Cómo se denomina el subsistema que interconecta armarios de telecomunicaciones?",
+    type: "multi",
+    options: ["Subsistema troncal (backbone)", "Cruzada telefónica", "Área de Acceso", "Facilidad de Entrada", "Armario de telecomunicaciones"],
+    correct: [0, 3]
+  },
+  {
+    id: 36, text: "¿Cómo se denomina el subsistema donde se conecta el acceso del proveedor de conectividad a Internet (o telefonía)?",
+    type: "single",
+    options: ["Subsistema troncal (backbone)", "Armario de telecomunicaciones", "Facilidad de Entrada", "Área de Acceso", "Cruzada telefónica"],
+    correct: [2]
+  },
+  {
+    id: 37, text: "Cuando decimos: 'Lugar en el que ingresan los servicios de telecomunicaciones al edificio y/o dónde llegan las canalizaciones de interconexión con otros edificios de la misma corporación (campus).'",
+    type: "single",
+    options: ["Canalizaciones de \"Montantes\" (\"Back-bone\")", "Sala de Equipos", "Facilidades de entrada", "Áreas de trabajo"],
+    correct: [2]
+  },
+  {
+    id: 38, text: "Indique cuál de los siguientes conectores es usado en cableado estructurado para armar la toma de red del área de trabajo:",
+    type: "single",
+    options: ["LC", "ST", "FC", "Plug RJ 45", "BNC", "Jack RJ 45", "RJ 36", "SC"],
+    correct: [5]
+  },
+  {
+    id: 39, text: "Indique cuáles de los siguientes conectores son usados para conectar el emisor/receptor con el cable de fibra óptica:",
+    type: "multi",
+    options: ["Jack RJ 45", "FC", "ST", "SC", "Plug RJ 45", "LC", "RJ 36", "BNC"],
+    correct: [1, 2, 3, 5]
+  },
+  {
+    id: 40, text: "Indique cuál de los siguientes conectores es usado en la red telefónica para conectar el aparato de abonado con la toma de red:",
+    type: "single",
+    options: ["SC", "TE", "RJ 36", "RJ 45", "LC", "ST", "BNC", "RJ 11"],
+    correct: [7]
+  },
+  {
+    id: 41, text: "¿Cuál de las siguientes normas de cableado estructurado para telecomunicaciones multipropósito?",
+    type: "multi",
+    options: ["ANSI/EIA/TIA 568", "IEEE 802.1", "ISO", "ISO/IEC 11801", "IRAM 569", "IEEE 802.3"],
+    correct: [0, 3]
+  },
+  {
+    id: 42, text: "Las normas del cableado estructurado ... y ... son totalmente compatibles y equivalentes en cuanto a la topología del cableado, medios conductores sugeridos y procedimientos de medición:",
+    type: "single",
+    options: ["ISO Y IEEE 802.3", "ISO/IEC 11801 y ANSI/EIA/TIA 568", "ANSI/EIA/TIA 1005 e ISO 11801"],
+    correct: [1]
+  },
+  {
+    id: 43, text: "Indique cuáles de los siguientes son subsistemas componentes del cableado estructurado según la norma ANSI/EIA/TIA 568:",
+    type: "multi",
+    options: ["Canaletas de guiado", "Armario de Telecomunicaciones (Telecommunication room)", "Switch", "Equipo certificador de enlace permanente", "Subsistema horizontal (o secundario)", "Toma de telecomunicaciones", "Cuarto de equipos", "Área de trabajo", "Subsistema de interconexión (backbone)", "Equipo terminal de usuario"],
+    correct: [1, 4, 6, 7, 8]
+  },
+  {
+    id: 44, text: "Si armamos un cable crossover, los pines 1 y 2 de una de las puntas se conectarán a:",
+    type: "single",
+    options: ["Los pines 7 y 8 de la otra", "Los pines 2 y 7 de la otra", "Los pines 6 y 8 de la otra", "Los pines 4 y 5 de la otra", "Los pines 3 y 6 de la otra", "Los pines 1 y 8 de la otra"],
+    correct: [4]
+  },
+  {
+    id: 45, text: "La forma en que se indica el tamaño de un conductor de comunicaciones es utilizando la nomenclatura AWG. Indique cuál es el número con el que se expresa el grosor de un cable UTP utilizado en cableado estructurado que responda a la categoría 6A, 7 y 8:",
+    type: "text",
+    correctText: ["23", "23 awg", "23awg"],
+    correctDisplay: "23",
+    placeholder: "Indica el número AWG (ej. 23)"
+  },
+  {
+    id: 46, text: "La forma en que se indica el tamaño de un conductor de comunicaciones es utilizando la nomenclatura AWG. Indique cuál es el número con el que se expresa el grosor de un cable UTP utilizado en cableado estructurado que responda a la categoría 5:",
+    type: "text",
+    correctText: ["24", "24 awg", "24awg"],
+    correctDisplay: "24",
+    placeholder: "Indica el número AWG (ej. 24)"
+  },
+  {
+    id: 47, text: "¿Cómo se arma un cable para conectar dos PC, utilizando las normas T568A y T-568B?",
+    type: "single",
+    options: ["(D) Cruzando todos los pares", "(B) Cruzando el par 4 con el 5 de la norma T-568-A en ambos extremos", "(C) En un extremo utilizo norma T-568-A y en el otro T-568-B", "(A) Utilizo en ambos extremos norma T-568-A"],
+    correct: [2]
+  },
+  {
+    id: 48, text: "Si tengo un cable armado con norma T568A en ambos extremos (cable directo), lo usaré para conectar:",
+    type: "multi",
+    options: ["Un Switch a un Router", "Un Access Point a un Router", "Una PC a un Switch"],
+    correct: [0, 1, 2]
+  },
+  {
+    id: 49, text: "Si tengo un cable armado con norma T568A en un extremo y T568B en el otro (cable cruzado), lo usaré para conectar:",
+    type: "multi",
+    options: ["Dos DTE entre sí", "Un Switch a un Hub", "Dos PC entre sí", "Dos Modems entre sí", "Dos Switch entre sí", "Un Router a una PC", "Un Access Point a un Router"],
+    correct: [0, 1, 2, 3, 4, 5]
+  },
+  {
+    id: 50, text: "Si necesitara implementar una red de computadoras que transmita información a una tasa de 10 Gb/s, necesitaré una instalación de cableado estructurado que certifique algunas de las siguientes categorías (seleccione tres):",
+    type: "multi",
+    options: ["Clase E", "Categoría 1", "Categoría 6A", "Categoría 5", "Categoría 5e", "Categoría 8", "Clase A", "Clase F"],
+    correct: [2, 5, 7]
+  },
+  {
+    id: 51, text: "Si necesitara implementar una red de computadoras que transmita información a una tasa de 1 Gb/s, necesitaré una instalación de cableado estructurado que certifique algunas de las siguientes categorías (seleccione tres):",
+    type: "multi",
+    options: ["Categoría 6", "Categoría 6A", "Categoría 1", "Categoría 5", "Categoría 5e"],
+    correct: [0, 1, 4]
+  },
+  {
+    id: 52, text: "¿Cuál es la categoría de cable que permite como mínimo una velocidad de transmisión de 1 Gbps?",
+    type: "single",
+    options: ["Categoría 1", "Categoría 5", "Categoría 3", "Categoría 5e"],
+    correct: [3]
+  },
+  {
+    id: 53, text: "La torsión del cable UTP se realiza para:",
+    type: "single",
+    options: ["(A) Disminuir el ISI", "(D) Ninguna de las anteriores", "(B) Disminuir la atenuación", "(C) Disminuir la paradiafonía"],
+    correct: [3]
+  },
+  {
+    id: 54, text: "¿Cuál es la definición correcta al hablar de un cable STP?",
+    type: "single",
+    options: ["Cable de par trenzado donde el apantallamiento envuelve a todo el grupo de pares trenzados", "Cable de pares trenzados laminado blindado individual", "Cable semejante al UTP que añade un recubrimiento metálico por cada par", "Cable de pares trenzados donde se le añade una malla metálica al apantallamiento global"],
+    correct: [2]
+  },
+  {
+    id: 55, text: "¿Cuál es la finalidad del blindaje en un cable STP?",
+    type: "single",
+    options: ["Reducir la absorción de la interferencia electromagnética externa", "Proteger a los pares de la humedad", "Reducir la atenuación del cable", "Proteger a los cables de cortocircuitos eléctricos", "Evitar la pérdida de señal (que pueda ser captada por un intruso)"],
+    correct: [0]
+  },
+  {
+    id: 56, text: "El nivel de protección del [a] ante perturbaciones externas es mayor al ofrecido por [b]. Sin embargo es más costoso y requiere más instalación. La pantalla del [c] para que sea más eficaz requiere una configuración de interconexión con tierra.",
+    type: "single",
+    options: ["[a]=Patch Pannel [b]=STP [c]= Multipar telefónico", "[a]=STP [b]=UTP [c]= STP", "[a]=Wireless [b]=Coaxial [c]= Par telefónico"],
+    correct: [1]
+  },
+  {
+    id: 57, text: "En los conectores RJ-45, los pines que se utilizan para la transmisión y recepción de datos son:",
+    type: "single",
+    options: ["Ninguna es correcta", "1, 2, 3, 6", "1, 4, 5, 7", "1, 2, 3, 4"],
+    correct: [1]
+  },
+  {
+    id: 58, text: "El NEXT es la interferencia electromagnética producida por una señal de radio frecuencia externa, sobre la señal que se emite por un par del cable, medida en el extremo cercano al emisor.",
+    type: "tf",
+    options: ["Verdadero", "Falso"],
+    correct: [1]
+  },
+  {
+    id: 59, text: "El [...] es el acoplamiento de señal de un par de un cable sobre otro par del mismo cable. En cambio el [...] es el acoplamiento de señal de un cable sobre otro próximo.",
+    type: "single",
+    options: ["[NEXT] y [ANEXT]", "[ACR] y [Delay Skew]", "[NEXT] y [FEXT]", "[PSNEXT] y [ACR]"],
+    correct: [0]
+  },
+  {
+    id: 60, text: "Indique qué factores pueden producir un aumento del NEXT:",
+    type: "multi",
+    options: ["Demasiado retiro del plástico protector de los cables", "Humedad en los conductores por los que pasan los cables", "Terminaciones de cables mal armadas (demasiado destrenzado de los pares)", "Disminución de la sección de los conductores", "Mala conexión del blindaje", "La frecuencia de la señal", "Mal crimpeado de los conectores"],
+    correct: [2, 4, 5]
+  },
+  {
+    id: 61, text: "La atenuación de una señal es:",
+    type: "single",
+    options: ["(A) Una pérdida de fidelidad de la señal transmitida", "(B) Una pérdida de potencia de las señales transmitidas", "(C) El aumento del ancho de banda de la señal transmitida", "(D) Una pérdida de sincronismo en la señal recibida"],
+    correct: [1]
+  },
+  {
+    id: 62, text: "Indique cuál de los siguientes conectores es usado en cableado estructurado para conectar el equipo terminal de usuario con la toma de red:",
+    type: "single",
+    options: ["BNC", "RJ 45", "LC", "RJ 36", "TE", "RJ 11", "SC", "ST"],
+    correct: [1]
+  },
+  {
+    id: 63, text: "Identifique tipo de cable (imagen con tres cables):",
+    type: "single",
+    options: ["UTP, FTP, STP", "FTP, UTP, CTP", "STP, Multipar telefónico, Coaxial"],
+    correct: [0]
+  },
+  {
+    id: 64, text: "Para certificar un cableado estructurado, ¿qué elementos comprende el tramo denominado canal (o trayecto)?",
+    type: "multi",
+    options: ["Cableado horizontal", "Cables de conexión (patch cord)", "Facilidad de entrada", "Panel de conexión (patch pannel)", "Toma de telecomunicaciones (de pared, o roseta)", "La placa de red de la PC", "Cuarto de equipos", "Cableado principal (backbone)"],
+    correct: [0, 1, 3, 4]
+  },
+  {
+    id: 65, text: "Si debo armar 60 cables de conexión (patch cord) para un Edificio de Laboratorios de informática; ¿cuántos conectores RJ45 necesitaré comprar (al menos)?",
+    type: "text",
+    correctText: ["120", "120 conectores", "120 conectores rj45"],
+    correctDisplay: "120",
+    placeholder: "Cantidad mínima de conectores (ej. 120)"
+  },
+  {
+    id: 66, text: "¿Cuál es el conductor preferido para implementar el backbone de campus?",
+    type: "text",
+    correctText: ["fibra optica", "fibra", "cable de fibra optica", "fibra optica sm", "fibra optica monomodo"],
+    correctDisplay: "Fibra Óptica",
+    placeholder: "Escribe el nombre del conductor (ej. Fibra Óptica)"
+  },
+  // === HERRAMIENTAS ===
+  {
+    id: 67, text: "La herramienta de la figura (herramienta de impacto) se usa para:",
+    type: "multi",
+    options: ["Crimpear un conector RJ45 a un cable UTP", "Empalar dos fibras ópticas monomodo", "Impactar un jack RJ45 en la toma de pared (roseta)", "Conectar los cables UTP a un panel de conexión (patch pannel) en el armario", "Empalar dos fibras ópticas multimodo"],
+    correct: [2, 3]
+  },
+  {
+    id: 68, text: "La herramienta de la figura (pinza crimpeadora) se usa para:",
+    type: "single",
+    options: ["Impactar un jack RJ45 en la toma de pared (roseta)", "Empalar dos fibras ópticas multimodo", "Crimpear un conector RJ45 a un cable UTP", "Empalar dos fibras ópticas monomodo", "Conectar los cables UTP a un panel de conexión (patch pannel) en el armario"],
+    correct: [2]
+  },
+  {
+    id: 69, text: "Si necesito armar un cable de conexión (patch cord), deberé utilizar como herramienta:",
+    type: "single",
+    options: ["Un certificador de cableado", "Un OTDR", "Un destornillador", "Una pinza crimpeadora", "Una empalmadora por fusión", "Una herramienta de impacto", "Una pinza \"pico de loro\"", "Un probador de cables"],
+    correct: [3]
+  },
+  // === TRANSMISIÓN SERIE / PARALELO ===
+  {
+    id: 70, text: "¿Cuáles de los siguientes son estándares de transmisión de bits en paralelo?",
+    type: "multi",
+    options: ["RS232-C", "Centronics", "LPT", "USB", "Cable Modem"],
+    correct: [1, 2]
+  },
+  {
+    id: 71, text: "¿Cuáles de los siguientes son estándares de transmisión de bits en serie?",
+    type: "multi",
+    options: ["Cable Modem", "USB", "RS232-C", "LPT", "Centronics"],
+    correct: [0, 1, 2]
+  },
+  {
+    id: 72, text: "Indique cuáles de las siguientes características corresponden a una transmisión en serie asincrónica:",
+    type: "multi",
+    options: ["El primer bit que se transmite es el de menor peso (LSB)", "El tiempo entre caracter debe ser fijo", "En el receptor se necesita recibir el bit de arranque para lograr el sincronismo", "Los caracteres a transmitir se juntan en la UART y luego van precedidos de un bit de arranque", "Cada caracter va precedido del bit de arranque y finaliza con el bit de parada", "El primer bit que se transmite es el de mayor peso (MSB)", "En reposo, el nivel lógico de la línea es \"1\"", "Los caracteres se transmiten aisladamente, caracter por caracter"],
+    correct: [0, 2, 4, 6, 7]
+  },
+  {
+    id: 73, text: "El estándar RS232 contempla una codificación para el \"0\" binario de [-3; -25] volts.",
+    type: "tf",
+    options: ["Verdadero", "Falso"],
+    correct: [1]
+  },
+  {
+    id: 74, text: "Dentro de las características más importantes de la conexión USB, podemos nombrar que:",
+    type: "multi",
+    options: ["Es plug and play", "No es plug and play", "Su longitud máxima de enlace es de 10 metros", "Su longitud máxima de enlace es de 5 metros", "Es Hot Plug and Play"],
+    correct: [0, 3, 4]
+  },
+  {
+    id: 75, text: "El uso del conector tipo C es obligatorio a partir de la tecnología USB 3,2.",
+    type: "tf",
+    options: ["Verdadero", "Falso"],
+    correct: [0]
+  },
+  {
+    id: 76, text: "La transmisión en serie de la información digital (bits) a través de un cable único u otros medios es menos efectiva en cuanto a costo que la transmisión en paralelo a través de múltiples cables.",
+    type: "tf",
+    options: ["Verdadero", "Falso"],
+    correct: [1]
+  },
+  {
+    id: 77, text: "El \"Jitter\" se produce por:",
+    type: "single",
+    options: ["(A) El corrimiento de amplitud de los pulsos respecto de su posición original", "(B) La variación de fase de la señal digital", "(C) La atenuación de los pulsos", "(D) La distorsión de los pulsos"],
+    correct: [1]
+  },
+  // === RS232 ===
+  {
+    id: 78, text: "Ejercicio RS232: Se necesita realizar una transferencia de datos desde un DTE hacia un DCE a través del interface RS232. ¿Cuál sería el conexionado mínimo necesario que garantice dicha transferencia?",
+    type: "single",
+    options: ["Tx > RX / GND <> GND / SHIELD - SHIELD", "TX > TX / RX < RX / GND <> GND / SHIELD - SHIELD", "Tx > TX / GND <> GND / SHIELD - SHIELD", "Rx < Rx / GND <> GND / SHIELD - SHIELD"],
+    correct: [0]
+  },
+  {
+    id: 79, text: "Ejercicio RS232 con verificación DCE encendido: Se necesita realizar una transferencia de datos desde un DTE hacia un DCE verificando si el DCE se encuentra encendido, sin puesta a tierra certificada. ¿Cuál sería el conexionado mínimo?",
+    type: "single",
+    options: ["Tx > TX / RTS > RTS / CTS < CTS / GND <> GND", "Tx > RX / RTS > RTS / DSR < DSR / retorno - retorno / shield - shield", "TX > RX / RTS > RTS / DSR < DSR / retorno - retorno", "Tx > Rx / Rx < Rx / RTS > RTS / DSR < DSR / retorno - retorno / shield", "Tx / RTS > RTS / DSR < DSR / retorno - retorno"],
+    correct: [2]
+  },
+  // === COMUNICACIONES INALÁMBRICAS ===
+  {
+    id: 80, text: "La eficiencia de la tecnología inalámbrica NFC radica en poseer una muy alta velocidad de transferencia de datos a corta distancia.",
+    type: "tf",
+    options: ["Verdadero", "Falso"],
+    correct: [0]
+  },
+  {
+    id: 81, text: "La tecnología Bluetooth se clasifica en: Versión (determina la potencia del transmisor) y Clase (determina la velocidad de transferencia de datos). Y opera en los rangos de frecuencia de 2.4GHz y 5GHz.",
+    type: "tf",
+    options: ["Verdadero", "Falso"],
+    correct: [1]
+  },
+  {
+    id: 82, text: "La tecnología de acceso inalámbrico Bluetooth está orientada sólo a la conexión punto a punto o red de malla de pocos nodos.",
+    type: "tf",
+    options: ["Verdadero", "Falso"],
+    correct: [0]
+  },
+  {
+    id: 83, text: "Con la tecnología Zigbee, es posible crear una pequeña red inalámbrica con dispositivos que se conectan entre sí a través de una red con topología de malla, utilizan un lenguaje de comunicación común entre ellos, sin necesidad de que cada uno esté conectado al router de manera individual. Y no es necesario el uso de un puente o hub para acceder a internet.",
+    type: "tf",
+    options: ["Verdadero", "Falso"],
+    correct: [1]
+  },
+  {
+    id: 84, text: "¿Cuáles son los dos tipos de espectro ensanchado?",
+    type: "multi",
+    options: ["DSSS", "ODSS", "TDMA", "FHSS", "OFDMA"],
+    correct: [0, 3]
+  },
+  {
+    id: 85, text: "En qué bandas de frecuencia puede trabajar un access point que utiliza norma 802.11n:",
+    type: "multi",
+    options: ["3GHz", "5GHz", "2,4MHz", "2,4GHz", "5MHz"],
+    correct: [1, 3]
+  },
+  {
+    id: 86, text: "La tecnología WiMAX de acceso móvil, bajo el estándar IEEE802.16e se utiliza en enlaces del tipo LOS.",
+    type: "tf",
+    options: ["Verdadero", "Falso"],
+    correct: [1]
+  },
+  {
+    id: 87, text: "Las señales de radiocomunicaciones se propagan por cualquier medio, incluso en el vacío.",
+    type: "tf",
+    options: ["Verdadero", "Falso"],
+    correct: [0]
+  },
+  {
+    id: 88, text: "Las señales de radiocomunicaciones sólo se propagan por la atmósfera terrestre (o sea, donde hay aire) no existiendo propagación electromagnética en el vacío.",
+    type: "tf",
+    options: ["Verdadero", "Falso"],
+    correct: [1]
+  },
+  {
+    id: 89, text: "Si necesito implementar un sistema de comunicaciones de gran ancho de banda y que posea estabilidad de funcionamiento, preferiré instalar una red Wi-Fi.",
+    type: "tf",
+    options: ["Verdadero", "Falso"],
+    correct: [1]
+  },
+  {
+    id: 90, text: "Si necesito implementar un sistema de comunicaciones en el menor tiempo posible, preferiré utilizar como medio conductor:",
+    type: "single",
+    options: ["Par Telefónico", "Cable UTP", "Fibra Óptica", "Cable Coaxial"],
+    correct: [1],
+    explanation: "Según otra fuente, la respuesta es Radiocomunicaciones (inalámbrico)."
+  },
+  // === TELEFONÍA CELULAR ===
+  {
+    id: 91, text: "¿Cuál fue la generación de telecomunicaciones móviles que permitió el acceso a internet desde los terminales de telefonía?",
+    type: "single",
+    options: ["1G", "AMPS", "3G", "2G", "GSM"],
+    correct: [2]
+  },
+  {
+    id: 92, text: "El grupo de células que conjuntamente usan todas las frecuencias disponibles se denomina:",
+    type: "single",
+    options: ["Multiplexación", "Modulación QAM", "Fibra óptica", "Clúster"],
+    correct: [3]
+  },
+  {
+    id: 93, text: "¿Cuáles de los siguientes métodos de acceso múltiple son empleados por los actuales sistemas de telefonía celular móvil 3G y 4G?",
+    type: "multi",
+    options: ["5G", "FDMA", "TDMA", "DAMA", "CDMA"],
+    correct: [1, 2, 4]
+  },
+  {
+    id: 94, text: "¿Cuáles son los tres elementos básicos de un sistema de comunicaciones celulares móviles?",
+    type: "multi",
+    options: ["Terminal móvil", "Regulación y estandarización", "Generación", "Hexágono", "Estación base", "Determinación del costo del servicio", "Centro de conmutación de móviles"],
+    correct: [0, 4, 6]
+  },
+  {
+    id: 95, text: "¿Cuáles de los siguientes son estándares de telefonía celular móvil digital?",
+    type: "multi",
+    options: ["CTI", "AMPS", "GSM", "CDMA 2000", "Movicom", "NMT", "UMTS"],
+    correct: [2, 3, 6]
+  },
+  {
+    id: 96, text: "¿Cuáles de los siguientes son estándares de telefonía celular móvil analógica?",
+    type: "multi",
+    options: ["CDMA 2000", "NMT", "Claro", "Multicom", "AMPS", "UMTS", "GSM"],
+    correct: [1, 4]
+  },
+  {
+    id: 97, text: "¿Cómo se llama el proceso de transferir una llamada en curso entre dos células cuando el móvil se desplaza?",
+    type: "text",
+    correctText: ["handover", "hand over", "hand-over"],
+    correctDisplay: "HandOver",
+    placeholder: "Escribe el nombre del proceso (ej. HandOver)"
+  },
+  {
+    id: 98, text: "La ganancia del sistema celular de comunicaciones se basa en instalar muy poca cantidad de estaciones base, aumentando la potencia de cada una de ellas, para poder atender a móviles más alejados.",
+    type: "tf",
+    options: ["Verdadero", "Falso"],
+    correct: [1],
+    explanation: "En un sistema celular se instalan muchas estaciones base con baja potencia, formando celdas pequeñas, para reutilizar frecuencias y aumentar capacidad."
+  },
+  {
+    id: 99, text: "¿Qué proceso permite aumentar la cantidad de abonados atendidos por un sistema celular de comunicaciones en una determinada zona?",
+    type: "single",
+    options: ["Confirmación del haz emitido por la antena", "Clusterización", "Sectorización", "Aumento de la potencia de señal radiada por la antena de la estación base", "Subdivisión de las celdas"],
+    correct: [4]
+  },
+  {
+    id: 100, text: "Para poder desarrollar una infraestructura de red 5G, será necesario implementar:",
+    type: "multi",
+    options: ["Frecuencias muy altas (30 a 300 GHz)", "Subdivisión de celdas", "Celdas muy pequeñas (pico o nanoceldas)", "Comunicación Full dúplex", "Conformación de los haces de radio emitidos por las antenas", "Tecnologías de radiotransmisión por múltiples canales", "Ninguna es correcta", "Todas son correctas"],
+    correct: [7],
+    explanation: "Todas las opciones listadas son correctas para 5G."
+  },
+  // === ORGANISMOS ===
+  {
+    id: 101, text: "¿Cuáles de estas organizaciones tienen funciones de normalización en Internet?",
+    type: "multi",
+    options: ["IETF", "ENACOM", "ITU", "Microsoft", "FIFA", "IANA", "IEEE", "AFA"],
+    correct: [0, 5]
+  },
+  {
+    id: 102, text: "Se dice que un estándar de jure u oficial, es definido por grupos u organizaciones oficiales. Entre las organizaciones internacionales de normalización en telecomunicaciones podemos citar:",
+    type: "multi",
+    options: ["ISO/IEC", "IEEE", "ITU", "ENACOM", "FIFA", "ANSI/EIA/TIA", "Microsoft", "AFA"],
+    correct: [0, 1, 2, 5]
+  },
+  {
+    id: 103, text: "En .... se llevan a cabo tareas de normalización y coordinación a nivel internacional en redes de telecomunicaciones celulares móviles:",
+    type: "single",
+    options: ["FCC", "ANSI/EIA/TIA", "ISO", "ENACOM", "ITU", "IEEE"],
+    correct: [4]
+  },
+  // === ANTENAS Y PROPAGACIÓN ===
+  {
+    id: 104, text: "¿Cómo se calcula la impedancia de una antena?",
+    type: "single",
+    options: ["Resistencia de radiación + Resistencia de pérdidas + reactancia de la antena", "Resistencia de radiación + Resistencia de pérdidas + reactancia de la antena + Pérdida en el espacio libre", "Resistencia de radiación + Resistencia de pérdidas", "Reactancia de la antena + frecuencia"],
+    correct: [0]
+  },
+  {
+    id: 105, text: "¿A qué nos referimos como vector Poynting?",
+    type: "multi",
+    options: ["Al producto vectorial entre el campo magnético y el campo eléctrico", "Vector que nos indica la máxima potencia de la señal que estemos propagando", "Al producto entre la frecuencia y la longitud de onda", "Vector que se utiliza para determinar el recorrido de los haces de luz en la fibra óptica", "Vector que nos indica la trayectoria que recorre una señal"],
+    correct: [0, 1]
+  },
+  {
+    id: 106, text: "¿A qué es igual dBd?",
+    type: "single",
+    options: ["dBd = dBi - 2.15 dB", "dBd = dBi + 2.15 dB", "dBd = dBi + 1.25 dB", "dBd = 2.15 * dBi"],
+    correct: [0]
+  },
+  {
+    id: 107, text: "La Relación de Onda Estacionaria (ROE) es:",
+    type: "single",
+    options: ["La relación entre la señal inyectada en la antena de Tx y la señal recibida en la antena de Rx", "La relación entre la señal inyectada en una línea de transmisión y la sensibilidad del receptor", "El fenómeno físico que se produce al existir un desacople de impedancias entre la antena, la línea de transmisión y la impedancia de salida del Tx"],
+    correct: [2]
+  },
+  {
+    id: 108, text: "En la zona de Fresnel, ¿qué porcentaje aún se considera estable para un enlace?",
+    type: "single",
+    options: ["60% de toda la zona", "40% de la zona 1", "60% de la zona 1", "50% de la zona 1", "50% de toda la zona"],
+    correct: [2]
+  },
+  {
+    id: 109, text: "El ruido que puede afectar la propagación de las ondas electromagnéticas puede ser producido por:",
+    type: "multi",
+    options: ["Humedad del ambiente", "Ruido producto del golpeteo de herramientas", "Arranque y parada de motores eléctricos", "Ruidos de automóviles en la calle", "Emisiones electromagnéticas provenientes del espacio", "Radiación solar (ruido provocado por las explosiones solares)", "Ruido de instrumentos musicales"],
+    correct: [2, 4, 5]
+  },
+  {
+    id: 110, text: "Si tuviera que enviar una señal eléctrica de mucha potencia por un conductor (por ejemplo para alimentar una antena de un transmisor de radiocomunicaciones), elegiría un conductor:",
+    type: "single",
+    options: ["Coaxil", "Fibra óptica monomodo", "UTP", "Wireless", "Par telefónico"],
+    correct: [0]
+  },
+  // === SATÉLITES ===
+  {
+    id: 111, text: "¿En cuáles de las siguientes órbitas deben estar los satélites utilizados en comunicaciones?",
+    type: "single",
+    options: ["LIO", "MEO", "LEO", "ESSO", "GEO"],
+    correct: [4]
+  },
+  {
+    id: 112, text: "Las órbitas Geoestacionarias sobre la que se encuentran los satélites de comunicaciones, se ubican en un plano:",
+    type: "single",
+    options: ["polar", "perpendicular al ecuador terrestre", "infinito", "ecuatorial", "meridional"],
+    correct: [3]
+  },
+  {
+    id: 113, text: "¿Qué factor limita principalmente la vida útil de un satélite de comunicaciones?",
+    type: "single",
+    options: ["La cantidad de combustible que puede llevar", "La cantidad de canales de radio que puede utilizar", "La cantidad de baterías que puede recargar", "La cantidad de transponder que puede llevar", "La velocidad de desplazamiento"],
+    correct: [0]
+  },
+  {
+    id: 114, text: "¿Qué bandas de frecuencias son utilizadas para la comunicación satelital?",
+    type: "multi",
+    options: ["C (4-8 GHz)", "Ka (26,5-40 GHz)", "L (1-2 GHz)", "X (8-12,5 GHz)", "K (18-26,5 GHz)", "S (2-4 GHz)", "Ku (12,5-18 GHz)"],
+    correct: [0, 1, 6]
+  },
+  // === MULTIPLEXACIÓN ===
+  {
+    id: 115, text: "En la multiplexación por división de tiempo (TDM) se pueden multiplexar:",
+    type: "multi",
+    options: ["Canales digitales", "Canales de ancho de banda variable y con duración de tiempo variable", "Canales analógicos", "Canales de voz, a los que se aplicó modulación PCM"],
+    correct: [0, 3]
+  },
+  {
+    id: 116, text: "En la multiplexación por división de frecuencia (FDM) se pueden multiplexar tanto canales analógicos como canales digitales.",
+    type: "tf",
+    options: ["Verdadero", "Falso"],
+    correct: [0]
+  },
+  {
+    id: 117, text: "Se puede considerar al ALOHA ranurado como un tipo de TDM.",
+    type: "tf",
+    options: ["Verdadero", "Falso"],
+    correct: [1],
+    explanation: "No se lo puede considerar, ya que no se está asignando el tiempo a cada usuario, sino creando ranuras para que se compita por su uso."
+  },
+  {
+    id: 118, text: "La relación Señal a Ruido de cuantificación mejora con el aumento de los niveles de cuantificación.",
+    type: "tf",
+    options: ["Verdadero", "Falso"],
+    correct: [0]
+  },
+  // === MEDIOS DE TRANSMISIÓN ===
+  {
+    id: 119, text: "¿Cuál es el medio conductor que posee escaso ancho de banda y gran atenuación?",
+    type: "single",
+    options: ["Par Telefónico", "Fibra Óptica SM", "UTP Cat 6", "Coaxil", "UTP Cat 5", "Fibra Óptica MM"],
+    correct: [0]
+  },
+  {
+    id: 120, text: "¿En qué aplicaciones de comunicaciones se prefiere utilizar cables coaxiles?",
+    type: "multi",
+    options: ["Conexión entre servidores en un Data Center", "Red telefónica", "Redes de CATV", "Conexión del transmisor a la antena en un sistema de comunicaciones inalámbricas (por ejemplo Wi-Fi)", "Redes de computadoras"],
+    correct: [2, 3]
+  },
+  {
+    id: 121, text: "Indicar a qué tipo de perturbación hace referencia la siguiente figura (donde se muestra interferencia entre cables adyacentes):",
+    type: "single",
+    options: ["Mapa de cableado incorrecto", "Interferencias electromagnéticas externas (EMI)", "PSNEXT", "ANEXT", "PSFEXT"],
+    correct: [3]
+  },
+  {
+    id: 122, text: "Si debo armar 30 cables de conexión (patch cord) para un Laboratorio de informática; ¿cuántos conectores RJ45 necesitaré comprar (al menos)?",
+    type: "text",
+    correctText: ["60", "60 conectores", "60 conectores rj45"],
+    correctDisplay: "60",
+    placeholder: "Cantidad mínima de conectores (ej. 60)"
+  }
+];
+
+// ============================================================
+// CONFIGURACIÓN & PERSISTENCIA LOCALSTORAGE
+// ============================================================
+let shuffleQuestionsSetting = localStorage.getItem('com_shuffle_questions') !== null 
+  ? localStorage.getItem('com_shuffle_questions') === 'true' 
+  : true;
+
+let shuffleOptionsSetting = localStorage.getItem('com_shuffle_options') !== null 
+  ? localStorage.getItem('com_shuffle_options') === 'true' 
+  : true;
+
+let wrongQuestions = JSON.parse(localStorage.getItem('com_wrong') || '[]');
+let bookmarkedQuestions = JSON.parse(localStorage.getItem('com_bookmarked') || '[]');
+
+let currentQuestions = [];
+let currentIndex = 0;
+let userSelections = {};    // { qId: [indices de displayOptions] }
+let userTextAnswers = {};   // { qId: "texto escrito" }
+let userChecked = {};       // { qId: boolean }
+let answers = {};           // { qId: { selected/entered: ..., correct: bool } }
+let lastMode = 'all';
+let lastGroupIndex = null;
+let showPalette = false;
+
+// ============================================================
+// INICIALIZACIÓN
+// ============================================================
+function init() {
+  document.getElementById('total-count').textContent = ALL_QUESTIONS.length;
+  document.getElementById('header-total').textContent = ALL_QUESTIONS.length;
+  
+  // Sincronizar toggles
+  document.getElementById('shuffle-questions-toggle').checked = shuffleQuestionsSetting;
+  document.getElementById('shuffle-options-toggle').checked = shuffleOptionsSetting;
+
+  buildGroupButtons();
+  updateCounters();
+  setupKeyboardNavigation();
+}
+
+function toggleSetting(settingKey) {
+  if (settingKey === 'shuffleQuestions') {
+    shuffleQuestionsSetting = document.getElementById('shuffle-questions-toggle').checked;
+    localStorage.setItem('com_shuffle_questions', shuffleQuestionsSetting);
+  } else if (settingKey === 'shuffleOptions') {
+    shuffleOptionsSetting = document.getElementById('shuffle-options-toggle').checked;
+    localStorage.setItem('com_shuffle_options', shuffleOptionsSetting);
+  }
+}
+
+function updateCounters() {
+  document.getElementById('header-marked-count').textContent = bookmarkedQuestions.length;
+  document.getElementById('header-wrong-count').textContent = wrongQuestions.length;
+
+  const markedBtn = document.getElementById('marked-btn');
+  const markedCount = document.getElementById('marked-count-btn');
+  if (markedBtn && markedCount) {
+    markedCount.textContent = bookmarkedQuestions.length;
+    markedBtn.disabled = bookmarkedQuestions.length === 0;
+  }
+
+  const retryBtn = document.getElementById('retry-btn');
+  const retryCount = document.getElementById('retry-count-btn');
+  if (retryBtn && retryCount) {
+    retryCount.textContent = wrongQuestions.length;
+    retryBtn.disabled = wrongQuestions.length === 0;
+  }
+}
+
+function buildGroupButtons() {
+  const grid = document.getElementById('groups-grid');
+  grid.innerHTML = '';
+  const groupSize = 10;
+  const total = ALL_QUESTIONS.length;
+  const groups = Math.ceil(total / groupSize);
+  
+  for (let g = 0; g < groups; g++) {
+    const start = g * groupSize + 1;
+    const end = Math.min((g + 1) * groupSize, total);
+    const btn = document.createElement('button');
+    btn.className = 'menu-btn';
+    btn.innerHTML = `📦 <strong>Bloque ${g + 1}</strong> (${start} - ${end})`;
+    btn.onclick = () => startQuiz('group', g);
+    grid.appendChild(btn);
+  }
+}
+
+// ============================================================
+// PREPARACIÓN DE PREGUNTAS Y OPCIONES ALEATORIAS
+// ============================================================
+function prepareQuestionData(q, shuffleOpts) {
+  if (q.type === 'text' || !q.options || !shuffleOpts) {
+    return {
+      ...q,
+      displayOptions: q.options ? [...q.options] : [],
+      displayCorrect: q.correct ? [...q.correct] : []
+    };
+  }
+
+  // Mapear opciones con su índice original para barajarlas
+  let indexed = q.options.map((opt, origIdx) => ({ opt, origIdx }));
+  indexed = shuffle(indexed);
+
+  const displayOptions = indexed.map(item => item.opt);
+  const displayCorrect = [];
+  indexed.forEach((item, newIdx) => {
+    if (q.correct.includes(item.origIdx)) {
+      displayCorrect.push(newIdx);
+    }
+  });
+
+  return {
+    ...q,
+    displayOptions,
+    displayCorrect
+  };
+}
+
+function normalizeAnswer(str) {
+  if (!str) return '';
+  return str
+    .toLowerCase()
+    .trim()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") // quitar tildes
+    .replace(/[^\w\s-]/g, "")        // quitar puntuación excepto guión
+    .replace(/\s+/g, " ");           // espacios colapsados
+}
+
+// ============================================================
+// FLUJO DEL QUIZ
+// ============================================================
+function startQuiz(mode, groupIndex) {
+  lastMode = mode;
+  lastGroupIndex = groupIndex;
+  userSelections = {};
+  userTextAnswers = {};
+  userChecked = {};
+  answers = {};
+  currentIndex = 0;
+  showPalette = false;
+  document.getElementById('question-palette').style.display = 'none';
+
+  let rawQuestions = [];
+
+  if (mode === 'all') {
+    rawQuestions = [...ALL_QUESTIONS];
+  } else if (mode === 'group') {
+    const start = groupIndex * 10;
+    const end = Math.min(start + 10, ALL_QUESTIONS.length);
+    rawQuestions = ALL_QUESTIONS.slice(start, end);
+  } else if (mode === 'retry') {
+    rawQuestions = ALL_QUESTIONS.filter(q => wrongQuestions.includes(q.id));
+    if (rawQuestions.length === 0) {
+      alert('¡No hay preguntas incorrectas para reintentar! 🎉');
+      return;
+    }
+  } else if (mode === 'marked') {
+    rawQuestions = ALL_QUESTIONS.filter(q => bookmarkedQuestions.includes(q.id));
+    if (rawQuestions.length === 0) {
+      alert('¡No tienes preguntas marcadas con estrella aún! Puedes marcarlas con el botón ⭐ durante el cuestionario.');
+      return;
+    }
+  }
+
+  // 1. Aleatorizar orden de preguntas si está activado
+  if (shuffleQuestionsSetting) {
+    rawQuestions = shuffle(rawQuestions);
+  }
+
+  // 2. Preparar preguntas y aleatorizar opciones si corresponde
+  currentQuestions = rawQuestions.map(q => prepareQuestionData(q, shuffleOptionsSetting));
+
+  document.getElementById('landing').style.display = 'none';
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('quiz-area').style.display = 'block';
+  
+  renderPalette();
+  renderQuestion();
+}
+
+function renderPalette() {
+  const palette = document.getElementById('question-palette');
+  palette.innerHTML = '';
+  currentQuestions.forEach((q, idx) => {
+    const item = document.createElement('div');
+    item.className = 'palette-item';
+    item.textContent = idx + 1;
+    
+    if (idx === currentIndex) item.classList.add('current');
+    if (bookmarkedQuestions.includes(q.id)) item.classList.add('starred');
+    
+    if (userChecked[q.id]) {
+      if (answers[q.id] && answers[q.id].correct) {
+        item.classList.add('answered-correct');
+      } else {
+        item.classList.add('answered-wrong');
+      }
+    }
+    
+    item.onclick = () => {
+      currentIndex = idx;
+      renderQuestion();
+    };
+    palette.appendChild(item);
+  });
+}
+
+function togglePaletteView() {
+  const palette = document.getElementById('question-palette');
+  showPalette = !showPalette;
+  palette.style.display = showPalette ? 'flex' : 'none';
+}
+
+function renderQuestion() {
+  const q = currentQuestions[currentIndex];
+  const total = currentQuestions.length;
+  const pct = Math.round(((currentIndex + 1) / total) * 100);
+  
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = `Pregunta ${currentIndex + 1} de ${total} (${pct}%)`;
+
+  const isChecked = !!userChecked[q.id];
+  const isStarred = bookmarkedQuestions.includes(q.id);
+
+  let badgeClass = 'badge-single';
+  let badgeText = 'Selección única';
+
+  if (q.type === 'text') {
+    badgeClass = 'badge-text';
+    badgeText = 'Respuesta Escrita (Completar)';
+  } else if (q.type === 'tf') {
+    badgeClass = 'badge-tf';
+    badgeText = 'Verdadero / Falso';
+  } else if (q.type === 'multi' || (q.displayCorrect && q.displayCorrect.length > 1)) {
+    badgeClass = 'badge-multi';
+    badgeText = 'Selección múltiple';
+  }
+
+  let html = `
+    <div class="question-card ${isChecked ? (answers[q.id]?.correct ? 'correct' : 'incorrect') : ''}" id="qcard-${q.id}">
+      <div class="question-header">
+        <span class="question-type-badge ${badgeClass}">${badgeText}</span>
+        <button class="star-btn ${isStarred ? 'active' : ''}" onclick="toggleBookmark(${q.id})">
+          ${isStarred ? '⭐ Marcada' : '☆ Marcar para repasar'}
+        </button>
+      </div>
+      <div class="question-text">${q.text}</div>
+  `;
+
+  // RENDER SEGÚN EL TIPO DE PREGUNTA
+  if (q.type === 'text') {
+    // CAMPO DE TEXTO PARA ESCRIBIR
+    const currentVal = userTextAnswers[q.id] || '';
+    let inputStatusClass = '';
+    if (isChecked) {
+      inputStatusClass = answers[q.id]?.correct ? 'input-correct' : 'input-wrong';
+    }
+
+    html += `
+      <div class="text-input-container">
+        <label for="text-ans-${q.id}" class="text-input-label">Respuesta:</label>
+        <input type="text" id="text-ans-${q.id}" 
+          class="text-input-box ${inputStatusClass}" 
+          value="${escapeHtml(currentVal)}" 
+          placeholder="${q.placeholder || 'Escribe tu respuesta aquí...'}"
+          ${isChecked ? 'disabled' : ''}
+          oninput="onTextInputChange(${q.id}, this.value)"
+          autocomplete="off">
+      </div>
+    `;
+  } else {
+    // OPCIONES MULTIPLE CHOICE / VERDADERO O FALSO
+    const isMulti = q.type === 'multi' || (q.displayCorrect && q.displayCorrect.length > 1);
+    const inputType = isMulti ? 'checkbox' : 'radio';
+    const selected = userSelections[q.id] || [];
+    const correctSet = new Set(q.displayCorrect || []);
+    const selectedSet = new Set(selected);
+
+    html += `<ul class="options-list">`;
+    q.displayOptions.forEach((opt, i) => {
+      let optClass = 'option-label';
+      if (selectedSet.has(i)) optClass += ' selected';
+      if (isChecked) {
+        if (correctSet.has(i)) optClass += ' correct-answer';
+        if (selectedSet.has(i) && !correctSet.has(i)) optClass += ' wrong-answer';
+      }
+
+      html += `
+        <li>
+          <label class="${optClass}" id="opt-${q.id}-${i}">
+            <input type="${inputType}" name="q${q.id}" value="${i}" 
+              ${selectedSet.has(i) ? 'checked' : ''} 
+              ${isChecked ? 'disabled' : ''} 
+              onchange="onOptionChange(${q.id}, ${i})">
+            <span class="option-key-badge">${i + 1}</span>
+            <span>${opt}</span>
+          </label>
+        </li>
+      `;
+    });
+    html += `</ul>`;
+  }
+
+  // FEEDBACK
+  html += `
+      <div class="feedback ${isChecked ? 'show' : ''} ${isChecked ? (answers[q.id]?.correct ? 'correct' : 'incorrect') : ''}" id="feedback-${q.id}">
+  `;
+
+  if (isChecked) {
+    const isCorrect = answers[q.id]?.correct;
+    if (isCorrect) {
+      html += '✅ ¡Respuesta Correcta!';
+    } else {
+      if (q.type === 'text') {
+        html += `❌ Respuesta Incorrecta. La respuesta correcta es: <strong style="color:#fff; font-size:1.05em;">${q.correctDisplay}</strong>`;
+      } else {
+        html += '❌ Respuesta Incorrecta';
+      }
+    }
+
+    if (q.explanation) {
+      html += `<div class="explanation">💡 <strong>Explicación:</strong> ${q.explanation}</div>`;
+    }
+  }
+
+  html += `
+      </div>
+    </div>
+  `;
+
+  document.getElementById('questions-container').innerHTML = html;
+
+  // Enfocar automáticamente el input si es de texto y no está respondido
+  if (q.type === 'text' && !isChecked) {
+    setTimeout(() => {
+      const inp = document.getElementById(`text-ans-${q.id}`);
+      if (inp) inp.focus();
+    }, 50);
+  }
+
+  // Botón Anterior
+  const prevBtn = document.getElementById('prev-btn');
+  prevBtn.disabled = currentIndex === 0;
+
+  // Botón Verificar
+  const checkBtn = document.getElementById('check-btn');
+  checkBtn.style.display = isChecked ? 'none' : 'inline-flex';
+
+  // Botón Siguiente / Finalizar
+  const nextBtn = document.getElementById('next-btn');
+  const finishBtn = document.getElementById('finish-btn');
+  
+  if (currentIndex === total - 1) {
+    nextBtn.style.display = 'none';
+    finishBtn.style.display = 'inline-flex';
+  } else {
+    nextBtn.style.display = 'inline-flex';
+    finishBtn.style.display = 'none';
+  }
+
+  renderPalette();
+}
+
+function onOptionChange(qId, optIdx) {
+  const q = currentQuestions.find(x => x.id === qId);
+  if (!q) return;
+  
+  let selected = [];
+  q.displayOptions.forEach((_, i) => {
+    const input = document.querySelector(`#opt-${qId}-${i} input`);
+    const label = document.getElementById(`opt-${qId}-${i}`);
+    if (input && input.checked) {
+      selected.push(i);
+      label.classList.add('selected');
+    } else {
+      label.classList.remove('selected');
+    }
+  });
+
+  userSelections[qId] = selected;
+}
+
+function onTextInputChange(qId, val) {
+  userTextAnswers[qId] = val;
+}
+
+function toggleOptionByKey(qId, optIdx) {
+  const q = currentQuestions.find(x => x.id === qId);
+  if (!q || !q.displayOptions || optIdx >= q.displayOptions.length) return;
+  
+  const isMulti = q.type === 'multi' || (q.displayCorrect && q.displayCorrect.length > 1);
+  const input = document.querySelector(`#opt-${qId}-${optIdx} input`);
+  if (!input) return;
+  
+  if (isMulti) {
+    input.checked = !input.checked;
+  } else {
+    q.displayOptions.forEach((_, i) => {
+      const other = document.querySelector(`#opt-${qId}-${i} input`);
+      if (other) other.checked = (i === optIdx);
+    });
+  }
+  onOptionChange(qId, optIdx);
+}
+
+function toggleBookmark(qId) {
+  if (bookmarkedQuestions.includes(qId)) {
+    bookmarkedQuestions = bookmarkedQuestions.filter(id => id !== qId);
+  } else {
+    bookmarkedQuestions.push(qId);
+  }
+  localStorage.setItem('com_bookmarked', JSON.stringify(bookmarkedQuestions));
+  updateCounters();
+  renderQuestion();
+}
+
+function checkCurrentQuestion() {
+  const q = currentQuestions[currentIndex];
+  let isCorrect = false;
+
+  if (q.type === 'text') {
+    const entered = (userTextAnswers[q.id] || '').trim();
+    if (!entered) {
+      alert('⚠️ Por favor escribe tu respuesta en el campo de texto antes de verificar.');
+      return;
+    }
+    const normEntered = normalizeAnswer(entered);
+    isCorrect = q.correctText.some(ans => normalizeAnswer(ans) === normEntered);
+    userChecked[q.id] = true;
+    answers[q.id] = { entered, correct: isCorrect };
+  } else {
+    const selected = userSelections[q.id] || [];
+    if (selected.length === 0) {
+      alert('⚠️ Por favor selecciona al menos una opción antes de verificar.');
+      return;
+    }
+    const correctSet = new Set(q.displayCorrect || []);
+    const selectedSet = new Set(selected);
+    isCorrect = correctSet.size === selectedSet.size && [...correctSet].every(c => selectedSet.has(c));
+    userChecked[q.id] = true;
+    answers[q.id] = { selected, correct: isCorrect };
+  }
+
+  // Gestión de errores en localStorage
+  if (!isCorrect) {
+    if (!wrongQuestions.includes(q.id)) wrongQuestions.push(q.id);
+  } else {
+    wrongQuestions = wrongQuestions.filter(id => id !== q.id);
+  }
+  localStorage.setItem('com_wrong', JSON.stringify(wrongQuestions));
+  updateCounters();
+
+  renderQuestion();
+}
+
+function nextQuestion() {
+  if (currentIndex < currentQuestions.length - 1) {
+    currentIndex++;
+    renderQuestion();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+function prevQuestion() {
+  if (currentIndex > 0) {
+    currentIndex--;
+    renderQuestion();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+function confirmExit() {
+  if (confirm('¿Deseas salir y volver al menú principal? Se mantendrán tus preguntas marcadas y errores guardados.')) {
+    backToMenu();
+  }
+}
+
+function showResults() {
+  document.getElementById('quiz-area').style.display = 'none';
+  document.getElementById('results').style.display = 'block';
+
+  const total = currentQuestions.length;
+  let correctCount = 0;
+  let answeredCount = 0;
+
+  currentQuestions.forEach(q => {
+    if (userChecked[q.id]) {
+      answeredCount++;
+      if (answers[q.id] && answers[q.id].correct) correctCount++;
+    }
+  });
+
+  const pct = Math.round((correctCount / total) * 100);
+  const circle = document.getElementById('score-circle');
+  circle.className = `score-circle ${pct >= 70 ? 'high' : pct >= 50 ? 'medium' : 'low'}`;
+  document.getElementById('score-pct').textContent = pct + '%';
+  document.getElementById('score-detail').textContent = `${correctCount} de ${total} correctas`;
+
+  document.getElementById('stat-correct').textContent = correctCount;
+  document.getElementById('stat-incorrect').textContent = total - correctCount;
+  document.getElementById('stat-total').textContent = total;
+
+  updateCounters();
+
+  const retryBtn = document.getElementById('results-retry-btn');
+  retryBtn.disabled = wrongQuestions.length === 0;
+  retryBtn.textContent = `🔄 Reintentar errores (${wrongQuestions.length})`;
+
+  const markedBtn = document.getElementById('results-marked-btn');
+  markedBtn.disabled = bookmarkedQuestions.length === 0;
+  markedBtn.textContent = `⭐ Practicar marcadas (${bookmarkedQuestions.length})`;
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function backToMenu() {
+  document.getElementById('quiz-area').style.display = 'none';
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('landing').style.display = 'block';
+  updateCounters();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ============================================================
+// NAVEGACIÓN POR TECLADO
+// ============================================================
+function setupKeyboardNavigation() {
+  window.addEventListener('keydown', function(e) {
+    const quizArea = document.getElementById('quiz-area');
+    if (!quizArea || quizArea.style.display !== 'block') return;
+
+    const isInputActive = document.activeElement && document.activeElement.tagName.toLowerCase() === 'input' && document.activeElement.type === 'text';
+
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const q = currentQuestions[currentIndex];
+      if (!q) return;
+      const isChecked = !!userChecked[q.id];
+      if (!isChecked) {
+        checkCurrentQuestion();
+      } else {
+        if (currentIndex < currentQuestions.length - 1) {
+          nextQuestion();
+        } else {
+          showResults();
+        }
+      }
+      return;
+    }
+
+    // Si está escribiendo en el cuadro de texto, permitimos que las flechas muevan el cursor
+    if (isInputActive) {
+      return;
+    }
+
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      prevQuestion();
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      nextQuestion();
+    } else if (e.key >= '1' && e.key <= '9') {
+      const optIdx = parseInt(e.key) - 1;
+      const q = currentQuestions[currentIndex];
+      if (q && q.type !== 'text' && !userChecked[q.id]) {
+        toggleOptionByKey(q.id, optIdx);
+      }
+    }
+  });
+}
+
+// ============================================================
+// UTILIDADES
+// ============================================================
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function escapeHtml(text) {
+  if (!text) return '';
+  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+// ============================================================
+// ARRANCAR
+// ============================================================
+init();
+</script>
+</body>
+</html>
