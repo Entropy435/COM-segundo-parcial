@@ -1028,8 +1028,7 @@ const ALL_QUESTIONS = [
     id: 31, text: "¿Cuál es la longitud máxima que puede tener el enlace permanente? (Indique sólo con números, sin unidades)",
     type: "text",
     correctText: ["90", "90m", "90 m", "90 metros"],
-    correctDisplay: "90",
-    placeholder: "Indica sólo el número (ej. 90)"
+    correctDisplay: "90"
   },
   {
     id: 32, text: "¿Cuál es la longitud máxima de un cable de categoría 5e que se puede utilizar?",
@@ -1113,15 +1112,13 @@ const ALL_QUESTIONS = [
     id: 45, text: "La forma en que se indica el tamaño de un conductor de comunicaciones es utilizando la nomenclatura AWG. Indique cuál es el número con el que se expresa el grosor de un cable UTP utilizado en cableado estructurado que responda a la categoría 6A, 7 y 8:",
     type: "text",
     correctText: ["23", "23 awg", "23awg"],
-    correctDisplay: "23",
-    placeholder: "Indica el número AWG (ej. 23)"
+    correctDisplay: "23"
   },
   {
     id: 46, text: "La forma en que se indica el tamaño de un conductor de comunicaciones es utilizando la nomenclatura AWG. Indique cuál es el número con el que se expresa el grosor de un cable UTP utilizado en cableado estructurado que responda a la categoría 5:",
     type: "text",
     correctText: ["24", "24 awg", "24awg"],
-    correctDisplay: "24",
-    placeholder: "Indica el número AWG (ej. 24)"
+    correctDisplay: "24"
   },
   {
     id: 47, text: "¿Cómo se arma un cable para conectar dos PC, utilizando las normas T568A y T-568B?",
@@ -1235,15 +1232,13 @@ const ALL_QUESTIONS = [
     id: 65, text: "Si debo armar 60 cables de conexión (patch cord) para un Edificio de Laboratorios de informática; ¿cuántos conectores RJ45 necesitaré comprar (al menos)?",
     type: "text",
     correctText: ["120", "120 conectores", "120 conectores rj45"],
-    correctDisplay: "120",
-    placeholder: "Cantidad mínima de conectores (ej. 120)"
+    correctDisplay: "120"
   },
   {
     id: 66, text: "¿Cuál es el conductor preferido para implementar el backbone de campus?",
     type: "text",
     correctText: ["fibra optica", "fibra", "cable de fibra optica", "fibra optica sm", "fibra optica monomodo"],
-    correctDisplay: "Fibra Óptica",
-    placeholder: "Escribe el nombre del conductor (ej. Fibra Óptica)"
+    correctDisplay: "Fibra Óptica"
   },
   // === HERRAMIENTAS ===
   {
@@ -1435,8 +1430,7 @@ const ALL_QUESTIONS = [
     id: 97, text: "¿Cómo se llama el proceso de transferir una llamada en curso entre dos células cuando el móvil se desplaza?",
     type: "text",
     correctText: ["handover", "hand over", "hand-over"],
-    correctDisplay: "HandOver",
-    placeholder: "Escribe el nombre del proceso (ej. HandOver)"
+    correctDisplay: "HandOver"
   },
   {
     id: 98, text: "La ganancia del sistema celular de comunicaciones se basa en instalar muy poca cantidad de estaciones base, aumentando la potencia de cada una de ellas, para poder atender a móviles más alejados.",
@@ -1594,8 +1588,7 @@ const ALL_QUESTIONS = [
     id: 122, text: "Si debo armar 30 cables de conexión (patch cord) para un Laboratorio de informática; ¿cuántos conectores RJ45 necesitaré comprar (al menos)?",
     type: "text",
     correctText: ["60", "60 conectores", "60 conectores rj45"],
-    correctDisplay: "60",
-    placeholder: "Cantidad mínima de conectores (ej. 60)"
+    correctDisplay: "60"
   }
 ];
 
@@ -1864,7 +1857,7 @@ function renderQuestion() {
         <input type="text" id="text-ans-${q.id}" 
           class="text-input-box ${inputStatusClass}" 
           value="${escapeHtml(currentVal)}" 
-          placeholder="${q.placeholder || 'Escribe tu respuesta aquí...'}"
+          placeholder="Escribe tu respuesta aquí..."
           ${isChecked ? 'disabled' : ''}
           oninput="onTextInputChange(${q.id}, this.value)"
           autocomplete="off">
