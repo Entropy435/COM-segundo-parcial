@@ -222,13 +222,29 @@
     transform: translateY(-2px);
     box-shadow: 0 4px 20px rgba(99, 102, 241, 0.25);
   }
+  .menu-btn.exam-btn {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, #ea580c 0%, #f59e0b 50%, #d97706 100%);
+    border: none;
+    color: #fff;
+    font-size: 1.2em;
+    padding: 18px;
+    font-weight: 800;
+    box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
+    letter-spacing: 0.3px;
+  }
+  .menu-btn.exam-btn:hover {
+    background: linear-gradient(135deg, #c2410c 0%, #d97706 50%, #b45309 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 28px rgba(245, 158, 11, 0.6);
+  }
   .menu-btn.all-btn {
     grid-column: 1 / -1;
     background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
     border: none;
     color: #fff;
     font-size: 1.15em;
-    padding: 18px;
+    padding: 16px;
     font-weight: 700;
     box-shadow: 0 4px 15px rgba(79, 70, 229, 0.35);
   }
@@ -281,6 +297,22 @@
     font-size: 0.95em;
     color: var(--text-muted);
     font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .timer-badge {
+    background: rgba(245, 158, 11, 0.15);
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    color: #fbbf24;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.92em;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: monospace;
   }
   .top-actions {
     display: flex;
@@ -335,6 +367,7 @@
     position: relative;
   }
   .question-card.correct { border-left-color: var(--success); }
+  .question-card.partial { border-left-color: var(--warning); }
   .question-card.incorrect { border-left-color: var(--danger); }
   
   .question-header {
@@ -500,6 +533,11 @@
     border: 1px solid var(--success-border);
     color: #34d399;
   }
+  .feedback.partial {
+    background: var(--warning-bg);
+    border: 1px solid var(--warning);
+    color: #fbbf24;
+  }
   .feedback.incorrect {
     background: var(--danger-bg);
     border: 1px solid var(--danger-border);
@@ -620,6 +658,7 @@
   .palette-item:hover { border-color: var(--primary); color: #fff; }
   .palette-item.current { border-color: var(--primary-border); background: var(--primary); color: #fff; box-shadow: 0 0 8px rgba(99,102,241,0.6); }
   .palette-item.answered-correct { background: var(--success-bg); border-color: var(--success); color: #34d399; }
+  .palette-item.answered-partial { background: var(--warning-bg); border-color: var(--warning); color: #fbbf24; }
   .palette-item.answered-wrong { background: var(--danger-bg); border-color: var(--danger); color: #f87171; }
   .palette-item.starred::after {
     content: "★";
@@ -659,6 +698,19 @@
   .score-circle.low { border-color: var(--danger); color: #f87171; box-shadow: 0 0 25px rgba(239, 68, 68, 0.3); }
   .score-circle small { font-size: 0.35em; font-weight: 500; color: var(--text-muted); margin-top: -4px; }
   
+  .exam-grade-badge {
+    display: inline-block;
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-size: 1.15em;
+    font-weight: 800;
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
+  }
+  .grade-promo { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 2px solid var(--success); box-shadow: 0 0 15px rgba(16, 185, 129, 0.3); }
+  .grade-aprob { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 2px solid var(--warning); box-shadow: 0 0 15px rgba(245, 158, 11, 0.3); }
+  .grade-desap { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 2px solid var(--danger); box-shadow: 0 0 15px rgba(239, 68, 68, 0.3); }
+
   .results-stats {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
@@ -733,8 +785,11 @@
 
   <!-- LANDING -->
   <div id="landing">
-    <div class="section-title">🚀 Modo de Estudio</div>
+    <div class="section-title">🎓 Evaluación & Práctica General</div>
     <div class="menu-grid">
+      <button class="menu-btn exam-btn" onclick="startQuiz('exam')">
+        <span>⏱️ <strong>SIMULACRO DE PARCIAL</strong> (20 preguntas con tiempo)</span>
+      </button>
       <button class="menu-btn all-btn" onclick="startQuiz('all')">
         <span>📋 Todas las preguntas (<span id="total-count">122</span>)</span>
       </button>
@@ -759,7 +814,12 @@
   <!-- QUIZ AREA -->
   <div id="quiz-area">
     <div class="quiz-top-bar">
-      <div class="progress-info" id="progress-text">Pregunta 1 de 10</div>
+      <div class="progress-info">
+        <span id="progress-text">Pregunta 1 de 20</span>
+        <span class="timer-badge" id="timer-badge" style="display:none;">
+          ⏱️ <span id="timer-text">00:00</span>
+        </span>
+      </div>
       <div class="top-actions">
         <button class="top-btn" onclick="togglePaletteView()">🔢 Índice</button>
         <button class="top-btn" onclick="confirmExit()">🏠 Menú</button>
@@ -801,25 +861,31 @@
   <div id="results">
     <div class="results-card">
       <h2 style="font-size: 1.8em; margin-bottom: 5px;">📊 Resumen de Resultados</h2>
-      <p style="color: var(--text-muted); font-size: 0.95em;">Puntuación obtenida en esta sesión</p>
+      <p style="color: var(--text-muted); font-size: 0.95em; margin-bottom: 15px;" id="results-subtitle">Puntuación obtenida en esta sesión</p>
       
+      <div id="exam-badge-container"></div>
+
       <div class="score-circle" id="score-circle">
         <span id="score-pct">0%</span>
-        <small id="score-detail">0 / 0</small>
+        <small id="score-detail">0.00 / 0.00 pts</small>
       </div>
 
       <div class="results-stats">
         <div class="stat-box">
           <div class="val" style="color: var(--success)" id="stat-correct">0</div>
-          <div class="lbl">Correctas</div>
+          <div class="lbl">Completas (1.0 pt)</div>
+        </div>
+        <div class="stat-box">
+          <div class="val" style="color: var(--warning)" id="stat-partial">0</div>
+          <div class="lbl">Parciales (&gt;0 pt)</div>
         </div>
         <div class="stat-box">
           <div class="val" style="color: var(--danger)" id="stat-incorrect">0</div>
-          <div class="lbl">Incorrectas</div>
+          <div class="lbl">Incorrectas (0 pt)</div>
         </div>
-        <div class="stat-box">
-          <div class="val" style="color: var(--text)" id="stat-total">0</div>
-          <div class="lbl">Total preguntas</div>
+        <div class="stat-box" id="stat-time-box" style="display:none;">
+          <div class="val" style="color: #60a5fa" id="stat-time">00:00</div>
+          <div class="lbl">Tiempo empleado</div>
         </div>
       </div>
 
@@ -1611,10 +1677,14 @@ let currentIndex = 0;
 let userSelections = {};    // { qId: [indices de displayOptions] }
 let userTextAnswers = {};   // { qId: "texto escrito" }
 let userChecked = {};       // { qId: boolean }
-let answers = {};           // { qId: { selected/entered: ..., correct: bool } }
+let answers = {};           // { qId: { score, isCorrect, isPartial, ... } }
 let lastMode = 'all';
 let lastGroupIndex = null;
 let showPalette = false;
+
+// Timer / Cronómetro
+let examTimerInterval = null;
+let examSeconds = 0;
 
 // ============================================================
 // INICIALIZACIÓN
@@ -1680,6 +1750,43 @@ function buildGroupButtons() {
 }
 
 // ============================================================
+// CRONÓMETRO / TIMER
+// ============================================================
+function startTimer() {
+  stopTimer();
+  examSeconds = 0;
+  updateTimerDisplay();
+  document.getElementById('timer-badge').style.display = 'inline-flex';
+  examTimerInterval = setInterval(() => {
+    examSeconds++;
+    updateTimerDisplay();
+  }, 1000);
+}
+
+function stopTimer() {
+  if (examTimerInterval) {
+    clearInterval(examTimerInterval);
+    examTimerInterval = null;
+  }
+}
+
+function updateTimerDisplay() {
+  const mins = Math.floor(examSeconds / 60).toString().padStart(2, '0');
+  const secs = (examSeconds % 60).toString().padStart(2, '0');
+  const timerElem = document.getElementById('timer-text');
+  if (timerElem) {
+    timerElem.textContent = `${mins}:${secs}`;
+  }
+}
+
+function formatDuration(totalSecs) {
+  const mins = Math.floor(totalSecs / 60);
+  const secs = totalSecs % 60;
+  if (mins === 0) return `${secs} seg`;
+  return `${mins}m ${secs}s`;
+}
+
+// ============================================================
 // PREPARACIÓN DE PREGUNTAS Y OPCIONES ALEATORIAS
 // ============================================================
 function prepareQuestionData(q, shuffleOpts) {
@@ -1737,33 +1844,41 @@ function startQuiz(mode, groupIndex) {
 
   let rawQuestions = [];
 
-  if (mode === 'all') {
-    rawQuestions = [...ALL_QUESTIONS];
-  } else if (mode === 'group') {
-    const start = groupIndex * 10;
-    const end = Math.min(start + 10, ALL_QUESTIONS.length);
-    rawQuestions = ALL_QUESTIONS.slice(start, end);
-  } else if (mode === 'retry') {
-    rawQuestions = ALL_QUESTIONS.filter(q => wrongQuestions.includes(q.id));
-    if (rawQuestions.length === 0) {
-      alert('¡No hay preguntas incorrectas para reintentar! 🎉');
-      return;
-    }
-  } else if (mode === 'marked') {
-    rawQuestions = ALL_QUESTIONS.filter(q => bookmarkedQuestions.includes(q.id));
-    if (rawQuestions.length === 0) {
-      alert('¡No tienes preguntas marcadas con estrella aún! Puedes marcarlas con el botón ⭐ durante el cuestionario.');
-      return;
+  if (mode === 'exam') {
+    // Simulacro de Parcial: 20 preguntas aleatorias con cronómetro
+    rawQuestions = shuffle([...ALL_QUESTIONS]).slice(0, 20);
+    startTimer();
+  } else {
+    stopTimer();
+    document.getElementById('timer-badge').style.display = 'none';
+
+    if (mode === 'all') {
+      rawQuestions = [...ALL_QUESTIONS];
+      if (shuffleQuestionsSetting) rawQuestions = shuffle(rawQuestions);
+    } else if (mode === 'group') {
+      const start = groupIndex * 10;
+      const end = Math.min(start + 10, ALL_QUESTIONS.length);
+      rawQuestions = ALL_QUESTIONS.slice(start, end);
+    } else if (mode === 'retry') {
+      rawQuestions = ALL_QUESTIONS.filter(q => wrongQuestions.includes(q.id));
+      if (rawQuestions.length === 0) {
+        alert('¡No hay preguntas incorrectas para reintentar! 🎉');
+        return;
+      }
+      if (shuffleQuestionsSetting) rawQuestions = shuffle(rawQuestions);
+    } else if (mode === 'marked') {
+      rawQuestions = ALL_QUESTIONS.filter(q => bookmarkedQuestions.includes(q.id));
+      if (rawQuestions.length === 0) {
+        alert('¡No tienes preguntas marcadas con estrella aún! Puedes marcarlas con el botón ⭐ durante el cuestionario.');
+        return;
+      }
+      if (shuffleQuestionsSetting) rawQuestions = shuffle(rawQuestions);
     }
   }
 
-  // 1. Aleatorizar orden de preguntas si está activado
-  if (shuffleQuestionsSetting) {
-    rawQuestions = shuffle(rawQuestions);
-  }
-
-  // 2. Preparar preguntas y aleatorizar opciones si corresponde
-  currentQuestions = rawQuestions.map(q => prepareQuestionData(q, shuffleOptionsSetting));
+  // Preparar preguntas y aleatorizar opciones (en examen siempre se mezclan opciones)
+  const shouldShuffleOpts = (mode === 'exam') ? true : shuffleOptionsSetting;
+  currentQuestions = rawQuestions.map(q => prepareQuestionData(q, shouldShuffleOpts));
 
   document.getElementById('landing').style.display = 'none';
   document.getElementById('results').style.display = 'none';
@@ -1785,10 +1900,15 @@ function renderPalette() {
     if (bookmarkedQuestions.includes(q.id)) item.classList.add('starred');
     
     if (userChecked[q.id]) {
-      if (answers[q.id] && answers[q.id].correct) {
-        item.classList.add('answered-correct');
-      } else {
-        item.classList.add('answered-wrong');
+      const ans = answers[q.id];
+      if (ans) {
+        if (ans.isCorrect || ans.score === 1.0) {
+          item.classList.add('answered-correct');
+        } else if (ans.isPartial || ans.score > 0) {
+          item.classList.add('answered-partial');
+        } else {
+          item.classList.add('answered-wrong');
+        }
       }
     }
     
@@ -1831,8 +1951,19 @@ function renderQuestion() {
     badgeText = 'Selección múltiple';
   }
 
+  // Clases visuales del card según estado
+  let cardStatusClass = '';
+  if (isChecked) {
+    const ans = answers[q.id];
+    if (ans) {
+      if (ans.isCorrect || ans.score === 1.0) cardStatusClass = 'correct';
+      else if (ans.isPartial || ans.score > 0) cardStatusClass = 'partial';
+      else cardStatusClass = 'incorrect';
+    }
+  }
+
   let html = `
-    <div class="question-card ${isChecked ? (answers[q.id]?.correct ? 'correct' : 'incorrect') : ''}" id="qcard-${q.id}">
+    <div class="question-card ${cardStatusClass}" id="qcard-${q.id}">
       <div class="question-header">
         <span class="question-type-badge ${badgeClass}">${badgeText}</span>
         <button class="star-btn ${isStarred ? 'active' : ''}" onclick="toggleBookmark(${q.id})">
@@ -1844,11 +1975,11 @@ function renderQuestion() {
 
   // RENDER SEGÚN EL TIPO DE PREGUNTA
   if (q.type === 'text') {
-    // CAMPO DE TEXTO PARA ESCRIBIR
     const currentVal = userTextAnswers[q.id] || '';
     let inputStatusClass = '';
     if (isChecked) {
-      inputStatusClass = answers[q.id]?.correct ? 'input-correct' : 'input-wrong';
+      const ans = answers[q.id];
+      inputStatusClass = (ans && ans.score === 1.0) ? 'input-correct' : 'input-wrong';
     }
 
     html += `
@@ -1864,7 +1995,6 @@ function renderQuestion() {
       </div>
     `;
   } else {
-    // OPCIONES MULTIPLE CHOICE / VERDADERO O FALSO
     const isMulti = q.type === 'multi' || (q.displayCorrect && q.displayCorrect.length > 1);
     const inputType = isMulti ? 'checkbox' : 'radio';
     const selected = userSelections[q.id] || [];
@@ -1896,20 +2026,32 @@ function renderQuestion() {
     html += `</ul>`;
   }
 
-  // FEEDBACK
+  // FEEDBACK CON PUNTUACIÓN EXACTA Y PARCIAL
+  let feedbackClass = '';
+  if (isChecked) {
+    const ans = answers[q.id];
+    if (ans) {
+      if (ans.isCorrect || ans.score === 1.0) feedbackClass = 'correct';
+      else if (ans.isPartial || ans.score > 0) feedbackClass = 'partial';
+      else feedbackClass = 'incorrect';
+    }
+  }
+
   html += `
-      <div class="feedback ${isChecked ? 'show' : ''} ${isChecked ? (answers[q.id]?.correct ? 'correct' : 'incorrect') : ''}" id="feedback-${q.id}">
+      <div class="feedback ${isChecked ? 'show ' + feedbackClass : ''}" id="feedback-${q.id}">
   `;
 
   if (isChecked) {
-    const isCorrect = answers[q.id]?.correct;
-    if (isCorrect) {
-      html += '✅ ¡Respuesta Correcta!';
+    const ans = answers[q.id] || {};
+    if (ans.isCorrect || ans.score === 1.0) {
+      html += `✅ ¡Respuesta Correcta! <span style="font-size:0.9em; opacity:0.9;">(+1.00 / 1.00 pt)</span>`;
+    } else if (ans.isPartial || ans.score > 0) {
+      html += `🟡 ¡Respuesta Parcialmente Correcta! <strong style="color:#fbbf24;">(+${ans.score.toFixed(2)} / 1.00 pt)</strong><br><span style="font-size:0.9em; opacity:0.9;">Has seleccionado ${ans.correctSelectedCount} de ${ans.totalCorrect} opciones correctas.</span>`;
     } else {
       if (q.type === 'text') {
-        html += `❌ Respuesta Incorrecta. La respuesta correcta es: <strong style="color:#fff; font-size:1.05em;">${q.correctDisplay}</strong>`;
+        html += `❌ Respuesta Incorrecta (0.00 / 1.00 pt). La respuesta correcta es: <strong style="color:#fff; font-size:1.05em;">${q.correctDisplay}</strong>`;
       } else {
-        html += '❌ Respuesta Incorrecta';
+        html += `❌ Respuesta Incorrecta <span style="font-size:0.9em; opacity:0.9;">(0.00 / 1.00 pt)</span>`;
       }
     }
 
@@ -2009,9 +2151,14 @@ function toggleBookmark(qId) {
   renderQuestion();
 }
 
+// ============================================================
+// EVALUACIÓN Y PUNTUACIÓN EXACTA / PARCIAL
+// ============================================================
 function checkCurrentQuestion() {
   const q = currentQuestions[currentIndex];
+  let score = 0;
   let isCorrect = false;
+  let isPartial = false;
 
   if (q.type === 'text') {
     const entered = (userTextAnswers[q.id] || '').trim();
@@ -2021,8 +2168,9 @@ function checkCurrentQuestion() {
     }
     const normEntered = normalizeAnswer(entered);
     isCorrect = q.correctText.some(ans => normalizeAnswer(ans) === normEntered);
+    score = isCorrect ? 1.0 : 0.0;
     userChecked[q.id] = true;
-    answers[q.id] = { entered, correct: isCorrect };
+    answers[q.id] = { entered, score, isCorrect, isPartial: false };
   } else {
     const selected = userSelections[q.id] || [];
     if (selected.length === 0) {
@@ -2030,14 +2178,56 @@ function checkCurrentQuestion() {
       return;
     }
     const correctSet = new Set(q.displayCorrect || []);
-    const selectedSet = new Set(selected);
-    isCorrect = correctSet.size === selectedSet.size && [...correctSet].every(c => selectedSet.has(c));
+    const totalCorrect = correctSet.size;
+
+    let correctSelectedCount = 0;
+    let wrongSelectedCount = 0;
+
+    selected.forEach(idx => {
+      if (correctSet.has(idx)) {
+        correctSelectedCount++;
+      } else {
+        wrongSelectedCount++;
+      }
+    });
+
+    if (totalCorrect > 1) {
+      // Selección múltiple con puntuación fraccionaria (estilo Moodle / UTN)
+      const penalty = 1.0 / totalCorrect;
+      const rawScore = (correctSelectedCount / totalCorrect) - (wrongSelectedCount * penalty);
+      score = Math.max(0, Math.round(rawScore * 100) / 100);
+
+      if (score >= 0.99) {
+        score = 1.0;
+        isCorrect = true;
+        isPartial = false;
+      } else if (score > 0) {
+        isCorrect = false;
+        isPartial = true;
+      } else {
+        isCorrect = false;
+        isPartial = false;
+      }
+    } else {
+      // Selección única o Verdadero/Falso
+      isCorrect = (correctSelectedCount === 1 && wrongSelectedCount === 0);
+      score = isCorrect ? 1.0 : 0.0;
+      isPartial = false;
+    }
+
     userChecked[q.id] = true;
-    answers[q.id] = { selected, correct: isCorrect };
+    answers[q.id] = {
+      selected,
+      score,
+      isCorrect,
+      isPartial,
+      correctSelectedCount,
+      totalCorrect
+    };
   }
 
-  // Gestión de errores en localStorage
-  if (!isCorrect) {
+  // Gestión de errores en localStorage (las que no estén 100% correctas se pueden reintentar)
+  if (score < 1.0) {
     if (!wrongQuestions.includes(q.id)) wrongQuestions.push(q.id);
   } else {
     wrongQuestions = wrongQuestions.filter(id => id !== q.id);
@@ -2066,34 +2256,79 @@ function prevQuestion() {
 
 function confirmExit() {
   if (confirm('¿Deseas salir y volver al menú principal? Se mantendrán tus preguntas marcadas y errores guardados.')) {
+    stopTimer();
     backToMenu();
   }
 }
 
+// ============================================================
+// RESULTADOS FINALES & NOTA
+// ============================================================
 function showResults() {
+  stopTimer();
   document.getElementById('quiz-area').style.display = 'none';
   document.getElementById('results').style.display = 'block';
 
   const total = currentQuestions.length;
-  let correctCount = 0;
-  let answeredCount = 0;
+  let totalScore = 0;
+  let fullCorrectCount = 0;
+  let partialCount = 0;
+  let wrongCount = 0;
 
   currentQuestions.forEach(q => {
     if (userChecked[q.id]) {
-      answeredCount++;
-      if (answers[q.id] && answers[q.id].correct) correctCount++;
+      const ans = answers[q.id];
+      if (ans) {
+        totalScore += ans.score;
+        if (ans.score === 1.0) fullCorrectCount++;
+        else if (ans.score > 0) partialCount++;
+        else wrongCount++;
+      } else {
+        wrongCount++;
+      }
+    } else {
+      wrongCount++;
     }
   });
 
-  const pct = Math.round((correctCount / total) * 100);
+  // Redondeo de puntos totales
+  totalScore = Math.round(totalScore * 100) / 100;
+  const pct = Math.round((totalScore / total) * 1000) / 10; // Un decimal para porcentaje
+
   const circle = document.getElementById('score-circle');
   circle.className = `score-circle ${pct >= 70 ? 'high' : pct >= 50 ? 'medium' : 'low'}`;
   document.getElementById('score-pct').textContent = pct + '%';
-  document.getElementById('score-detail').textContent = `${correctCount} de ${total} correctas`;
+  document.getElementById('score-detail').textContent = `${totalScore.toFixed(2)} / ${total}.00 pts`;
 
-  document.getElementById('stat-correct').textContent = correctCount;
-  document.getElementById('stat-incorrect').textContent = total - correctCount;
-  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-correct').textContent = fullCorrectCount;
+  document.getElementById('stat-partial').textContent = partialCount;
+  document.getElementById('stat-incorrect').textContent = wrongCount;
+
+  // Manejo de Simulacro de Parcial (Tiempo y Calificación)
+  const timeBox = document.getElementById('stat-time-box');
+  const badgeContainer = document.getElementById('exam-badge-container');
+  badgeContainer.innerHTML = '';
+
+  if (lastMode === 'exam') {
+    document.getElementById('results-subtitle').textContent = `Simulacro de Parcial de 20 preguntas finalizado`;
+    timeBox.style.display = 'block';
+    document.getElementById('stat-time').textContent = formatDuration(examSeconds);
+
+    // Calcular Nota UTN
+    const grade = Math.round((totalScore / total) * 10);
+    let gradeBadge = '';
+    if (pct >= 80) {
+      gradeBadge = `<div class="exam-grade-badge grade-promo">🏆 ¡PROMOCIONADO! (Nota: ${Math.max(8, grade)} / 10)</div>`;
+    } else if (pct >= 60) {
+      gradeBadge = `<div class="exam-grade-badge grade-aprob">✅ ¡APROBADO! (Nota: ${Math.max(6, grade)} / 10)</div>`;
+    } else {
+      gradeBadge = `<div class="exam-grade-badge grade-desap">❌ DESAPROBADO (Nota: ${Math.min(5, Math.max(1, grade))} / 10)</div>`;
+    }
+    badgeContainer.innerHTML = gradeBadge;
+  } else {
+    document.getElementById('results-subtitle').textContent = `Puntuación obtenida en esta sesión`;
+    timeBox.style.display = 'none';
+  }
 
   updateCounters();
 
@@ -2109,6 +2344,7 @@ function showResults() {
 }
 
 function backToMenu() {
+  stopTimer();
   document.getElementById('quiz-area').style.display = 'none';
   document.getElementById('results').style.display = 'none';
   document.getElementById('landing').style.display = 'block';
