@@ -768,14 +768,14 @@
     <div class="toggles-wrapper">
       <label class="toggle-item" title="Cambia el orden en el que aparecen las preguntas">
         <div class="switch">
-          <input type="checkbox" id="shuffle-questions-toggle" onchange="toggleSetting('shuffleQuestions')">
+          <input type="checkbox" id="shuffle-questions-toggle" checked onchange="toggleSetting('shuffleQuestions')">
           <span class="slider"></span>
         </div>
         <span>🔀 Mezclar preguntas</span>
       </label>
       <label class="toggle-item" title="Cambia el orden de las opciones/respuestas de cada pregunta">
         <div class="switch">
-          <input type="checkbox" id="shuffle-options-toggle" onchange="toggleSetting('shuffleOptions')">
+          <input type="checkbox" id="shuffle-options-toggle" checked onchange="toggleSetting('shuffleOptions')">
           <span class="slider"></span>
         </div>
         <span>🔀 Mezclar respuestas</span>
@@ -1842,6 +1842,12 @@ function startQuiz(mode, groupIndex) {
   showPalette = false;
   document.getElementById('question-palette').style.display = 'none';
 
+  // Sincronizar estado actual de los toggles de aleatoriedad
+  const qToggle = document.getElementById('shuffle-questions-toggle');
+  const optToggle = document.getElementById('shuffle-options-toggle');
+  if (qToggle) shuffleQuestionsSetting = qToggle.checked;
+  if (optToggle) shuffleOptionsSetting = optToggle.checked;
+
   let rawQuestions = [];
 
   if (mode === 'exam') {
@@ -1859,6 +1865,7 @@ function startQuiz(mode, groupIndex) {
       const start = groupIndex * 10;
       const end = Math.min(start + 10, ALL_QUESTIONS.length);
       rawQuestions = ALL_QUESTIONS.slice(start, end);
+      if (shuffleQuestionsSetting) rawQuestions = shuffle(rawQuestions);
     } else if (mode === 'retry') {
       rawQuestions = ALL_QUESTIONS.filter(q => wrongQuestions.includes(q.id));
       if (rawQuestions.length === 0) {
