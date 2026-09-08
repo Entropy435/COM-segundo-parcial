@@ -552,6 +552,22 @@
     border-top: 1px dashed rgba(255,255,255,0.15);
   }
 
+  /* Question Image */
+  .question-image-container {
+    margin: 0 0 20px 0;
+    text-align: center;
+  }
+  .question-image {
+    max-width: 100%;
+    max-height: 320px;
+    border-radius: 10px;
+    border: 1px solid var(--border-light);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    background: #fff;
+    padding: 8px;
+    object-fit: contain;
+  }
+
   /* Navigation Bar */
   .nav-controls {
     display: flex;
@@ -745,7 +761,7 @@
     <h1>📡 Cuestionario COM <span>2do Parcial</span></h1>
     <p class="subtitle">Comunicaciones — Universidad Tecnológica Nacional (Modo Oscuro)</p>
     <div class="quick-stats-bar">
-      <div class="stat-pill">📚 Total: <strong id="header-total">122</strong></div>
+      <div class="stat-pill">📚 Total: <strong id="header-total">123</strong></div>
       <div class="stat-pill">⭐ Marcadas: <strong id="header-marked-count">0</strong></div>
       <div class="stat-pill">❌ Por reintentar: <strong id="header-wrong-count">0</strong></div>
     </div>
@@ -791,7 +807,7 @@
         <span>⏱️ <strong>SIMULACRO DE PARCIAL</strong> (20 preguntas con tiempo)</span>
       </button>
       <button class="menu-btn all-btn" onclick="startQuiz('all')">
-        <span>📋 Todas las preguntas (<span id="total-count">122</span>)</span>
+        <span>📋 Todas las preguntas (<span id="total-count">123</span>)</span>
       </button>
     </div>
 
@@ -1285,6 +1301,7 @@ const ALL_QUESTIONS = [
   {
     id: 63, text: "Identifique tipo de cable (imagen con tres cables):",
     type: "single",
+    image: "q63_cables.png",
     options: ["UTP, FTP, STP", "FTP, UTP, CTP", "STP, Multipar telefónico, Coaxial"],
     correct: [0]
   },
@@ -1310,12 +1327,14 @@ const ALL_QUESTIONS = [
   {
     id: 67, text: "La herramienta de la figura (herramienta de impacto) se usa para:",
     type: "multi",
+    image: "q67_impacto.png",
     options: ["Crimpear un conector RJ45 a un cable UTP", "Empalar dos fibras ópticas monomodo", "Impactar un jack RJ45 en la toma de pared (roseta)", "Conectar los cables UTP a un panel de conexión (patch pannel) en el armario", "Empalar dos fibras ópticas multimodo"],
     correct: [2, 3]
   },
   {
     id: 68, text: "La herramienta de la figura (pinza crimpeadora) se usa para:",
     type: "single",
+    image: "q68_crimpeadora.png",
     options: ["Impactar un jack RJ45 en la toma de pared (roseta)", "Empalar dos fibras ópticas multimodo", "Crimpear un conector RJ45 a un cable UTP", "Empalar dos fibras ópticas monomodo", "Conectar los cables UTP a un panel de conexión (patch pannel) en el armario"],
     correct: [2]
   },
@@ -1647,6 +1666,7 @@ const ALL_QUESTIONS = [
   {
     id: 121, text: "Indicar a qué tipo de perturbación hace referencia la siguiente figura (donde se muestra interferencia entre cables adyacentes):",
     type: "single",
+    image: "q121_anext.png",
     options: ["Mapa de cableado incorrecto", "Interferencias electromagnéticas externas (EMI)", "PSNEXT", "ANEXT", "PSFEXT"],
     correct: [3]
   },
@@ -1655,6 +1675,14 @@ const ALL_QUESTIONS = [
     type: "text",
     correctText: ["60", "60 conectores", "60 conectores rj45"],
     correctDisplay: "60"
+  },
+  {
+    id: 123, text: "En la siguiente figura, indicar cuántos clusters hay:",
+    type: "single",
+    image: "q_clusters.png",
+    options: ["1", "2", "3", "4"],
+    correct: [2],
+    explanation: "Se pueden contar 3 clusters completos de 7 celdas (1 al 7) en la figura."
   }
 ];
 
@@ -1978,6 +2006,7 @@ function renderQuestion() {
         </button>
       </div>
       <div class="question-text">${q.text}</div>
+      ${q.image ? `<div class="question-image-container"><img src="imgs/${q.image}" class="question-image" alt="Imagen de la pregunta" loading="lazy"></div>` : ''}
   `;
 
   // RENDER SEGÚN EL TIPO DE PREGUNTA
