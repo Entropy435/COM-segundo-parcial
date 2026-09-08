@@ -761,7 +761,7 @@
     <h1>📡 Cuestionario COM <span>2do Parcial</span></h1>
     <p class="subtitle">Comunicaciones — Universidad Tecnológica Nacional (Modo Oscuro)</p>
     <div class="quick-stats-bar">
-      <div class="stat-pill">📚 Total: <strong id="header-total">123</strong></div>
+      <div class="stat-pill">📚 Total: <strong id="header-total">125</strong></div>
       <div class="stat-pill">⭐ Marcadas: <strong id="header-marked-count">0</strong></div>
       <div class="stat-pill">❌ Por reintentar: <strong id="header-wrong-count">0</strong></div>
     </div>
@@ -807,7 +807,7 @@
         <span>⏱️ <strong>SIMULACRO DE PARCIAL</strong> (20 preguntas con tiempo)</span>
       </button>
       <button class="menu-btn all-btn" onclick="startQuiz('all')">
-        <span>📋 Todas las preguntas (<span id="total-count">123</span>)</span>
+        <span>📋 Todas las preguntas (<span id="total-count">125</span>)</span>
       </button>
     </div>
 
@@ -984,6 +984,7 @@ const ALL_QUESTIONS = [
   {
     id: 11, text: "Indique los distintos tipos de fibras ópticas utilizadas en comunicaciones:",
     type: "multi",
+    image: "q11_fibras.png",
     options: ["Multimodo de Índice Gradual (MM)", "Multimodo de Índice Positivo (MM)", "Monomodo (SM)", "De modo Único (UM)", "Multimodo de Salto de Índice (MM)"],
     correct: [0, 2, 4]
   },
@@ -1211,12 +1212,14 @@ const ALL_QUESTIONS = [
   {
     id: 48, text: "Si tengo un cable armado con norma T568A en ambos extremos (cable directo), lo usaré para conectar:",
     type: "multi",
+    image: "q48_cable_directo.png",
     options: ["Un Switch a un Router", "Un Access Point a un Router", "Una PC a un Switch"],
     correct: [0, 1, 2]
   },
   {
     id: 49, text: "Si tengo un cable armado con norma T568A en un extremo y T568B en el otro (cable cruzado), lo usaré para conectar:",
     type: "multi",
+    image: "q49_cable_cruzado.png",
     options: ["Dos DTE entre sí", "Un Switch a un Hub", "Dos PC entre sí", "Dos Modems entre sí", "Dos Switch entre sí", "Un Router a una PC", "Un Access Point a un Router"],
     correct: [0, 1, 2, 3, 4, 5]
   },
@@ -1527,12 +1530,14 @@ const ALL_QUESTIONS = [
   {
     id: 99, text: "¿Qué proceso permite aumentar la cantidad de abonados atendidos por un sistema celular de comunicaciones en una determinada zona?",
     type: "single",
+    image: "q99_celdas.png",
     options: ["Confirmación del haz emitido por la antena", "Clusterización", "Sectorización", "Aumento de la potencia de señal radiada por la antena de la estación base", "Subdivisión de las celdas"],
     correct: [4]
   },
   {
     id: 100, text: "Para poder desarrollar una infraestructura de red 5G, será necesario implementar:",
     type: "multi",
+    image: "q100_5g.png",
     options: ["Frecuencias muy altas (30 a 300 GHz)", "Subdivisión de celdas", "Celdas muy pequeñas (pico o nanoceldas)", "Comunicación Full dúplex", "Conformación de los haces de radio emitidos por las antenas", "Tecnologías de radiotransmisión por múltiples canales", "Ninguna es correcta", "Todas son correctas"],
     correct: [7],
     explanation: "Todas las opciones listadas son correctas para 5G."
@@ -1683,6 +1688,32 @@ const ALL_QUESTIONS = [
     options: ["1", "2", "3", "4"],
     correct: [2],
     explanation: "Se pueden contar 3 clusters completos de 7 celdas (1 al 7) en la figura."
+  },
+  {
+    id: 124, text: "Indique qué tipo de técnica de acceso múltiple corresponde a cada gráfico (G1, G2 y G3):",
+    type: "single",
+    image: "q124_acceso_multiple.png",
+    options: [
+      "G1: FDMA, G2: TDMA, G3: CDMA",
+      "G1: FDMA, G2: CDMA, G3: TDMA",
+      "G1: TDMA, G2: FDMA, G3: CDMA",
+      "G1: CDMA, G2: TDMA, G3: FDMA"
+    ],
+    correct: [1],
+    explanation: "G1 divide los canales por bandas de frecuencia (FDMA). El gráfico inferior derecho (G3) asigna ranuras de tiempo sucesivas a cada usuario (TDMA). El gráfico inferior izquierdo (G2) superpone señales en tiempo y frecuencia distinguiéndolas por código (CDMA)."
+  },
+  {
+    id: 125, text: "Indique los siguientes tipos de conductores correspondientes a cada figura (G1, G2, G3, G4):",
+    type: "single",
+    image: "q125_conductores.png",
+    options: [
+      "G1: UTP, G2: FTP, G3: STP, G4: S-FTP",
+      "G1: FTP, G2: UTP, G3: STP, G4: S-FTP",
+      "G1: UTP, G2: STP, G3: FTP, G4: S-FTP",
+      "G1: S-FTP, G2: STP, G3: FTP, G4: UTP"
+    ],
+    correct: [0],
+    explanation: "G1: UTP (par trenzado no apantallado). G2: FTP (apantallamiento global por lámina de aluminio). G3: STP (pantalla metálica individual por cada par trenzado). G4: S-FTP (malla metálica trenzada externa combinada con lámina en los pares)."
   }
 ];
 
