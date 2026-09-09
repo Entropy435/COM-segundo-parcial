@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cuestionario COM - 2do Parcial (Modo Oscuro)</title>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <style>
   :root {
     --bg: #0b0f19;
@@ -55,6 +59,14 @@
     align-items: center;
     justify-content: center;
     gap: 12px;
+  }
+  .header-logo {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: inline-block;
+    vertical-align: middle;
   }
   .subtitle {
     color: var(--text-muted);
@@ -747,6 +759,7 @@
     .container { padding: 12px; }
     .question-card { padding: 18px 18px; }
     h1 { font-size: 1.5em; }
+    .header-logo { width: 30px; height: 30px; }
     .menu-grid { grid-template-columns: 1fr; }
     .nav-controls { flex-direction: column; width: 100%; }
     .nav-group-left, .nav-group-right { width: 100%; justify-content: space-between; }
@@ -758,7 +771,7 @@
 <body>
 <div class="container">
   <header>
-    <h1>📡 Cuestionario COM <span>2do Parcial</span></h1>
+    <h1><img src="favicon.png" alt="Logo" class="header-logo"> Cuestionario COM <span>2do Parcial</span></h1>
     <p class="subtitle">Comunicaciones — Universidad Tecnológica Nacional (Modo Oscuro)</p>
     <div class="quick-stats-bar">
       <div class="stat-pill">📚 Total: <strong id="header-total">125</strong></div>
