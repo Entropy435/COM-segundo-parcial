@@ -1192,7 +1192,12 @@
 
   <!-- LANDING / MENÚ PRINCIPAL -->
   <div id="landing">
-    <div class="section-title">🎓 Protocolo de Examen & Banco Completo</div>
+        <div class="menu-grid" style="margin-bottom: 20px;">
+      <a href="cuestionario_guia_254.html" class="menu-btn" style="text-decoration:none; display:flex; align-items:center; justify-content:center; border-color: #3b82f6; background: rgba(59, 130, 246, 0.1);">
+        <span>📚 <strong>IR A LA GUÍA DE ESTUDIO EXTENDIDA (254 Preguntas // 9 Módulos Teóricos)</strong></span>
+      </a>
+    </div>
+    <div class="section-title">🎓 Protocolo de Examen & Banco Completo (Oficial 219 Preguntas)</div>
     <div class="menu-grid">
       <button class="menu-btn exam-btn" onclick="startQuiz('exam')">
         <span>⚡ <strong>SIMULACRO DE PARCIAL 3</strong> (20 preguntas // con cronómetro)</span>
@@ -4838,8 +4843,10 @@ let shuffleOptionsSetting = localStorage.getItem('com_p3_shuffle_options') !== n
   ? localStorage.getItem('com_p3_shuffle_options') === 'true' 
   : true;
 
-let wrongQuestions = JSON.parse(localStorage.getItem('com_p3_wrong') || '[]');
-let bookmarkedQuestions = JSON.parse(localStorage.getItem('com_p3_bookmarked') || '[]');
+let wrongQuestions = [];
+try { wrongQuestions = JSON.parse(localStorage.getItem('com_p3_wrong') || '[]'); } catch(e) { wrongQuestions = []; }
+let bookmarkedQuestions = [];
+try { bookmarkedQuestions = JSON.parse(localStorage.getItem('com_p3_bookmarked') || '[]'); } catch(e) { bookmarkedQuestions = []; }
 
 let currentQuestions = [];
 let currentIndex = 0;
