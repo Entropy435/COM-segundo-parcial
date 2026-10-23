@@ -65,7 +65,6 @@
     min-height: 100vh;
     padding-bottom: 50px;
     position: relative;
-    /* Fondo limpio sin scanlines borrosas que cansen la vista */
     background-image: 
       radial-gradient(circle at 50% 0%, rgba(255, 42, 95, 0.1) 0%, rgba(13, 17, 23, 0.8) 40%, #0d1117 80%),
       linear-gradient(180deg, #0d1117 0%, #090c10 100%);
@@ -98,7 +97,7 @@
     z-index: 2;
   }
 
-  /* HEADER TECNOLÓGICO CLARO Y NÍTIDO */
+  /* HEADER GENERAL (VISIBLE EN MENÚ / LANDING) */
   header {
     text-align: center;
     margin-bottom: 24px;
@@ -212,7 +211,7 @@
     font-weight: 700;
   }
 
-  /* SHORTCUTS BANNER */
+  /* SHORTCUTS BANNER (VISIBLE EN MENÚ / LANDING) */
   .shortcuts-banner {
     display: flex;
     align-items: center;
@@ -241,7 +240,7 @@
     font-weight: 700;
   }
 
-  /* SETTINGS / CONFIGURATION PANEL */
+  /* SETTINGS CARD (VISIBLE EN MENÚ / LANDING) */
   .settings-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -283,6 +282,8 @@
     color: var(--text);
     text-transform: uppercase;
   }
+
+  /* SWITCH INDUSTRIAL */
   .switch {
     position: relative;
     display: inline-block;
@@ -316,6 +317,169 @@
     background-color: var(--neon-red);
     box-shadow: 0 0 8px var(--neon-red);
     transform: translateX(22px);
+  }
+
+  /* SWITCH COMPACTO PARA BARRA DE QUIZ */
+  .switch-sm {
+    width: 34px;
+    height: 18px;
+  }
+  .switch-sm .slider:before {
+    height: 10px;
+    width: 10px;
+    left: 3px;
+    bottom: 3px;
+  }
+  .switch-sm input:checked + .slider:before {
+    transform: translateX(16px);
+  }
+
+  /* ============================================================
+     NUEVA BARRA COMPACTA DENTRO DEL QUIZ (EN LUGAR DEL HEADER)
+     ============================================================ */
+  .quiz-top-nav-bar {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--neon-red);
+    padding: 12px 18px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
+  }
+  .quiz-top-main-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .section-indicator-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .section-badge {
+    background: linear-gradient(135deg, #7a0928 0%, var(--neon-red) 100%);
+    color: #ffffff;
+    padding: 5px 12px;
+    font-size: 0.88em;
+    font-weight: 800;
+    font-family: var(--font-terminal);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    box-shadow: 0 0 10px rgba(255, 42, 95, 0.4);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .progress-badge {
+    color: var(--text);
+    font-size: 0.9em;
+    font-weight: 700;
+    font-family: var(--font-terminal);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    background: #0d1117;
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .timer-badge {
+    background: #211319;
+    border: 1px solid var(--neon-red);
+    color: var(--neon-red);
+    padding: 4px 10px;
+    font-size: 0.9em;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-terminal);
+    box-shadow: 0 0 8px rgba(255, 42, 95, 0.3);
+  }
+  .top-nav-actions {
+    display: flex;
+    gap: 8px;
+  }
+  .top-btn {
+    background: #0d1117;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 7px 14px;
+    font-size: 0.84em;
+    cursor: pointer;
+    font-weight: 700;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-terminal);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .top-btn:hover {
+    background: #222938;
+    color: #ffffff;
+    border-color: var(--neon-red);
+    box-shadow: 0 0 10px rgba(255, 42, 95, 0.3);
+  }
+
+  /* BARRA DE ALEATORIEDAD COMPACTA INTEGRADA */
+  .quiz-toggles-bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--border);
+    font-size: 0.82em;
+    font-family: var(--font-terminal);
+    color: var(--text-muted);
+  }
+  .toggles-bar-label {
+    color: #ff6b8b;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .toggle-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+    color: var(--text);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.82em;
+    background: #0d1117;
+    border: 1px solid var(--border);
+    padding: 3px 10px;
+  }
+  .toggle-pill:hover {
+    border-color: var(--neon-red);
+    color: #ffffff;
+  }
+
+  /* BARRA DE PROGRESO LÁSER */
+  .progress-bar-container {
+    background: #0a0d12;
+    border: 1px solid var(--border);
+    height: 7px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .progress-bar {
+    background: linear-gradient(90deg, #910c31, #ff2a5f);
+    height: 100%;
+    box-shadow: 0 0 10px #ff2a5f;
+    transition: width 0.25s ease;
+    width: 0%;
   }
 
   /* MENU / LANDING */
@@ -429,82 +593,8 @@
 
   /* QUIZ AREA */
   #quiz-area { display: none; }
-  
-  .quiz-top-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 14px;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  .progress-info {
-    font-size: 0.95em;
-    color: #e6edf3;
-    font-weight: 700;
-    font-family: var(--font-terminal);
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-  .timer-badge {
-    background: #211319;
-    border: 1px solid var(--neon-red);
-    color: var(--neon-red);
-    padding: 4px 12px;
-    font-size: 0.92em;
-    font-weight: 700;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-family: var(--font-terminal);
-    box-shadow: 0 0 8px rgba(255, 42, 95, 0.3);
-  }
-  .top-actions {
-    display: flex;
-    gap: 8px;
-  }
-  .top-btn {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    color: var(--text-muted);
-    padding: 6px 14px;
-    font-size: 0.84em;
-    cursor: pointer;
-    font-weight: 700;
-    transition: all 0.15s;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-family: var(--font-terminal);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-  }
-  .top-btn:hover {
-    background: #222938;
-    color: #ffffff;
-    border-color: var(--neon-red);
-    box-shadow: 0 0 10px rgba(255, 42, 95, 0.3);
-  }
 
-  .progress-bar-container {
-    background: #0a0d12;
-    border: 1px solid var(--border);
-    height: 7px;
-    margin-bottom: 22px;
-    overflow: hidden;
-  }
-  .progress-bar {
-    background: linear-gradient(90deg, #910c31, #ff2a5f);
-    height: 100%;
-    box-shadow: 0 0 10px #ff2a5f;
-    transition: width 0.25s ease;
-    width: 0%;
-  }
-
-  /* QUESTION CARD — NÍTIDA, CÓMODA Y VISIBLE */
+  /* QUESTION CARD */
   .question-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -535,6 +625,14 @@
     margin-bottom: 18px;
     border-bottom: 1px solid var(--border);
     padding-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .header-badges-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
   }
   .question-type-badge {
     display: inline-block;
@@ -549,6 +647,20 @@
   .badge-multi { background: rgba(217, 70, 239, 0.12); color: #e879f9; border: 1px solid rgba(217, 70, 239, 0.4); }
   .badge-tf { background: rgba(0, 230, 118, 0.12); color: #00e676; border: 1px solid rgba(0, 230, 118, 0.4); }
   .badge-text { background: rgba(255, 179, 0, 0.12); color: #ffb300; border: 1px solid rgba(255, 179, 0, 0.4); }
+
+  .question-category-badge {
+    background: #0d1117;
+    color: #7dd3fc;
+    border: 1px solid #1f3a52;
+    padding: 4px 10px;
+    font-size: 0.78em;
+    font-weight: 700;
+    font-family: var(--font-terminal);
+    letter-spacing: 0.04em;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
 
   .star-btn {
     background: #0d1117;
@@ -576,7 +688,7 @@
     box-shadow: 0 0 10px rgba(255, 193, 7, 0.3);
   }
 
-  /* ENUNCIADO DE LA PREGUNTA: TIPOGRAFÍA DE ALTA LEGIBILIDAD PARA ESTUDIO */
+  /* ENUNCIADO DE LA PREGUNTA */
   .question-text {
     font-size: 1.16em;
     font-weight: 600;
@@ -592,7 +704,7 @@
     font-family: var(--font-terminal);
   }
 
-  /* LISTADO DE OPCIONES: BOTONES DE RELIEVE CLARO Y ESPACIOSO */
+  /* LISTADO DE OPCIONES */
   .options-list { list-style: none; }
   .options-list li { margin-bottom: 12px; }
   .option-label {
@@ -650,7 +762,7 @@
     box-shadow: 0 0 15px rgba(255, 42, 95, 0.35) !important;
   }
 
-  /* INPUT DE TEXTO PARA ESCRIBIR */
+  /* INPUT DE TEXTO */
   .text-input-container {
     display: flex;
     align-items: center;
@@ -695,7 +807,7 @@
     color: #ff6b8b !important;
   }
 
-  /* FEEDBACK Y EXPLICACIONES — FORMATO DE ESTUDIO CLARO */
+  /* FEEDBACK */
   .feedback {
     margin-top: 22px;
     padding: 18px 22px;
@@ -748,7 +860,7 @@
     object-fit: contain;
   }
 
-  /* BARRA DE NAVEGACIÓN Y BOTONES */
+  /* BOTONES DE NAVEGACIÓN */
   .nav-controls {
     display: flex;
     gap: 12px;
@@ -1018,12 +1130,17 @@
     .nav-group-left, .nav-group-right { width: 100%; justify-content: space-between; }
     .btn { flex: 1; padding: 12px 14px; font-size: 0.85em; }
     .settings-card { flex-direction: column; align-items: flex-start; }
+    .quiz-top-main-row { flex-direction: column; align-items: flex-start; }
+    .top-nav-actions { width: 100%; justify-content: space-between; }
+    .top-btn { flex: 1; justify-content: center; }
   }
 </style>
 </head>
 <body>
 <div class="container">
-  <header>
+
+  <!-- HEADER PRINCIPAL (SOLO VISIBLE EN MENÚ / RESULTADOS) -->
+  <header id="main-header">
     <div class="header-hud-top">
       <span class="hud-tag">[SYS_ONLINE // PROTOCOL_COM_V3.0]</span>
       <span class="hud-status"><span class="blink-dot"></span> SEC_LEVEL: ROOT_OPERATOR</span>
@@ -1041,8 +1158,8 @@
     </div>
   </header>
 
-  <!-- SHORTCUTS BANNER -->
-  <div class="shortcuts-banner">
+  <!-- SHORTCUTS BANNER (SOLO VISIBLE EN MENÚ) -->
+  <div class="shortcuts-banner" id="main-shortcuts">
     <span>⌨️ <strong>Atajos de Terminal:</strong></span>
     <span><span class="kbd">←</span> Anterior</span>
     <span><span class="kbd">→</span> Siguiente</span>
@@ -1050,22 +1167,22 @@
     <span><span class="kbd">1</span>-<span class="kbd">9</span> Elegir Opción</span>
   </div>
 
-  <!-- SETTINGS / CONFIGURATION PANEL -->
-  <div class="settings-card">
+  <!-- SETTINGS CARD (SOLO VISIBLE EN MENÚ) -->
+  <div class="settings-card" id="main-settings">
     <div class="settings-title">
       <span>⚙️ Parámetros de Aleatoriedad:</span>
     </div>
     <div class="toggles-wrapper">
       <label class="toggle-item" title="Cambia el orden en el que aparecen las preguntas">
         <div class="switch">
-          <input type="checkbox" id="shuffle-questions-toggle" checked onchange="toggleSetting('shuffleQuestions')">
+          <input type="checkbox" id="shuffle-questions-toggle" checked onchange="syncSetting('shuffleQuestions', this.checked)">
           <span class="slider"></span>
         </div>
         <span>🔀 Mezclar Preguntas</span>
       </label>
       <label class="toggle-item" title="Cambia el orden de las opciones/respuestas de cada pregunta">
         <div class="switch">
-          <input type="checkbox" id="shuffle-options-toggle" checked onchange="toggleSetting('shuffleOptions')">
+          <input type="checkbox" id="shuffle-options-toggle" checked onchange="syncSetting('shuffleOptions', this.checked)">
           <span class="slider"></span>
         </div>
         <span>🔀 Mezclar Respuestas</span>
@@ -1073,7 +1190,7 @@
     </div>
   </div>
 
-  <!-- LANDING -->
+  <!-- LANDING / MENÚ PRINCIPAL -->
   <div id="landing">
     <div class="section-title">🎓 Protocolo de Examen & Banco Completo</div>
     <div class="menu-grid">
@@ -1105,21 +1222,45 @@
     <div class="menu-grid" id="groups-grid"></div>
   </div>
 
-  <!-- QUIZ AREA -->
+  <!-- QUIZ AREA (ÁREA DE PREGUNTA: LIMPIA, DIRECTA, SIN DISTRACCIONES) -->
   <div id="quiz-area">
-    <div class="quiz-top-bar">
-      <div class="progress-info">
-        <span id="progress-text">PREGUNTA 1 DE 20</span>
-        <span class="timer-badge" id="timer-badge" style="display:none;">
-          ⏱️ <span id="timer-text">00:00</span>
-        </span>
+    <!-- BARRA SUPERIOR COMPACTA DEL QUIZ -->
+    <div class="quiz-top-nav-bar">
+      <div class="quiz-top-main-row">
+        <div class="section-indicator-wrap">
+          <span class="section-badge" id="section-badge">📦 BLOQUE 1</span>
+          <span class="progress-badge" id="progress-text">PREGUNTA 1 DE 10 [10%]</span>
+          <span class="timer-badge" id="timer-badge" style="display:none;">
+            ⏱️ <span id="timer-text">00:00</span>
+          </span>
+        </div>
+        <div class="top-nav-actions">
+          <button class="top-btn" onclick="togglePaletteView()" title="Abrir índice de preguntas">🔢 Índice</button>
+          <button class="top-btn" onclick="confirmExit()" title="Volver al menú">🏠 Menú</button>
+        </div>
       </div>
-      <div class="top-actions">
-        <button class="top-btn" onclick="togglePaletteView()">🔢 Índice</button>
-        <button class="top-btn" onclick="confirmExit()">🏠 Menú</button>
+
+      <!-- PARÁMETROS DE ALEATORIEDAD COMPACTOS INTEGRADOS -->
+      <div class="quiz-toggles-bar">
+        <span class="toggles-bar-label">⚙️ Aleatoriedad:</span>
+        <label class="toggle-pill" title="Mezclar orden de las preguntas">
+          <div class="switch switch-sm">
+            <input type="checkbox" id="quiz-shuffle-q" onchange="syncSetting('shuffleQuestions', this.checked)">
+            <span class="slider"></span>
+          </div>
+          <span>Preguntas</span>
+        </label>
+        <label class="toggle-pill" title="Mezclar orden de las respuestas">
+          <div class="switch switch-sm">
+            <input type="checkbox" id="quiz-shuffle-opt" onchange="syncSetting('shuffleOptions', this.checked)">
+            <span class="slider"></span>
+          </div>
+          <span>Respuestas</span>
+        </label>
       </div>
     </div>
 
+    <!-- BARRA DE PROGRESO -->
     <div class="progress-bar-container">
       <div class="progress-bar" id="progress-bar"></div>
     </div>
@@ -5544,8 +5685,14 @@ function init() {
   document.getElementById('header-total').textContent = ALL_QUESTIONS.length;
   
   // Sincronizar toggles
-  document.getElementById('shuffle-questions-toggle').checked = shuffleQuestionsSetting;
-  document.getElementById('shuffle-options-toggle').checked = shuffleOptionsSetting;
+  const mQ = document.getElementById('shuffle-questions-toggle');
+  const mOpt = document.getElementById('shuffle-options-toggle');
+  const qQ = document.getElementById('quiz-shuffle-q');
+  const qOpt = document.getElementById('quiz-shuffle-opt');
+  if (mQ) mQ.checked = shuffleQuestionsSetting;
+  if (mOpt) mOpt.checked = shuffleOptionsSetting;
+  if (qQ) qQ.checked = shuffleQuestionsSetting;
+  if (qOpt) qOpt.checked = shuffleOptionsSetting;
 
 
   buildCategoryButtons();
@@ -5555,11 +5702,28 @@ function init() {
   setupKeyboardNavigation();
 }
 
-function toggleSetting(settingKey) {
+function syncSetting(settingKey, isChecked) {
   if (settingKey === 'shuffleQuestions') {
-    shuffleQuestionsSetting = document.getElementById('shuffle-questions-toggle').checked;
-    localStorage.setItem('com_p3_shuffle_questions', shuffleQuestionsSetting);
+    shuffleQuestionsSetting = isChecked;
+    localStorage.setItem('com_p3_shuffle_questions', isChecked);
+    const m = document.getElementById('shuffle-questions-toggle');
+    const q = document.getElementById('quiz-shuffle-q');
+    if (m) m.checked = isChecked;
+    if (q) q.checked = isChecked;
   } else if (settingKey === 'shuffleOptions') {
+    shuffleOptionsSetting = isChecked;
+    localStorage.setItem('com_p3_shuffle_options', isChecked);
+    const m = document.getElementById('shuffle-options-toggle');
+    const q = document.getElementById('quiz-shuffle-opt');
+    if (m) m.checked = isChecked;
+    if (q) q.checked = isChecked;
+  }
+}
+
+function toggleSetting(settingKey) {
+  const m = document.getElementById(settingKey === 'shuffleQuestions' ? 'shuffle-questions-toggle' : 'shuffle-options-toggle');
+  syncSetting(settingKey, m ? m.checked : true);
+} else if (settingKey === 'shuffleOptions') {
     shuffleOptionsSetting = document.getElementById('shuffle-options-toggle').checked;
     localStorage.setItem('com_p3_shuffle_options', shuffleOptionsSetting);
   }
@@ -5758,6 +5922,40 @@ function startQuiz(mode, groupIndex) {
   // Preparar preguntas y aleatorizar opciones (en examen siempre se mezclan opciones)
   const shouldShuffleOpts = (mode === 'exam') ? true : shuffleOptionsSetting;
   currentQuestions = rawQuestions.map(q => prepareQuestionData(q, shouldShuffleOpts));
+
+  // Ocultar header grande, atajos y tarjeta de settings al entrar a la pregunta
+  const mainHeader = document.getElementById('main-header');
+  const mainShortcuts = document.getElementById('main-shortcuts');
+  const mainSettings = document.getElementById('main-settings');
+  if (mainHeader) mainHeader.style.display = 'none';
+  if (mainShortcuts) mainShortcuts.style.display = 'none';
+  if (mainSettings) mainSettings.style.display = 'none';
+
+  // Configurar indicador de sección actual
+  let sectionName = '';
+  if (mode === 'exam') {
+    sectionName = '⚡ SIMULACRO DE PARCIAL';
+  } else if (mode === 'all') {
+    sectionName = '📋 BANCO COMPLETO';
+  } else if (mode === 'group') {
+    const startNum = groupIndex * 10 + 1;
+    const endNum = Math.min((groupIndex + 1) * 10, ALL_QUESTIONS.length);
+    sectionName = `📦 BLOQUE ${groupIndex + 1} (${startNum} - ${endNum})`;
+  } else if (mode === 'category') {
+    sectionName = `📂 EJE: ${groupIndex}`;
+  } else if (mode === 'marked') {
+    sectionName = '★ PREGUNTAS MARCADAS';
+  } else if (mode === 'retry') {
+    sectionName = '☠ REINTENTO DE ERRORES';
+  }
+  const badgeElem = document.getElementById('section-badge');
+  if (badgeElem) badgeElem.textContent = sectionName;
+
+  // Sincronizar toggles en la barra de quiz
+  const qQ = document.getElementById('quiz-shuffle-q');
+  const qOpt = document.getElementById('quiz-shuffle-opt');
+  if (qQ) qQ.checked = shuffleQuestionsSetting;
+  if (qOpt) qOpt.checked = shuffleOptionsSetting;
 
   document.getElementById('landing').style.display = 'none';
   document.getElementById('results').style.display = 'none';
@@ -6300,6 +6498,13 @@ function showResults() {
 
 function backToMenu() {
   stopTimer();
+  const mainHeader = document.getElementById('main-header');
+  const mainShortcuts = document.getElementById('main-shortcuts');
+  const mainSettings = document.getElementById('main-settings');
+  if (mainHeader) mainHeader.style.display = 'block';
+  if (mainShortcuts) mainShortcuts.style.display = 'flex';
+  if (mainSettings) mainSettings.style.display = 'flex';
+
   document.getElementById('quiz-area').style.display = 'none';
   document.getElementById('results').style.display = 'none';
   document.getElementById('landing').style.display = 'block';
