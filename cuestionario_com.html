@@ -4997,11 +4997,12 @@ function formatDuration(totalSecs) {
 // PREPARACIÓN DE PREGUNTAS Y OPCIONES ALEATORIAS
 // ============================================================
 function prepareQuestionData(q, shuffleOpts) {
-  if (q.type === 'text' || !q.options || !shuffleOpts) {
+  const origCorrect = Array.isArray(q.correct) ? q.correct : (typeof q.correct === 'number' ? [q.correct] : []);
+  if (q.type === 'text' || q.type === 'grid' || !q.options || !shuffleOpts) {
     return {
       ...q,
       displayOptions: q.options ? [...q.options] : [],
-      displayCorrect: q.correct ? [...q.correct] : []
+      displayCorrect: [...origCorrect]
     };
   }
 
@@ -5012,7 +5013,7 @@ function prepareQuestionData(q, shuffleOpts) {
   const displayOptions = indexed.map(item => item.opt);
   const displayCorrect = [];
   indexed.forEach((item, newIdx) => {
-    if (q.correct.includes(item.origIdx)) {
+    if (origCorrect.includes(item.origIdx)) {
       displayCorrect.push(newIdx);
     }
   });
