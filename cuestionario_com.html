@@ -708,18 +708,22 @@
   /* LISTADO DE OPCIONES */
   .options-list { list-style: none; }
   .options-list li { margin-bottom: 12px; }
+  /* OPCIONES Y EVALUACIÓN DE RESPUESTAS */
   .option-label {
     display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    padding: 14px 18px;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 16px;
     border: 1px solid var(--border);
     cursor: pointer;
     transition: all 0.15s ease;
     background: var(--bg-option);
     color: #e6edf3;
-    font-size: 1em;
-    line-height: 1.55;
+    font-size: 0.98em;
+    line-height: 1.5;
+    position: relative;
+    border-radius: 4px;
+    flex-wrap: nowrap;
   }
   .option-label:hover {
     border-color: var(--neon-red);
@@ -727,11 +731,17 @@
     color: #ffffff;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   }
-  .option-label input {
-    margin-top: 4px;
+  .option-left-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .option-left-wrap input {
     accent-color: var(--neon-red);
     transform: scale(1.2);
     cursor: pointer;
+    margin: 0;
   }
   .option-key-badge {
     background: #0d1117;
@@ -741,7 +751,11 @@
     font-size: 0.84em;
     font-family: var(--font-terminal);
     font-weight: 700;
-    margin-right: 2px;
+  }
+  .option-text {
+    flex: 1;
+    word-break: break-word;
+    color: inherit;
   }
   .option-label.selected {
     border: 2px solid var(--neon-red);
@@ -749,18 +763,112 @@
     box-shadow: 0 0 12px rgba(255, 42, 95, 0.35);
     color: #ffffff;
   }
-  .option-label.correct-answer {
-    border: 2px solid var(--success) !important;
-    background: var(--success-bg) !important;
-    color: #69f0ae !important;
-    box-shadow: 0 0 15px rgba(0, 230, 118, 0.3) !important;
-    font-weight: 600;
+
+  /* ICONOS PREFIJO TRAS VERIFICACIÓN */
+  .eval-icon-prefix {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    font-size: 0.82em;
+    font-weight: 900;
+    font-family: var(--font-terminal);
+    flex-shrink: 0;
   }
-  .option-label.wrong-answer {
-    border: 2px solid var(--danger) !important;
-    background: var(--danger-bg) !important;
-    color: #ff8ca3 !important;
-    box-shadow: 0 0 15px rgba(255, 42, 95, 0.35) !important;
+  .eval-icon-prefix.icon-correct {
+    background: #00e676;
+    color: #05140b;
+    box-shadow: 0 0 8px rgba(0, 230, 118, 0.6);
+  }
+  .eval-icon-prefix.icon-wrong {
+    background: #ff2a5f;
+    color: #ffffff;
+    box-shadow: 0 0 8px rgba(255, 42, 95, 0.6);
+  }
+  .eval-icon-prefix.icon-missed {
+    background: rgba(0, 230, 118, 0.2);
+    border: 1px dashed #00e676;
+    color: #00e676;
+  }
+
+  /* BADGES DE ESTADO (ETIQUETAS CLARAS DE EVALUACIÓN) */
+  .eval-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    font-size: 0.80em;
+    font-family: var(--font-terminal);
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    border-radius: 4px;
+    text-transform: uppercase;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  .eval-badge-correct {
+    background: #00e676;
+    color: #05140b;
+    border: 1px solid #00e676;
+    box-shadow: 0 0 12px rgba(0, 230, 118, 0.5);
+  }
+  .eval-badge-wrong {
+    background: #ff2a5f;
+    color: #ffffff;
+    border: 1px solid #ff2a5f;
+    box-shadow: 0 0 12px rgba(255, 42, 95, 0.5);
+  }
+  .eval-badge-missed {
+    background: rgba(0, 230, 118, 0.12);
+    border: 1px dashed #00e676;
+    color: #5cf5a5;
+    box-shadow: 0 0 8px rgba(0, 230, 118, 0.25);
+  }
+  .eval-badge-neutral {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #8b949e;
+    font-size: 0.74em;
+    padding: 3px 8px;
+  }
+
+  /* ESTILOS DEL CONTENEDOR EN EVALUACIÓN */
+  .option-label.eval-user-correct {
+    border: 2px solid #00e676 !important;
+    background: rgba(0, 230, 118, 0.14) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 15px rgba(0, 230, 118, 0.35) !important;
+  }
+  .option-label.eval-user-wrong {
+    border: 2px solid #ff2a5f !important;
+    background: rgba(255, 42, 95, 0.18) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 15px rgba(255, 42, 95, 0.4) !important;
+  }
+  .option-label.eval-missed-correct {
+    border: 2px dashed #00e676 !important;
+    background: rgba(0, 230, 118, 0.08) !important;
+    color: #e6edf3 !important;
+    box-shadow: 0 0 10px rgba(0, 230, 118, 0.2) !important;
+  }
+  .option-label.eval-unselected-neutral {
+    opacity: 0.45 !important;
+    border: 1px solid var(--border) !important;
+    background: rgba(18, 22, 31, 0.5) !important;
+    color: #8b949e !important;
+  }
+
+  @media (max-width: 768px) {
+    .option-label {
+      flex-wrap: wrap;
+    }
+    .eval-badge {
+      width: 100%;
+      justify-content: center;
+      margin-top: 6px;
+    }
   }
 
   /* INPUT DE TEXTO */
@@ -5303,22 +5411,51 @@ function renderQuestion() {
 
     html += `<ul class="options-list">`;
     q.displayOptions.forEach((opt, i) => {
+      const isSelected = selectedSet.has(i);
+      const isOptionCorrect = correctSet.has(i);
+
       let optClass = 'option-label';
-      if (selectedSet.has(i)) optClass += ' selected';
+      let statusBadge = '';
+      let iconPrefix = '';
+
+      if (isSelected) optClass += ' selected';
+
       if (isChecked) {
-        if (correctSet.has(i)) optClass += ' correct-answer';
-        if (selectedSet.has(i) && !correctSet.has(i)) optClass += ' wrong-answer';
+        if (isSelected && isOptionCorrect) {
+          // Opción marcada por el usuario que es correcta
+          optClass += ' eval-user-correct';
+          iconPrefix = '<span class="eval-icon-prefix icon-correct" title="Opción marcada y correcta">✓</span>';
+          statusBadge = '<span class="eval-badge eval-badge-correct">✓ TU ELECCIÓN • CORRECTA</span>';
+        } else if (isSelected && !isOptionCorrect) {
+          // Opción marcada por el usuario que es incorrecta
+          optClass += ' eval-user-wrong';
+          iconPrefix = '<span class="eval-icon-prefix icon-wrong" title="Opción marcada erróneamente">✖</span>';
+          statusBadge = '<span class="eval-badge eval-badge-wrong">✖ TU ELECCIÓN • INCORRECTA</span>';
+        } else if (!isSelected && isOptionCorrect) {
+          // Opción correcta que el usuario NO marcó
+          optClass += ' eval-missed-correct';
+          iconPrefix = '<span class="eval-icon-prefix icon-missed" title="Esta opción era correcta y faltó marcarla">⚡</span>';
+          statusBadge = '<span class="eval-badge eval-badge-missed">⚡ ERA CORRECTA • NO LA MARCASTE</span>';
+        } else {
+          // Opción incorrecta que el usuario no marcó (descarte correcto)
+          optClass += ' eval-unselected-neutral';
+          statusBadge = '<span class="eval-badge eval-badge-neutral">○ INCORRECTA</span>';
+        }
       }
 
       html += `
         <li>
           <label class="${optClass}" id="opt-${q.id}-${i}">
-            <input type="${inputType}" name="q${q.id}" value="${i}" 
-              ${selectedSet.has(i) ? 'checked' : ''} 
-              ${isChecked ? 'disabled' : ''} 
-              onchange="onOptionChange(${q.id}, ${i})">
-            <span class="option-key-badge">[${i + 1}]</span>
-            <span>${opt}</span>
+            <div class="option-left-wrap">
+              <input type="${inputType}" name="q${q.id}" value="${i}" 
+                ${isSelected ? 'checked' : ''} 
+                ${isChecked ? 'disabled' : ''} 
+                onchange="onOptionChange(${q.id}, ${i})">
+              ${iconPrefix}
+              <span class="option-key-badge">[${i + 1}]</span>
+            </div>
+            <div class="option-text">${opt}</div>
+            ${statusBadge}
           </label>
         </li>
       `;
@@ -5346,7 +5483,8 @@ function renderQuestion() {
     if (ans.isCorrect || ans.score === 1.0) {
       html += `✔ [SISTEMA // ACCESO CONCEDIDO] Respuesta Correcta <span style="font-size:0.9em; opacity:0.9;">(+1.00 / 1.00 pt)</span>`;
     } else if (ans.isPartial || ans.score > 0) {
-      html += `⚠ [SISTEMA // PUNTUACIÓN PARCIAL] <strong style="color:#fbbf24;">(+${ans.score.toFixed(2)} / 1.00 pt)</strong><br><span style="font-size:0.9em; opacity:0.9;">Has seleccionado ${ans.correctSelectedCount} de ${ans.totalCorrect} opciones correctas.</span>`;
+      const penaltyNote = (ans.wrongSelectedCount > 0) ? ` (y marcaste ${ans.wrongSelectedCount} opción${ans.wrongSelectedCount > 1 ? 'es' : ''} incorrecta${ans.wrongSelectedCount > 1 ? 's' : ''} que resta${ans.wrongSelectedCount > 1 ? 'ron' : ''})` : '';
+      html += `⚠ [SISTEMA // PUNTUACIÓN PARCIAL] <strong style="color:#fbbf24;">(+${ans.score.toFixed(2)} / 1.00 pt)</strong><br><span style="font-size:0.9em; opacity:0.9;">Has seleccionado ${ans.correctSelectedCount} de ${ans.totalCorrect} opciones correctas${penaltyNote}.</span>`;
     } else {
       if (q.type === 'text') {
         html += `✖ [SISTEMA // ERROR] Respuesta Incorrecta (0.00 / 1.00 pt). La solución correcta es: <strong style="color:var(--neon-red); font-size:1.05em; text-shadow:0 0 6px var(--neon-red);">${q.correctDisplay}</strong>`;
@@ -5551,6 +5689,7 @@ function checkCurrentQuestion() {
       isCorrect,
       isPartial,
       correctSelectedCount,
+      wrongSelectedCount,
       totalCorrect
     };
   }
