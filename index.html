@@ -603,6 +603,13 @@
     color: #ffffff !important;
     box-shadow: 0 0 14px rgba(0, 230, 118, 0.35) !important;
   }
+  .option-item.missed {
+    background: var(--warning-bg) !important;
+    border-color: var(--warning) !important;
+    border-left: 4px solid var(--warning) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 14px rgba(255, 179, 0, 0.35) !important;
+  }
   .option-item.wrong {
     background: var(--danger-bg) !important;
     border-color: var(--danger) !important;
@@ -692,6 +699,17 @@
     display: none !important;
   }
 
+  .option-item.missed .cyber-radio,
+  .option-item.missed .cyber-checkbox {
+    border-color: var(--warning) !important;
+    background: rgba(255, 179, 0, 0.2) !important;
+    color: var(--warning) !important;
+    box-shadow: 0 0 10px rgba(255, 179, 0, 0.4) !important;
+  }
+  .option-item.missed .cyber-radio::after {
+    display: none !important;
+  }
+
   .option-item.wrong .cyber-radio,
   .option-item.wrong .cyber-checkbox {
     border-color: var(--danger) !important;
@@ -766,6 +784,11 @@
     border: 2px solid var(--success) !important;
     box-shadow: inset 0 0 10px rgba(0, 230, 118, 0.35);
   }
+  .grid-cell-missed {
+    background: rgba(255, 179, 0, 0.22) !important;
+    border: 2px solid var(--warning) !important;
+    box-shadow: inset 0 0 10px rgba(255, 179, 0, 0.35);
+  }
   .grid-cell-wrong {
     background: rgba(255, 42, 95, 0.22) !important;
     border: 2px solid var(--danger) !important;
@@ -791,6 +814,12 @@
     border: 1px solid var(--success);
     color: var(--success);
     box-shadow: 0 0 8px rgba(0, 230, 118, 0.35);
+  }
+  .eval-missed {
+    background: rgba(255, 179, 0, 0.2);
+    border: 1px solid var(--warning);
+    color: var(--warning);
+    box-shadow: 0 0 8px rgba(255, 179, 0, 0.35);
   }
   .eval-wrong {
     background: rgba(255, 42, 95, 0.2);
@@ -1458,7 +1487,7 @@ function renderQuestion() {
         } else {
           conceptCellContent += `
             <div style="margin-top:4px; font-family:var(--font-terminal); font-size:0.75rem; color:var(--neon-red); font-weight:700;">
-              ✗ INCORRECTO &bull; Correcto: <strong style="color:var(--success); text-decoration:underline;">${escapeHtml(q.columns[correctCol])}</strong>
+              ✕ INCORRECTO &bull; Correcto: <strong style="color:var(--warning); text-decoration:underline;">${escapeHtml(q.columns[correctCol])}</strong>
             </div>
           `;
         }
@@ -1469,7 +1498,7 @@ function renderQuestion() {
       q.columns.forEach((colName, cIdx) => {
         if (isChecked) {
           if (cIdx === correctCol && isRowCorrect) {
-            // Acierto
+            // Acierto (Verde)
             gridHtml += `
               <td class="grid-cell-correct" title="Respuesta Correcta">
                 <div style="display:flex; flex-direction:column; align-items:center; gap:2px;">
@@ -1479,12 +1508,12 @@ function renderQuestion() {
               </td>
             `;
           } else if (cIdx === correctCol && !isRowCorrect) {
-            // Era esta
+            // Era esta (Amarillo)
             gridHtml += `
-              <td class="grid-cell-correct" title="Esta era la columna correcta">
+              <td class="grid-cell-missed" title="Esta era la columna correcta">
                 <div style="display:flex; flex-direction:column; align-items:center; gap:2px;">
-                  <span style="color:var(--success); font-weight:900; font-size:1.15rem; line-height:1;">✓</span>
-                  <span style="font-size:0.7rem; color:var(--success); font-weight:800; font-family:var(--font-terminal); background:rgba(0,230,118,0.25); padding:1px 5px; letter-spacing:0.04em;">ERA ESTA</span>
+                  <span style="color:var(--warning); font-weight:900; font-size:1.15rem; line-height:1;">✓</span>
+                  <span style="font-size:0.7rem; color:var(--warning); font-weight:800; font-family:var(--font-terminal); background:rgba(255,179,0,0.25); padding:1px 5px; letter-spacing:0.04em;">ERA ESTA</span>
                 </div>
               </td>
             `;
@@ -1532,7 +1561,8 @@ function renderQuestion() {
           ? (idx === q.displayCorrect) 
           : (q.displayCorrect.includes(idx));
           
-        if (isCorrectOpt) optClass += ' correct';
+        if (isCorrectOpt && isSelected) optClass += ' correct';
+        else if (isCorrectOpt && !isSelected) optClass += ' missed';
         else if (isSelected && !isCorrectOpt) optClass += ' wrong';
       }
       
@@ -1541,7 +1571,8 @@ function renderQuestion() {
       if (isMulti) {
         let iconContent = '';
         if (isChecked) {
-          if (isCorrectOpt) iconContent = '✓';
+          if (isCorrectOpt && isSelected) iconContent = '✓';
+          else if (isCorrectOpt && !isSelected) iconContent = '✓';
           else if (isSelected) iconContent = '✕';
         } else if (isSelected) {
           iconContent = '✓';
@@ -1550,7 +1581,8 @@ function renderQuestion() {
       } else {
         let iconContent = '';
         if (isChecked) {
-          if (isCorrectOpt) iconContent = '✓';
+          if (isCorrectOpt && isSelected) iconContent = '✓';
+          else if (isCorrectOpt && !isSelected) iconContent = '✓';
           else if (isSelected && !isCorrectOpt) iconContent = '✕';
         }
         indicatorHtml = `<div class="cyber-indicator cyber-radio ${isSelected ? 'checked' : ''}">${iconContent}</div>`;
@@ -1559,9 +1591,9 @@ function renderQuestion() {
       let evalBadgeHtml = '';
       if (isChecked) {
         if (isCorrectOpt && isSelected) {
-          evalBadgeHtml = `<span class="eval-pill eval-correct">✓ CORRECTA</span>`;
+          evalBadgeHtml = `<span class="eval-pill eval-correct">✓ ACIERTO</span>`;
         } else if (isCorrectOpt && !isSelected) {
-          evalBadgeHtml = `<span class="eval-pill eval-correct">✓ ERA LA CORRECTA</span>`;
+          evalBadgeHtml = `<span class="eval-pill eval-missed">✓ ERA ESTA</span>`;
         } else if (!isCorrectOpt && isSelected) {
           evalBadgeHtml = `<span class="eval-pill eval-wrong">✕ TU ELECCIÓN</span>`;
         }
