@@ -758,6 +758,45 @@
     color: #ffffff;
   }
 
+  /* GRID EVALUATION CELL STYLES */
+  .grid-cell-correct {
+    background: rgba(0, 230, 118, 0.22) !important;
+    border: 2px solid var(--success) !important;
+    box-shadow: inset 0 0 10px rgba(0, 230, 118, 0.35);
+  }
+  .grid-cell-wrong {
+    background: rgba(255, 42, 95, 0.22) !important;
+    border: 2px solid var(--danger) !important;
+    box-shadow: inset 0 0 10px rgba(255, 42, 95, 0.35);
+  }
+
+  /* EVALUATION PILL BADGES FOR OPTIONS */
+  .eval-pill {
+    font-family: var(--font-terminal);
+    font-size: 0.78rem;
+    font-weight: 800;
+    padding: 3px 8px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: auto;
+  }
+  .eval-correct {
+    background: rgba(0, 230, 118, 0.2);
+    border: 1px solid var(--success);
+    color: var(--success);
+    box-shadow: 0 0 8px rgba(0, 230, 118, 0.35);
+  }
+  .eval-wrong {
+    background: rgba(255, 42, 95, 0.2);
+    border: 1px solid var(--danger);
+    color: var(--neon-red);
+    box-shadow: 0 0 8px rgba(255, 42, 95, 0.35);
+  }
+
   /* PALETTE GRID */
   .palette-grid {
     display: grid;
@@ -1387,7 +1426,7 @@ function renderQuestion() {
         <table class="grid-table">
           <thead>
             <tr>
-              <th>ELEMENTO / CONCEPTO</th>
+              <th style="min-width:180px; text-align:left; padding-left:14px;">ELEMENTO / CONCEPTO</th>
               ${q.columns.map(c => `<th>${escapeHtml(c)}</th>`).join('')}
             </tr>
           </thead>
@@ -1396,20 +1435,82 @@ function renderQuestion() {
     q.rows.forEach((rowName, rIdx) => {
       const selectedCol = (userSel[rIdx] !== undefined) ? userSel[rIdx] : -1;
       const correctCol = q.correct[rIdx];
+      const isRowCorrect = (selectedCol === correctCol);
+      
       let rowStyle = '';
       if (isChecked) {
-        if (selectedCol === correctCol) rowStyle = 'background:rgba(0, 230, 118, 0.1);';
-        else rowStyle = 'background:rgba(255, 42, 95, 0.12);';
+        if (isRowCorrect) rowStyle = 'background:rgba(0, 230, 118, 0.08);';
+        else rowStyle = 'background:rgba(255, 42, 95, 0.1);';
       }
-      gridHtml += `<tr style="${rowStyle}"><td>${escapeHtml(rowName)}</td>`;
+      
+      let conceptCellContent = `
+        <div style="font-weight:700; color:#ffffff; font-size:0.92rem;">${escapeHtml(rowName)}</div>
+      `;
+      if (isChecked) {
+        if (isRowCorrect) {
+          conceptCellContent += `
+            <div style="margin-top:4px; font-family:var(--font-terminal); font-size:0.75rem; color:var(--success); font-weight:700;">
+              ✓ CORRECTO &bull; ${escapeHtml(q.columns[correctCol])}
+            </div>
+          `;
+        } else {
+          conceptCellContent += `
+            <div style="margin-top:4px; font-family:var(--font-terminal); font-size:0.75rem; color:var(--neon-red); font-weight:700;">
+              ✗ INCORRECTO &bull; Correcto: <strong style="color:var(--success); text-decoration:underline;">${escapeHtml(q.columns[correctCol])}</strong>
+            </div>
+          `;
+        }
+      }
+
+      gridHtml += `<tr style="${rowStyle}"><td>${conceptCellContent}</td>`;
+      
       q.columns.forEach((colName, cIdx) => {
-        let disabled = isChecked ? 'disabled' : '';
-        let checked = (selectedCol === cIdx) ? 'checked' : '';
-        gridHtml += `
-          <td>
-            <input type="radio" name="grid_row_${q.id}_${rIdx}" value="${cIdx}" ${checked} ${disabled} onchange="onGridChange(${q.id}, ${rIdx}, ${cIdx})">
-          </td>
-        `;
+        if (isChecked) {
+          if (cIdx === correctCol && isRowCorrect) {
+            // Acierto
+            gridHtml += `
+              <td class="grid-cell-correct" title="Respuesta Correcta">
+                <div style="display:flex; flex-direction:column; align-items:center; gap:2px;">
+                  <span style="color:var(--success); font-weight:900; font-size:1.15rem; line-height:1;">✓</span>
+                  <span style="font-size:0.7rem; color:var(--success); font-weight:800; font-family:var(--font-terminal); letter-spacing:0.04em;">ACIERTO</span>
+                </div>
+              </td>
+            `;
+          } else if (cIdx === correctCol && !isRowCorrect) {
+            // Era esta
+            gridHtml += `
+              <td class="grid-cell-correct" title="Esta era la columna correcta">
+                <div style="display:flex; flex-direction:column; align-items:center; gap:2px;">
+                  <span style="color:var(--success); font-weight:900; font-size:1.15rem; line-height:1;">✓</span>
+                  <span style="font-size:0.7rem; color:var(--success); font-weight:800; font-family:var(--font-terminal); background:rgba(0,230,118,0.25); padding:1px 5px; letter-spacing:0.04em;">ERA ESTA</span>
+                </div>
+              </td>
+            `;
+          } else if (cIdx === selectedCol && !isRowCorrect) {
+            // La que marcó mal
+            gridHtml += `
+              <td class="grid-cell-wrong" title="Marcaste esta opción incorrectamente">
+                <div style="display:flex; flex-direction:column; align-items:center; gap:2px;">
+                  <span style="color:var(--neon-red); font-weight:900; font-size:1.15rem; line-height:1;">✕</span>
+                  <span style="font-size:0.7rem; color:var(--neon-red); font-weight:800; font-family:var(--font-terminal); background:rgba(255,42,95,0.25); padding:1px 5px; letter-spacing:0.04em;">TU ELECCIÓN</span>
+                </div>
+              </td>
+            `;
+          } else {
+            gridHtml += `
+              <td style="opacity:0.35;">
+                <span style="color:var(--text-dim); font-size:0.85rem;">—</span>
+              </td>
+            `;
+          }
+        } else {
+          const isCellChecked = (selectedCol === cIdx);
+          gridHtml += `
+            <td onclick="onGridCellClick(${q.id}, ${rIdx}, ${cIdx})" style="cursor:pointer; transition:background 0.15s ease;" onmouseover="this.style.background='rgba(255,42,95,0.1)'" onmouseout="this.style.background=''">
+              <div class="cyber-indicator cyber-radio ${isCellChecked ? 'checked' : ''}" style="margin:0 auto; pointer-events:none;"></div>
+            </td>
+          `;
+        }
       });
       gridHtml += `</tr>`;
     });
@@ -1452,6 +1553,17 @@ function renderQuestion() {
         }
         indicatorHtml = `<div class="cyber-indicator cyber-radio ${isSelected ? 'checked' : ''}">${iconContent}</div>`;
       }
+
+      let evalBadgeHtml = '';
+      if (isChecked) {
+        if (isCorrectOpt && isSelected) {
+          evalBadgeHtml = `<span class="eval-pill eval-correct">✓ CORRECTA</span>`;
+        } else if (isCorrectOpt && !isSelected) {
+          evalBadgeHtml = `<span class="eval-pill eval-correct">✓ ERA LA CORRECTA</span>`;
+        } else if (!isCorrectOpt && isSelected) {
+          evalBadgeHtml = `<span class="eval-pill eval-wrong">✕ TU ELECCIÓN</span>`;
+        }
+      }
       
       const keyLetter = (idx < 9) ? `${idx + 1}` : '';
       optHtml += `
@@ -1459,6 +1571,7 @@ function renderQuestion() {
           <div class="option-key-badge">${keyLetter}</div>
           ${indicatorHtml}
           <div style="flex:1; margin-left:4px;">${escapeHtml(optText)}</div>
+          ${evalBadgeHtml}
         </div>
       `;
     });
@@ -1516,11 +1629,15 @@ function onOptionClick(qId, optIdx) {
   renderQuestion();
 }
 
-function onGridChange(qId, rowIdx, colIdx) {
+function onGridCellClick(qId, rowIdx, colIdx) {
   if (userChecked[qId]) return;
   if (!userSelections[qId]) userSelections[qId] = [];
   userSelections[qId][rowIdx] = colIdx;
   renderQuestion();
+}
+
+function onGridChange(qId, rowIdx, colIdx) {
+  onGridCellClick(qId, rowIdx, colIdx);
 }
 
 function checkCurrentQuestion() {
