@@ -3,454 +3,720 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>COM 3er Parcial · Módulo Práctico</title>
+<title>COM 3er Parcial // SECTOR PRÁCTICO [Cyberpunk Tech Edition]</title>
 <link rel="icon" type="image/x-icon" href="favicon.ico?v=2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
 
-:root {
-  --bg-page: #0b0f19;
-  --bg-surface: #111827;
-  --bg-surface-hover: #172033;
-  --bg-card: #131c2e;
-  --bg-card-hover: #19253d;
-  --bg-option: #121a2a;
-  --bg-option-hover: #1a253c;
-  --bg-option-selected: #1e3a5f;
-  
-  --border-subtle: #1e293b;
-  --border-light: #334155;
-  --border-focus: #3b82f6;
+  :root {
+    /* PALETA CIBERPUNK GÓTICO // MODO ESTUDIO ALTO CONTRASTE */
+    --bg: #0d1117;                  /* Fondo carbón oscuro / obsidiana */
+    --bg-card: #161b22;             /* Tarjeta con relieve visible y limpio */
+    --bg-card-hover: #1c222b;
+    --bg-option: #1b212c;           /* Opciones destacadas como bloques tácticos */
+    --bg-option-hover: #232a38;
+    --bg-input: #0a0d12;
+    --border: #30363d;              /* Bordes nítidos de alta definición */
+    --border-light: #484f58;
+    --neon-red: #ff2a5f;            /* Rojo neón ciberpunk vibrante */
+    --neon-red-bright: #ff4d79;
+    --neon-red-glow: 0 0 10px rgba(255, 42, 95, 0.45);
+    --neon-red-border: #ff2a5f;
+    --primary: #ff2a5f;
+    --primary-hover: #ff477a;
+    --primary-light: rgba(255, 42, 95, 0.14);
+    --primary-border: #ff2a5f;
+    --success: #00e676;             /* Verde acierto de alta legibilidad */
+    --success-bg: rgba(0, 230, 118, 0.14);
+    --success-border: #00e676;
+    --success-glow: 0 0 12px rgba(0, 230, 118, 0.4);
+    --danger: #ff2a5f;              /* Rojo error nítido */
+    --danger-bg: rgba(255, 42, 95, 0.16);
+    --danger-border: #ff2a5f;
+    --warning: #ffb300;             /* Ámbar fósforo */
+    --warning-bg: rgba(255, 179, 0, 0.14);
+    --warning-border: #ffb300;
+    --star: #ffc107;
+    --text: #f0f6fc;                /* Blanco puro de alto contraste */
+    --text-muted: #9ba6b2;          /* Texto secundario claro */
+    --text-dim: #768390;
+    --font-terminal: 'Share Tech Mono', 'Consolas', 'Fira Code', 'Courier New', monospace;
+    --font-read: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'JetBrains Mono', Consolas, sans-serif;
+  }
 
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --text-faint: #64748b;
+  /* BORDES 100% RÍGIDOS CYBERPUNK */
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border-radius: 0px !important;
+  }
 
-  --accent-blue: #3b82f6;
-  --accent-blue-hover: #2563eb;
-  --accent-indigo: #6366f1;
-  --accent-emerald: #10b981;
-  --accent-rose: #f43f5e;
-  --accent-amber: #f59e0b;
+  body {
+    font-family: var(--font-read);
+    background-color: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    min-height: 100vh;
+    padding-bottom: 50px;
+    position: relative;
+    background-image: 
+      radial-gradient(circle at 50% 0%, rgba(255, 42, 95, 0.1) 0%, rgba(13, 17, 23, 0.8) 40%, #0d1117 80%),
+      linear-gradient(180deg, #0d1117 0%, #090c10 100%);
+    background-attachment: fixed;
+  }
 
-  --correct-bg: rgba(16, 185, 129, 0.14);
-  --correct-border: #10b981;
-  --correct-text: #34d399;
+  /* SCROLLBAR CYBERPUNK */
+  ::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #090c10;
+    border-left: 1px solid var(--border);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #2b131a;
+    border: 1px solid var(--neon-red);
+    box-shadow: 0 0 6px rgba(255, 42, 95, 0.4);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--neon-red);
+  }
 
-  --wrong-bg: rgba(244, 63, 94, 0.14);
-  --wrong-border: #f43f5e;
-  --wrong-text: #fb7185;
+  /* TOP HUD NAVBAR */
+  .top-hud {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(13, 17, 23, 0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 2px solid var(--neon-red);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 42, 95, 0.2);
+    padding: 10px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .hud-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: #ffffff;
+    font-family: var(--font-terminal);
+    font-size: 1.1em;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .hud-badge {
+    background: linear-gradient(135deg, #7a0928 0%, var(--neon-red) 100%);
+    color: #ffffff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border: 1px solid var(--neon-red);
+    box-shadow: 0 0 8px rgba(255, 42, 95, 0.4);
+    letter-spacing: 0.08em;
+  }
+  .blink-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--neon-red);
+    box-shadow: 0 0 8px var(--neon-red);
+    display: inline-block;
+    animation: blink 1.4s infinite ease-in-out;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.25; transform: scale(0.85); }
+  }
 
-  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-}
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    list-style: none;
+  }
+  .nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    font-family: var(--font-terminal);
+    font-size: 0.86rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border: 1px solid var(--border);
+    background: #0d1117;
+    transition: all 0.15s ease;
+  }
+  .nav-link:hover {
+    color: #ffffff;
+    border-color: var(--neon-red);
+    background: #1c222b;
+    box-shadow: 0 0 10px rgba(255, 42, 95, 0.3);
+  }
+  .nav-link.active {
+    color: #ffffff;
+    background: #2b131a;
+    border-color: var(--neon-red);
+    box-shadow: 0 0 12px rgba(255, 42, 95, 0.5);
+  }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+  /* CONTAINER */
+  .container {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 24px 18px 40px;
+    position: relative;
+    z-index: 2;
+  }
 
-body {
-  background-color: var(--bg-page);
-  color: var(--text-main);
-  font-family: var(--font-sans);
-  line-height: 1.5;
-  font-size: 15px;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
+  /* HEADER BANNER */
+  .cyber-header {
+    text-align: center;
+    margin-bottom: 24px;
+    padding: 22px 18px 20px;
+    border: 1px solid var(--border);
+    border-bottom: 3px solid var(--neon-red);
+    background: linear-gradient(180deg, #161b22 0%, #12161d 100%);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  }
+  .header-hud-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 0.8em;
+    font-family: var(--font-terminal);
+    color: var(--neon-red);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(48, 54, 61, 0.6);
+    padding-bottom: 6px;
+  }
+  .cyber-title {
+    color: #ffffff;
+    font-size: 2.1em;
+    font-weight: 800;
+    font-family: var(--font-terminal);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .cyber-subtitle {
+    color: #ff6b8b;
+    font-size: 0.9em;
+    font-family: var(--font-terminal);
+    margin-top: 8px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .quick-stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 14px;
+    font-size: 0.84em;
+    font-family: var(--font-terminal);
+    flex-wrap: wrap;
+  }
+  .stat-pill {
+    background: #0d1117;
+    border: 1px solid var(--border);
+    padding: 5px 12px;
+    color: var(--text-muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .stat-pill strong {
+    color: var(--neon-red);
+    font-weight: 700;
+  }
 
-/* NAVBAR */
-.top-nav {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: rgba(11, 15, 25, 0.94);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border-subtle);
-  padding: 0.75rem 1.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+  /* BUTTONS CYBERPUNK */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 18px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    transition: all 0.15s ease;
+    text-decoration: none;
+    user-select: none;
+    font-family: var(--font-terminal);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--bg-card);
+    color: var(--text);
+  }
+  .btn:hover {
+    background: #212836;
+    border-color: var(--neon-red);
+    color: #ffffff;
+    box-shadow: 0 0 12px rgba(255, 42, 95, 0.4);
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #7a0928 0%, #b80d3d 50%, #ff2a5f 100%);
+    border: 1px solid var(--neon-red);
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(255, 42, 95, 0.35);
+  }
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #910c31 0%, #cf1147 50%, #ff4273 100%);
+    box-shadow: 0 4px 22px rgba(255, 42, 95, 0.6);
+  }
+  .btn-secondary {
+    background: #161b22;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+  .btn-secondary:hover {
+    border-color: var(--neon-red);
+    color: #ffffff;
+  }
+  .btn-amber {
+    background: #2d2400;
+    border: 1px solid var(--warning);
+    color: var(--warning);
+  }
+  .btn-amber:hover {
+    background: var(--warning);
+    color: #000;
+    box-shadow: 0 0 14px rgba(255, 179, 0, 0.5);
+  }
+  .btn-sm {
+    padding: 5px 12px;
+    font-size: 0.8rem;
+  }
+  .btn-lg {
+    padding: 14px 24px;
+    font-size: 1.05rem;
+    font-weight: 800;
+  }
 
-.nav-brand {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  text-decoration: none;
-  color: var(--text-main);
-  font-weight: 700;
-  font-size: 1.05rem;
-}
+  /* GATEWAYS GRID (INDEX) */
+  .gateways-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .gateway-terminal {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 5px solid var(--neon-red);
+    padding: 24px 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.2s ease;
+  }
+  .gateway-terminal:hover {
+    border-color: var(--neon-red);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 0 18px rgba(255, 42, 95, 0.3);
+    transform: translateY(-2px);
+  }
+  .terminal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+    margin-bottom: 14px;
+    font-family: var(--font-terminal);
+    font-size: 0.84em;
+    text-transform: uppercase;
+    color: var(--neon-red);
+  }
+  .terminal-title {
+    font-size: 1.4em;
+    font-weight: 800;
+    font-family: var(--font-terminal);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    color: #ffffff;
+  }
 
-.nav-badge {
-  background: linear-gradient(135deg, var(--accent-blue), var(--accent-indigo));
-  color: #fff;
-  font-size: 0.72rem;
-  font-weight: 700;
-  padding: 0.18rem 0.5rem;
-  border-radius: 9999px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
+  /* SECTION TITLE */
+  .section-title {
+    font-size: 1.05em;
+    color: #ff4d79;
+    margin: 26px 0 14px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-family: var(--font-terminal);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 6px;
+  }
 
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  list-style: none;
-}
+  /* CARDS GENERALES */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--neon-red);
+    padding: 20px;
+    margin-bottom: 18px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
+  }
 
-.nav-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.45rem 0.85rem;
-  border-radius: 8px;
-  font-size: 0.88rem;
-  font-weight: 500;
-  color: var(--text-muted);
-  text-decoration: none;
-  transition: all 0.15s ease;
-  border: 1px solid transparent;
-}
+  /* BARRA TOP DE QUIZ (TACTICAL HUD) */
+  .quiz-hud-bar {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--neon-red);
+    padding: 12px 18px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .hud-badge-section {
+    background: linear-gradient(135deg, #7a0928 0%, var(--neon-red) 100%);
+    color: #ffffff;
+    padding: 4px 10px;
+    font-size: 0.86em;
+    font-weight: 800;
+    font-family: var(--font-terminal);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    box-shadow: 0 0 10px rgba(255, 42, 95, 0.4);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .hud-badge-progress {
+    color: var(--text);
+    font-size: 0.88em;
+    font-weight: 700;
+    font-family: var(--font-terminal);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    background: #0d1117;
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    display: inline-flex;
+    align-items: center;
+  }
 
-.nav-link:hover {
-  color: var(--text-main);
-  background: var(--bg-surface);
-  border-color: var(--border-subtle);
-}
+  /* BARRA DE PROGRESO LÁSER */
+  .progress-laser-bg {
+    background: #0a0d12;
+    border: 1px solid var(--border);
+    height: 7px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .progress-laser-fill {
+    background: linear-gradient(90deg, #910c31, #ff2a5f);
+    height: 100%;
+    box-shadow: 0 0 10px #ff2a5f;
+    transition: width 0.25s ease;
+    width: 0%;
+  }
 
-.nav-link.active {
-  color: #fff;
-  background: var(--bg-card-hover);
-  border-color: var(--border-light);
-  font-weight: 600;
-}
+  /* QUESTION CARD CYBERPUNK */
+  .question-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 5px solid var(--neon-red);
+    padding: 26px 28px;
+    margin-bottom: 22px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+    position: relative;
+    transition: all 0.25s ease;
+  }
+  .question-card.correct {
+    border-left-color: var(--success);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35), 0 0 15px rgba(0, 230, 118, 0.2);
+  }
+  .question-card.wrong {
+    border-left-color: var(--danger);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35), 0 0 15px rgba(255, 42, 95, 0.25);
+  }
 
-/* CONTAINER */
-.container {
-  max-width: 980px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 1.5rem 1.25rem 3rem;
-  flex: 1;
-}
+  .question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .cyber-tag {
+    background: #0d1117;
+    border: 1px solid var(--border);
+    color: var(--neon-red);
+    font-family: var(--font-terminal);
+    font-size: 0.8em;
+    font-weight: 700;
+    padding: 3px 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
 
-/* BUTTONS */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.45rem;
-  padding: 0.55rem 1.15rem;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
-  border: 1px solid transparent;
-  transition: all 0.15s ease;
-  text-decoration: none;
-  user-select: none;
-  font-family: inherit;
-}
-.btn-primary { background: var(--accent-blue); color: #fff; }
-.btn-primary:hover { background: var(--accent-blue-hover); }
-.btn-secondary { background: var(--bg-card); color: var(--text-main); border-color: var(--border-subtle); }
-.btn-secondary:hover { background: var(--bg-card-hover); border-color: var(--border-light); }
-.btn-outline { background: transparent; color: var(--text-muted); border-color: var(--border-subtle); }
-.btn-outline:hover { color: var(--text-main); border-color: var(--border-light); background: var(--bg-surface); }
-.btn-emerald { background: var(--accent-emerald); color: #fff; }
-.btn-emerald:hover { background: #059669; }
-.btn-amber { background: var(--accent-amber); color: #fff; }
-.btn-amber:hover { background: #d97706; }
-.btn-rose { background: var(--accent-rose); color: #fff; }
-.btn-rose:hover { background: #e11d48; }
-.btn-sm { padding: 0.35rem 0.75rem; font-size: 0.82rem; border-radius: 6px; }
-.btn-lg { padding: 0.85rem 1.6rem; font-size: 1.05rem; border-radius: 10px; font-weight: 600; }
+  .question-prompt {
+    font-size: 1.18rem;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
 
-/* CHIPS */
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  padding: 0.2rem 0.6rem;
-  border-radius: 9999px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  color: var(--text-muted);
-}
-.chip-blue { background: rgba(59, 130, 246, 0.12); border-color: rgba(59, 130, 246, 0.3); color: #93c5fd; }
-.chip-emerald { background: rgba(16, 185, 129, 0.12); border-color: rgba(16, 185, 129, 0.3); color: #6ee7b7; }
-.chip-amber { background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.3); color: #fcd34d; }
-.chip-rose { background: rgba(244, 63, 94, 0.12); border-color: rgba(244, 63, 94, 0.3); color: #fda4af; }
+  /* CONTENEDOR DE IMAGEN CON MARCO BLANCO DE ALTO CONTRASTE */
+  .question-image-box {
+    text-align: center;
+    background: #ffffff;
+    border: 2px solid var(--border-light);
+    padding: 12px;
+    margin-bottom: 20px;
+    cursor: zoom-in;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  }
+  .question-image-box img {
+    max-width: 100%;
+    max-height: 420px;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+  }
 
-/* CARDS */
-.card {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: 12px;
-  padding: 1.5rem;
-  transition: all 0.2s ease;
-}
+  /* OPCIONES CYBERPUNK */
+  .options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .option-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 18px;
+    background: var(--bg-option);
+    border: 1px solid var(--border);
+    border-left: 3px solid transparent;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+    font-size: 0.96rem;
+    line-height: 1.5;
+  }
+  .option-item:hover {
+    background: var(--bg-option-hover);
+    border-color: var(--neon-red);
+    border-left-color: var(--neon-red);
+    box-shadow: 0 0 10px rgba(255, 42, 95, 0.25);
+  }
+  .option-item.selected {
+    background: #2b131a;
+    border-color: var(--neon-red);
+    border-left: 4px solid var(--neon-red);
+    box-shadow: 0 0 12px rgba(255, 42, 95, 0.4);
+    color: #ffffff;
+  }
+  .option-item.correct {
+    background: var(--success-bg) !important;
+    border-color: var(--success) !important;
+    border-left: 4px solid var(--success) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 14px rgba(0, 230, 118, 0.35) !important;
+  }
+  .option-item.wrong {
+    background: var(--danger-bg) !important;
+    border-color: var(--danger) !important;
+    border-left: 4px solid var(--danger) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 14px rgba(255, 42, 95, 0.35) !important;
+  }
+  .option-key-badge {
+    background: #0d1117;
+    border: 1px solid var(--border);
+    color: var(--neon-red);
+    font-family: var(--font-terminal);
+    font-size: 0.82em;
+    font-weight: 700;
+    min-width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
 
-/* QUIZ STYLES */
-.quiz-top-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  padding: 0.85rem 1.25rem;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: 10px;
-  margin-bottom: 0.75rem;
-}
+  /* EXPLANATION BOX */
+  .explanation-box {
+    background: #111620;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--neon-red);
+    padding: 16px 20px;
+    margin-top: 15px;
+    font-size: 0.94rem;
+    line-height: 1.6;
+    color: #d1d7e0;
+  }
+  .explanation-title {
+    font-family: var(--font-terminal);
+    font-weight: 700;
+    font-size: 0.95em;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
 
-.quiz-progress-bar-bg {
-  width: 100%;
-  height: 6px;
-  background: var(--bg-surface-hover);
-  border-radius: 9999px;
-  overflow: hidden;
-  margin-bottom: 1.25rem;
-}
-.quiz-progress-bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent-blue), var(--accent-emerald));
-  width: 0%;
-  transition: width 0.25s ease;
-}
+  /* GRID / MATRIZ TABLE */
+  .grid-table-container {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    margin-bottom: 20px;
+  }
+  .grid-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    font-family: var(--font-read);
+  }
+  .grid-table th, .grid-table td {
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    text-align: center;
+  }
+  .grid-table th {
+    background: #1c222b;
+    color: var(--neon-red);
+    font-family: var(--font-terminal);
+    text-transform: uppercase;
+    font-size: 0.82em;
+    letter-spacing: 0.05em;
+  }
+  .grid-table td:first-child {
+    text-align: left;
+    font-weight: 600;
+    background: #161b22;
+    color: #ffffff;
+  }
 
-.question-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: 14px;
-  padding: 1.75rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
-}
+  /* PALETTE GRID */
+  .palette-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+    gap: 6px;
+    padding: 14px;
+    background: #161b22;
+    border: 1px solid var(--border);
+    margin-bottom: 18px;
+  }
+  .palette-btn {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-family: var(--font-terminal);
+    font-weight: 700;
+    border: 1px solid var(--border);
+    background: #0d1117;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .palette-btn:hover {
+    background: #232a38;
+    color: #ffffff;
+    border-color: var(--neon-red);
+  }
+  .palette-btn.current {
+    border-color: var(--neon-red);
+    color: #ffffff;
+    box-shadow: 0 0 10px var(--neon-red);
+    background: #3d1420;
+  }
+  .palette-btn.correct {
+    background: var(--success-bg);
+    border-color: var(--success);
+    color: var(--success);
+  }
+  .palette-btn.wrong {
+    background: var(--danger-bg);
+    border-color: var(--danger);
+    color: var(--danger);
+  }
 
-.question-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
+  /* IMAGE ZOOM MODAL */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 100;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex; align-items: center; justify-content: center;
+    padding: 1.5rem; backdrop-filter: blur(8px);
+  }
+  .modal-content {
+    max-width: 95vw; max-height: 90vh; position: relative;
+    background: #ffffff; padding: 12px; border: 2px solid var(--neon-red);
+    box-shadow: 0 0 30px rgba(255, 42, 95, 0.6);
+  }
+  .modal-content img {
+    max-width: 100%; max-height: 82vh; object-fit: contain; display: block;
+  }
+  .modal-close {
+    position: absolute; top: -38px; right: 0;
+    color: var(--neon-red); background: transparent; border: none;
+    font-size: 2rem; cursor: pointer; font-family: var(--font-terminal);
+  }
 
-.question-prompt {
-  font-size: 1.15rem;
-  font-weight: 600;
-  color: var(--text-main);
-  line-height: 1.55;
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-
-/* IMAGE BOX WITH CRISP CONTRAST */
-.question-image-box {
-  text-align: center;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  padding: 0.85rem;
-  cursor: zoom-in;
-  overflow: hidden;
-}
-.question-image-box img {
-  max-width: 100%;
-  max-height: 420px;
-  border-radius: 4px;
-  object-fit: contain;
-  display: inline-block;
-  vertical-align: middle;
-}
-
-/* OPTIONS */
-.options-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.65rem;
-}
-
-.option-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.85rem;
-  padding: 0.95rem 1.15rem;
-  background: var(--bg-option);
-  border: 1px solid var(--border-subtle);
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  user-select: none;
-}
-.option-item:hover {
-  background: var(--bg-option-hover);
-  border-color: var(--border-light);
-}
-.option-item.selected {
-  background: var(--bg-option-selected);
-  border-color: var(--accent-blue);
-}
-.option-item.correct {
-  background: var(--correct-bg) !important;
-  border-color: var(--correct-border) !important;
-  color: var(--correct-text) !important;
-}
-.option-item.wrong {
-  background: var(--wrong-bg) !important;
-  border-color: var(--wrong-border) !important;
-  color: var(--wrong-text) !important;
-}
-
-.option-key-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 1.6rem;
-  height: 1.6rem;
-  padding: 0 0.35rem;
-  border-radius: 6px;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  font-size: 0.78rem;
-  font-family: var(--font-mono);
-  color: var(--text-faint);
-  flex-shrink: 0;
-}
-
-.option-text {
-  flex: 1;
-  font-size: 0.95rem;
-  line-height: 1.45;
-}
-
-/* EXPLANATION BOX */
-.explanation-box {
-  background: rgba(30, 41, 59, 0.6);
-  border: 1px solid var(--border-light);
-  border-left: 4px solid var(--accent-blue);
-  border-radius: 8px;
-  padding: 1.15rem;
-  font-size: 0.92rem;
-  line-height: 1.55;
-  color: #cbd5e1;
-}
-.explanation-title {
-  font-weight: 600;
-  color: var(--text-main);
-  margin-bottom: 0.4rem;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-/* GRID TABLE */
-.grid-table-container {
-  overflow-x: auto;
-  border: 1px solid var(--border-subtle);
-  border-radius: 8px;
-}
-.grid-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.88rem;
-}
-.grid-table th, .grid-table td {
-  padding: 0.65rem 0.85rem;
-  border: 1px solid var(--border-subtle);
-  text-align: center;
-}
-.grid-table th {
-  background: var(--bg-card);
-  color: var(--text-muted);
-  font-weight: 600;
-}
-.grid-table td:first-child {
-  text-align: left;
-  font-weight: 500;
-  color: var(--text-main);
-  background: var(--bg-surface);
-}
-
-/* PALETTE */
-.palette-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(42px, 1fr));
-  gap: 0.45rem;
-  padding: 1rem;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: 10px;
-  margin-top: 1rem;
-}
-.palette-btn {
-  aspect-ratio: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.82rem;
-  font-weight: 600;
-  border-radius: 6px;
-  border: 1px solid var(--border-subtle);
-  background: var(--bg-card);
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-.palette-btn:hover { background: var(--bg-card-hover); color: var(--text-main); }
-.palette-btn.current { border-color: var(--accent-blue); color: #fff; font-weight: 700; outline: 2px solid rgba(59, 130, 246, 0.4); }
-.palette-btn.correct { background: var(--correct-bg); border-color: var(--correct-border); color: var(--correct-text); }
-.palette-btn.wrong { background: var(--wrong-bg); border-color: var(--wrong-border); color: var(--wrong-text); }
-
-/* MODAL */
-.modal-overlay {
-  position: fixed; inset: 0; z-index: 100;
-  background: rgba(0, 0, 0, 0.88);
-  display: flex; align-items: center; justify-content: center;
-  padding: 1.5rem; backdrop-filter: blur(6px);
-}
-.modal-content {
-  max-width: 95vw; max-height: 90vh; position: relative;
-  background: #ffffff; padding: 0.75rem; border-radius: 10px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-}
-.modal-content img {
-  max-width: 100%; max-height: 80vh; border-radius: 6px; object-fit: contain; display: block;
-}
-.modal-close {
-  position: absolute; top: -2.5rem; right: 0;
-  color: #fff; background: transparent; border: none;
-  font-size: 1.8rem; cursor: pointer;
-}
-
-@media (max-width: 640px) {
-  .top-nav { flex-direction: column; align-items: flex-start; gap: 0.6rem; }
-  .nav-links { width: 100%; overflow-x: auto; padding-bottom: 0.25rem; }
-  .container { padding: 1rem 0.75rem 2rem; }
-  .question-card { padding: 1.15rem; }
-}
+  @media (max-width: 640px) {
+    .top-hud { flex-direction: column; align-items: flex-start; }
+    .nav-links { width: 100%; overflow-x: auto; }
+    .question-card { padding: 16px; }
+  }
 
 </style>
 </head>
 <body>
 
-<!-- TOP NAVBAR -->
-<header class="top-nav">
-  <a href="index.html" class="nav-brand">
-    <span>📡 COM 3er Parcial</span>
-    <span class="nav-badge" style="background: linear-gradient(135deg, var(--accent-amber), var(--accent-rose));">Práctico</span>
+<!-- TOP HUD NAVBAR -->
+<header class="top-hud">
+  <a href="index.html" class="hud-brand">
+    <span class="blink-dot" style="background:var(--warning); box-shadow:0 0 8px var(--warning);"></span>
+    <span>COM_P3 // HUB</span>
+    <span class="hud-badge" style="background: linear-gradient(135deg, #7a5000 0%, var(--warning) 100%); border-color:var(--warning); color:#000;">PRÁCTICO</span>
   </a>
   <nav>
     <ul class="nav-links">
-      <li><a href="index.html" class="nav-link">🏠 Hub</a></li>
-      <li><a href="teorico.html" class="nav-link">📘 Teórico (182)</a></li>
-      <li><a href="practico.html" class="nav-link active">🛠️ Práctico (37)</a></li>
+      <li><a href="index.html" class="nav-link">🏠 HUB</a></li>
+      <li><a href="teorico.html" class="nav-link">📘 TEÓRICO (182)</a></li>
+      <li><a href="practico.html" class="nav-link active">🛠️ PRÁCTICO (37)</a></li>
     </ul>
   </nav>
 </header>
@@ -459,108 +725,118 @@ body {
 
   <!-- MENU VIEW -->
   <div id="menu-view">
-    <div style="margin-bottom: 2rem;">
-      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.4rem;">
-        <span class="chip chip-amber">Módulo de Práctica Oficial</span>
-        <span class="chip chip-emerald">37 Preguntas</span>
+    
+    <header class="cyber-header" style="border-bottom-color:var(--warning);">
+      <div class="header-hud-top">
+        <span class="hud-tag" style="color:var(--warning);">[ SECTOR // PRÁCTICA OFICIAL ]</span>
+        <span class="stat-pill"><span class="blink-dot" style="background:var(--warning); box-shadow:0 0 8px var(--warning);"></span> DIAGRAMAS DE OJO & CRC</span>
+        <span class="hud-tag" style="color:var(--warning);">[ 37 PREGUNTAS ]</span>
       </div>
-      <h1 style="font-size: 1.85rem; font-weight: 700; color:var(--text-main);">Módulo Práctico</h1>
-      <p style="color:var(--text-muted); font-size: 0.95rem; margin-top:0.3rem;">
-        Oscilogramas y Diagrama de Ojo (ruido, jitter, atenuación, ISI, factor roll-off α) y Control de Errores (código de Hamming, polinomios y palabras de código CRC).
-      </p>
-    </div>
+      <h1 class="cyber-title">MÓDULO PRÁCTICO</h1>
+      <div class="cyber-subtitle" style="color:#fcd34d;">DIAGRAMA DE OJO // OSCILOSCOPIO // HAMMING // CRC // POLINOMIOS</div>
+      
+      <div class="quick-stats-bar">
+        <div class="stat-pill">TOTAL PRÁCTICOS: <strong style="color:var(--warning);">37</strong></div>
+        <div class="stat-pill">EJERCICIOS CON OSCILOGRAMA: <strong style="color:var(--warning);">26</strong></div>
+        <div class="stat-pill">FALLADAS: <strong id="wrong-count">0</strong></div>
+        <div class="stat-pill">GUARDADAS: <strong id="bookmark-count">0</strong></div>
+      </div>
+    </header>
 
     <!-- QUICK ACTIONS -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
-      <div class="card" style="cursor:pointer; border-color:rgba(245, 158, 11, 0.4);" onclick="startQuiz('all')">
-        <div style="font-size:1.4rem; margin-bottom:0.4rem;">🛠️</div>
-        <div style="font-weight:700; font-size:1.05rem; color:var(--text-main);">Todo el Práctico</div>
-        <div style="color:var(--text-muted); font-size:0.85rem; margin-top:0.2rem;">Repasa las 37 preguntas prácticas</div>
-        <div style="margin-top:0.8rem;"><span class="btn btn-amber btn-sm">Comenzar →</span></div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 24px;">
+      <div class="card" style="cursor:pointer; margin-bottom:0; border-left-color:var(--warning);" onclick="startQuiz('all')">
+        <div style="font-size:1.4rem; margin-bottom:6px;">🛠️</div>
+        <div style="font-weight:700; font-family:var(--font-terminal); color:#ffffff; font-size:1.1rem; text-transform:uppercase;">TODO EL PRÁCTICO</div>
+        <div style="color:var(--text-muted); font-size:0.86rem; margin-top:4px;">Repasa las 37 preguntas prácticas completas</div>
+        <div style="margin-top:12px;"><span class="btn btn-amber btn-sm">INICIAR PRÁCTICA →</span></div>
       </div>
 
-      <div class="card" style="cursor:pointer;" onclick="startQuiz('exam')">
-        <div style="font-size:1.4rem; margin-bottom:0.4rem;">🎯</div>
-        <div style="font-weight:700; font-size:1.05rem; color:var(--text-main);">Simulacro Práctico</div>
-        <div style="color:var(--text-muted); font-size:0.85rem; margin-top:0.2rem;">15 ejercicios al azar con cronómetro</div>
-        <div style="margin-top:0.8rem;"><span class="btn btn-secondary btn-sm">Iniciar Examen →</span></div>
+      <div class="card" style="cursor:pointer; margin-bottom:0; border-left-color:var(--warning);" onclick="startQuiz('exam')">
+        <div style="font-size:1.4rem; margin-bottom:6px;">🎯</div>
+        <div style="font-weight:700; font-family:var(--font-terminal); color:#ffffff; font-size:1.1rem; text-transform:uppercase;">SIMULACRO PRÁCTICO</div>
+        <div style="color:var(--text-muted); font-size:0.86rem; margin-top:4px;">15 ejercicios al azar con cronómetro</div>
+        <div style="margin-top:12px;"><span class="btn btn-secondary btn-sm">TEST DE 15 →</span></div>
       </div>
 
-      <div class="card" style="cursor:pointer;" onclick="startQuiz('wrong')">
-        <div style="font-size:1.4rem; margin-bottom:0.4rem;">🔄</div>
-        <div style="font-weight:700; font-size:1.05rem; color:var(--text-main);">Repasar Falladas</div>
-        <div style="color:var(--text-muted); font-size:0.85rem; margin-top:0.2rem;"><span id="wrong-count">0</span> ejercicios con error</div>
-        <div style="margin-top:0.8rem;"><span class="btn btn-secondary btn-sm">Reintentar →</span></div>
+      <div class="card" style="cursor:pointer; margin-bottom:0; border-left-color:var(--warning);" onclick="startQuiz('wrong')">
+        <div style="font-size:1.4rem; margin-bottom:6px;">🔄</div>
+        <div style="font-weight:700; font-family:var(--font-terminal); color:#ffffff; font-size:1.1rem; text-transform:uppercase;">REPASAR FALLADAS</div>
+        <div style="color:var(--text-muted); font-size:0.86rem; margin-top:4px;">Filtro dinámico de ejercicios errados</div>
+        <div style="margin-top:12px;"><span class="btn btn-secondary btn-sm">REINTENTAR →</span></div>
       </div>
 
-      <div class="card" style="cursor:pointer;" onclick="startQuiz('bookmarks')">
-        <div style="font-size:1.4rem; margin-bottom:0.4rem;">⭐</div>
-        <div style="font-weight:700; font-size:1.05rem; color:var(--text-main);">Ejercicios Guardados</div>
-        <div style="color:var(--text-muted); font-size:0.85rem; margin-top:0.2rem;"><span id="bookmark-count">0</span> preguntas favoritas</div>
-        <div style="margin-top:0.8rem;"><span class="btn btn-secondary btn-sm">Ver Guardadas →</span></div>
+      <div class="card" style="cursor:pointer; margin-bottom:0; border-left-color:var(--warning);" onclick="startQuiz('bookmarks')">
+        <div style="font-size:1.4rem; margin-bottom:6px;">⭐</div>
+        <div style="font-weight:700; font-family:var(--font-terminal); color:#ffffff; font-size:1.1rem; text-transform:uppercase;">FAVORITAS</div>
+        <div style="color:var(--text-muted); font-size:0.86rem; margin-top:4px;">Ejercicios guardados para análisis</div>
+        <div style="margin-top:12px;"><span class="btn btn-secondary btn-sm">VER GUARDADAS →</span></div>
       </div>
     </div>
 
     <!-- MODULES LIST -->
-    <div style="margin-bottom: 2rem;">
-      <h2 style="font-size:1.15rem; font-weight:600; margin-bottom:1rem; color:var(--text-main);">Temas Prácticos</h2>
-      <div id="category-cards-container" style="display:flex; flex-direction:column; gap:0.65rem;"></div>
+    <div style="margin-bottom: 24px;">
+      <div class="section-title" style="color:var(--warning);">⚡ TEMAS PRÁCTICOS OFICIALES</div>
+      <div id="category-cards-container" style="display:flex; flex-direction:column; gap:10px;"></div>
     </div>
 
     <!-- BLOCKS OF 10 -->
-    <div style="margin-bottom: 2rem;">
-      <h2 style="font-size:1.15rem; font-weight:600; margin-bottom:1rem; color:var(--text-main);">Bloques Rápidos (de 10 en 10)</h2>
-      <div id="group-buttons-container" style="display:flex; flex-wrap:wrap; gap:0.5rem;"></div>
+    <div style="margin-bottom: 24px;">
+      <div class="section-title" style="color:var(--warning);">🔢 BLOQUES RÁPIDOS (DE 10 EN 10)</div>
+      <div id="group-buttons-container" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
     </div>
 
     <!-- SETTINGS -->
-    <div class="card" style="margin-top:2rem;">
-      <div style="font-weight:600; font-size:0.95rem; margin-bottom:0.8rem;">Opciones de Estudio</div>
-      <div style="display:flex; flex-wrap:wrap; gap:1.5rem;">
-        <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer; font-size:0.9rem;">
+    <div class="card" style="border-left-color:var(--warning);">
+      <div style="font-weight:700; font-family:var(--font-terminal); font-size:0.95em; color:#ffffff; text-transform:uppercase; margin-bottom:12px;">
+        ⚙️ PARÁMETROS DE EJECUCIÓN
+      </div>
+      <div style="display:flex; flex-wrap:wrap; gap:20px;">
+        <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-family:var(--font-terminal); font-size:0.88rem; text-transform:uppercase;">
           <input type="checkbox" id="shuffle-questions-toggle" onchange="toggleSetting('shuffleQuestions')">
           Mezclar orden de preguntas
         </label>
-        <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer; font-size:0.9rem;">
+        <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-family:var(--font-terminal); font-size:0.88rem; text-transform:uppercase;">
           <input type="checkbox" id="shuffle-options-toggle" onchange="toggleSetting('shuffleOptions')">
           Mezclar opciones de respuesta
         </label>
       </div>
     </div>
 
-    <div style="text-align:center; margin-top:2.5rem; color:var(--text-faint); font-size:0.82rem;">
-      Banco verificado con preguntero oficial · Total: <span id="total-count">0</span> ejercicios prácticos
+    <div style="text-align:center; margin-top:25px; color:var(--text-dim); font-family:var(--font-terminal); font-size:0.84rem;">
+      [ SYS // DATA VERIFIED AGAINST LA BANDA DEL 81 ] · TOTAL: <span id="total-count">0</span> EJERCICIOS PRÁCTICOS
     </div>
   </div>
 
   <!-- QUIZ VIEW -->
   <div id="quiz-view" style="display: none;">
-    <div class="quiz-top-bar">
-      <div>
-        <span style="font-weight:600; font-size:0.92rem; color:var(--text-main);" id="quiz-section-name">Modo</span>
-        <span id="quiz-timer" class="chip chip-amber" style="margin-left:0.5rem; display:none;">⏱️ 00:00</span>
+    
+    <div class="quiz-hud-bar" style="border-left-color:var(--warning);">
+      <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+        <span class="hud-badge-section" id="quiz-section-name" style="background:linear-gradient(135deg, #7a5000 0%, var(--warning) 100%); color:#000;">[ MODO ]</span>
+        <span id="quiz-timer" class="stat-pill" style="display:none; color:var(--warning); border-color:var(--warning);">⏱️ 00:00</span>
       </div>
-      <div style="display:flex; align-items:center; gap:0.5rem;">
-        <span class="quiz-progress-text"><span id="current-idx-display">1</span> / <span id="total-idx-display">15</span></span>
-        <button id="btn-bookmark" class="btn btn-outline btn-sm" onclick="toggleBookmark()">☆ Guardar</button>
-        <button class="btn btn-secondary btn-sm" onclick="togglePaletteView()"># Paleta</button>
-        <button class="btn btn-outline btn-sm" onclick="backToMenu()">✕ Salir</button>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span class="hud-badge-progress"><span id="current-idx-display">1</span> / <span id="total-idx-display">15</span></span>
+        <button id="btn-bookmark" class="btn btn-secondary btn-sm" onclick="toggleBookmark()">☆ GUARDAR</button>
+        <button class="btn btn-secondary btn-sm" onclick="togglePaletteView()"># PALETA</button>
+        <button class="btn btn-secondary btn-sm" onclick="backToMenu()">✕ SALIR</button>
       </div>
     </div>
 
-    <div class="quiz-progress-bar-bg">
-      <div id="progress-bar-fill" class="quiz-progress-bar-fill"></div>
+    <div class="progress-laser-bg">
+      <div id="progress-bar-fill" class="progress-laser-fill" style="background: linear-gradient(90deg, #b45309, #f59e0b); box-shadow: 0 0 10px #f59e0b;"></div>
     </div>
 
     <div id="palette-container" class="palette-grid" style="display: none;"></div>
 
-    <div class="question-card">
-      <div class="question-meta">
-        <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
-          <span id="q-category-chip" class="chip chip-amber">Bloque</span>
-          <span id="q-type-chip" class="chip chip-blue">Tipo</span>
+    <div id="active-question-card" class="question-card" style="border-left-color:var(--warning);">
+      <div class="question-header">
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <span id="q-category-chip" class="cyber-tag" style="color:var(--warning); border-color:var(--warning);">BLOQUE</span>
+          <span id="q-type-chip" class="cyber-tag">TIPO</span>
         </div>
-        <span id="q-id-chip" class="chip">ID #0</span>
+        <span id="q-id-chip" class="cyber-tag">SYS // ID #0</span>
       </div>
 
       <div id="q-prompt-text" class="question-prompt">Pregunta</div>
@@ -569,13 +845,13 @@ body {
 
       <div id="options-container"></div>
 
-      <div id="explanation-container" class="explanation-box" style="display: none;"></div>
+      <div id="explanation-container" class="explanation-box" style="display: none; border-left-color:var(--warning);"></div>
 
-      <div style="display:flex; justify-content:space-between; align-items:center; gap:0.75rem; margin-top:0.5rem;">
-        <button id="btn-prev" class="btn btn-outline" onclick="prevQuestion()">← Anterior</button>
-        <div style="display:flex; gap:0.5rem;">
-          <button id="btn-check" class="btn btn-amber" onclick="checkCurrentQuestion()">Verificar (Enter)</button>
-          <button id="btn-next" class="btn btn-amber" style="display:none;" onclick="nextQuestion()">Siguiente →</button>
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:16px; border-top:1px solid var(--border); padding-top:16px;">
+        <button id="btn-prev" class="btn btn-secondary" onclick="prevQuestion()">← ANTERIOR</button>
+        <div style="display:flex; gap:10px;">
+          <button id="btn-check" class="btn btn-amber" onclick="checkCurrentQuestion()">VERIFICAR (ENTER)</button>
+          <button id="btn-next" class="btn btn-amber" style="display:none;" onclick="nextQuestion()">SIGUIENTE →</button>
         </div>
       </div>
     </div>
@@ -583,21 +859,21 @@ body {
 
   <!-- RESULTS VIEW -->
   <div id="results-view" style="display: none;">
-    <div class="card" style="text-align: center; padding: 2.5rem 1.5rem;">
-      <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📊</div>
-      <h2 style="font-size: 1.6rem; font-weight: 700; color: var(--text-main);">Resultado de Práctica</h2>
-      <div style="margin: 1rem 0;">
-        <span id="results-badge" class="chip chip-amber" style="font-size:0.95rem; padding:0.4rem 1rem;">Completado</span>
+    <div class="card" style="text-align: center; padding: 35px 20px; border-left-color:var(--warning);">
+      <div style="font-size: 2.8rem; margin-bottom: 10px;">📊</div>
+      <h2 class="cyber-title" style="font-size: 1.8rem; margin-bottom: 12px; color:var(--warning);">REPORTE DE PRÁCTICA</h2>
+      <div style="margin: 14px 0;">
+        <span id="results-badge" class="cyber-tag" style="font-size:1rem; padding:6px 16px; color:var(--warning); border-color:var(--warning);">COMPLETADO</span>
       </div>
-      <div id="results-score-text" style="font-size: 2.2rem; font-weight: 800; font-family: var(--font-mono); color: var(--text-main); margin-bottom: 0.5rem;">
+      <div id="results-score-text" style="font-size: 2.6rem; font-weight: 800; font-family: var(--font-terminal); color: #ffffff; margin-bottom: 8px;">
         0 / 0 (0%)
       </div>
-      <div id="results-time-text" style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;"></div>
+      <div id="results-time-text" style="color: var(--text-muted); font-family: var(--font-terminal); font-size: 0.95rem; margin-bottom: 24px;"></div>
 
-      <div style="display:flex; justify-content:center; gap:0.75rem; flex-wrap:wrap;">
-        <button class="btn btn-amber" onclick="retryWrong()">Reintentar Falladas</button>
-        <button class="btn btn-secondary" onclick="backToMenu()">Volver al Menú</button>
-        <a href="teorico.html" class="btn btn-primary">Ir al Teórico (182) →</a>
+      <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+        <button class="btn btn-amber" onclick="retryWrong()">REINTENTAR FALLADAS</button>
+        <button class="btn btn-secondary" onclick="backToMenu()">VOLVER AL SELECTOR</button>
+        <a href="teorico.html" class="btn btn-primary">IR AL TEÓRICO (182) →</a>
       </div>
     </div>
   </div>
@@ -615,7 +891,6 @@ body {
 <script>
 const ALL_QUESTIONS = [{"id": 2, "category": "BLOQUE 5: Perturbaciones y Diagrama de Ojo", "text": "Observe la figura adjunta e indique la presencia o no, de algunas de las siguientes perturbaciones", "type": "single", "explanation": "En el oscilograma del diagrama de ojo se observa un ensanchamiento horizontal en los cruces por cero (eje temporal), mientras que la apertura vertical permanece limpia. Este ensanchamiento o dispersión temporal en los instantes de cruce es característico del Jitter (fluctuación de fase).", "image": "q_1_1vSViUsc.png", "options": ["ISI", "Atenuacion", "Ruido", "Ninguna", "Jitter"], "correct": 2, "section": "practico"}, {"id": 4, "category": "BLOQUE 5: Perturbaciones y Diagrama de Ojo", "text": "Determine cual de las siguientes capturas de pantalla de un osciloscopio muestra una señal con ISI", "type": "single", "explanation": "El gráfico C presenta una degradación severa de las trayectorias de señal con el ojo completamente cerrado o distorsionado debido a Interferencia Intersimbólica (ISI), a diferencia del gráfico A que exhibe un ojo bien abierto y sin distorsión.", "image": "q_3_1qll7H0i.png", "options": ["El grafico B", "Los graficos A y C", "El grafico C", "El grafico A"], "correct": 1, "section": "practico"}, {"id": 5, "category": "BLOQUE 5: Perturbaciones y Diagrama de Ojo", "text": "Al observar el siguiente diagrama de ojo. ¿Cuantos niveles de tension podemos asegurar que posee el codigo de banda base de la señal recibida", "type": "single", "explanation": "En un diagrama de ojo multinivel, el número de aperturas verticales superpuestas (ojos) es igual a M - 1. Al observar 3 aperturas de ojo bien diferenciadas, el número de niveles de tensión del código de banda base es M = 3 + 1 = 4 niveles (ej. 4-PAM / 2B1Q).", "image": "q_4_1D6SzfW1.png", "options": ["M = 8", "Ninguna es correcta", "M = 4", "M = 7", "M = 5"], "correct": 0, "section": "practico"}, {"id": 8, "category": "BLOQUE 5: Perturbaciones y Diagrama de Ojo", "text": "El ruido que puede afectar la propagacion de las ondas electromagnetica puede ser producido por", "type": "multi", "explanation": "El ruido electromagnético que afecta a las señales de telecomunicación proviene de fuentes naturales (radiación solar, emisiones cósmicas del espacio) y de fuentes artificiales generadas por el hombre (ruido impulsivo por arranque/parada de motores eléctricos y sistemas de encendido de automóviles en la calle). Los ruidos acústicos o mecánicos no son electromagnéticos.", "options": ["Radiacion solar (ruido provocado por las explosiones rolares)", "Arranque y parada de motores electricos", "Ruido producto del golpeteo de herramientas", "Emisiones electromagneticas provenientes del espacio", "Ruidos de automoviles en la calle", "Ruido de instrumentos musicales", "Humedad del ambiente"], "correct": [0, 1, 3], "section": "practico"}, {"id": 9, "category": "BLOQUE 5: Perturbaciones y Diagrama de Ojo", "text": "La atenuacion de una señal es:", "type": "single", "explanation": "La atenuación es la pérdida progresiva de potencia que sufre una señal electromagnética a medida que se propaga a lo largo de un medio de transmisión físico.", "options": ["El aumento del ancho de banda de la señal transmitida", "Una perdida de fidelidad de la señal transmitida", "Una perdida de potencia de las señales transmitidas", "Una perdida de sincronismo en la señal recibida"], "correct": 2, "section": "practico"}, {"id": 52, "category": "BLOQUE 5: Perturbaciones y Diagrama de Ojo", "text": "Una señal de comunicaciones que viene caracterizada por la ecuación s(t)=10.sen(2.pi.300+fase) tiene una longitud de onda (en kilómetros), de: (indicar sólo números, sin unidades; utilizar la coma como separador decimal)", "type": "single", "explanation": "La frecuencia de la señal s(t) = 10 * sin(2*pi*300*t + fase) es f = 300 Hz. Considerando velocidad de propagación de la luz v = c = 300.000 km/s, la longitud de onda es lambda = v / f = 300.000 / 300 = 1000 km.", "options": ["100000", "100", "1000000", "1000"], "correct": 3, "section": "practico"}, {"id": 53, "category": "BLOQUE 5: Perturbaciones y Diagrama de Ojo", "text": "Una compañía de comunicaciones desea realizar un estudio de requerimientos de una red de comunicación que transmita películas de video bajo la modalidad de paga por ver (PPV). Estas películas se enviarán a los abonados como una secuencia de 24 fotogramas por segundo codificados en binario. Cada fotograma es una imagen en blanco y negro, estática HD de 1280 x 720 pixeles, y se necesita codificar el nivel de brillo de cada uno de esos puntos distinguiendo entre 1024 posibles niveles distintos. Se desea obtener la velocidad de transmisión sostenida que debe soportar esa red de comunicación para que pueda cumplir con esos requerimientos, sin utilizar ningún algoritmo de compresión. (Indicar el valor en Mb/s sin utilizar unidades ni signos de puntuación separadores de unidades)", "type": "single", "explanation": "Cada fotograma tiene 1280 * 720 = 921.600 píxeles. Con 1024 niveles se requieren log2(1024) = 10 bits/píxel. Cada cuadro pesa 9.216.000 bits. A 24 fotogramas/s, la velocidad de transmisión sostenida es 9.216.000 * 24 = 221.184.000 bps = 221,18 Mbps, que redondeado es 221 Mb/s.", "options": ["221,9", "221", "225", "230", "ninguna es correcta"], "correct": 1, "section": "practico"}, {"id": 55, "category": "BLOQUE 5: Perturbaciones y Diagrama de Ojo", "text": "¿Cuál sería el ancho de banda mínimo en Hz que debería tener un canal de comunicaciones para conducir una señal constituida por un tren de 1000 pulsos rectangulares de 0,0002 ms de duración cada uno?\n(Considerar el criterio del primer cruce por cero).\nIndicar los valores solo con números (sin unidades).", "type": "single", "explanation": "Para un tren de pulsos rectangulares de duración tau = 0,0002 ms = 0,2 us = 2*10^-7 s, el ancho de banda según el criterio del primer cruce por cero de Nyquist / espectro sinc es B = 1 / (2*tau) = 1 / (2 * 2*10^-7 s) = 2.500.000 Hz (2,5 MHz).", "options": ["2500000", "25000000", "25000", "Ninguna es correcta", "250000"], "correct": 0, "section": "practico"}, {"id": 156, "category": "BLOQUE 5: Perturbaciones y Diagrama de Ojo", "text": "Cuales de los siguientes elementos puede producir un atraso en la corriente que circula por un circuito electrico respecto de la tension aplicada en su entrada", "type": "single", "explanation": "Un Inductor (bobina) produce un desfase en el cual la corriente atrasa 90° respecto de la tensión aplicada en sus bornes (v(t) = L * di/dt).", "options": ["Inductor", "Resistencia", "Capacitor", "Conductor", "Conector"], "correct": 0, "section": "practico"}, {"id": 157, "category": "BLOQUE 5: Perturbaciones y Diagrama de Ojo", "text": "Cuanto nivel de S/N en dB, requeririamos para transmitir sobre la capacidad de un canal telefónico, a 64 Kbps (suponer una capacidad del canal telefónico de 3100 Hz)  (indicar solo valores numéricos)", "type": "single", "explanation": "Aplicando la fórmula de Shannon C = B * log2(1 + S/N): con C = 64.000 bps y B = 3100 Hz, C/B = 64000 / 3100 = 20,645. Luego 1 + S/N = 2^20,645 = 1.638.706. En dB: (S/N)_dB = 10 * log10(1.638.706) = 62,145 dB =~ 62,15 dB.", "options": ["62,15", "61,2", "64,1", "62", "ninguna es correcta"], "correct": 0, "section": "practico"}, {"id": 158, "category": "BLOQUE 5: Perturbaciones y Diagrama de Ojo", "text": "Se tiene una señal de comunicaciones cuyo comportamiento puede ser caracterizado por la ecuación: s(t) = 5 * sen(2 * pi * 1000 * t + fase). Si debo transmitir dicha señal por un medio conductor para que pasen sin atenuación al menos el componente fundamental y las armónicas hasta la del 7 orden, entonces el medio conductor se deberá comportar como un:", "type": "single", "explanation": "La frecuencia fundamental es f1 = 1000 Hz. La armónica de 7mo orden tiene una frecuencia de f7 = 7 * 1000 Hz = 7000 Hz. Para que pasen sin atenuación la fundamental y todas las armónicas hasta la de 7mo orden, el medio debe comportarse como un filtro pasa bajos con ancho de banda de al menos 7000 Hz.", "options": ["Filtro pasa altos de Bw >> 7000 Hz", "Filtro pasa altos de Bw= 3500 Hz", "Filtro paso Banda de 3000 a 5000 Hz", "Filtro paso bajos de Bw= 7000 Hz", "Filtro paso bajos de Bw = 3500 Hz"], "correct": 3, "section": "practico"}, {"id": 159, "category": "BLOQUE 5: Perturbaciones y Diagrama de Ojo", "text": "Si en un circuito de comunicaciones se dice que la potencia de entrada es de 0 dBm; ¿cuál es la potencia de salida en Watt, si la ganancia es de 30 dB? (Indicar solo valores numericos, sin signos ni unidades; utilizar la coma como separador de decimales).", "type": "single", "explanation": "0 dBm equivale a 1 mW (0,001 W). Una ganancia de 30 dB amplifica la potencia 10^(30/10) = 1000 veces. Por lo tanto, la potencia de salida es P_out = 1 mW * 1000 = 1000 mW = 1 Watt.", "options": ["5", "3", "2", "4", "1"], "correct": 4, "section": "practico"}, {"id": 161, "category": "BLOQUE 5: Perturbaciones y Diagrama de Ojo", "text": "Una fuente con una potencia de nivel de -20 dBm se conecta a un extremo de un cable de fibra optica. La longitud de la fibra es 1200 m. El nivel de potencia en el otro extremo se mide como -22,5 dBm. ¿Cual es la perdida de la fibra en dB/Km?", "type": "single", "explanation": "La pérdida total es (-20 dBm) - (-22,5 dBm) = 2,5 dB en una distancia de 1200 m = 1,2 km. La atenuación unitaria de la fibra óptica es alfa = 2,5 dB / 1,2 km = 2,0833 dB/km (2,08 dB/Km).", "options": ["2,4", "3000", "2,08", "5", "2,5"], "correct": 2, "section": "practico"}, {"id": 163, "category": "BLOQUE 5: Perturbaciones y Diagrama de Ojo", "text": "Una señal es 28 dB menor en potencia que otra señal. ¿Cuantas veces menor es? (Indicar solo valores numericos, sin signos ni unidades, utilizar la coma como separador de decimales)", "type": "single", "explanation": "Una diferencia de potencia de 28 dB corresponde a una relación de potencias de 10^(28 / 10) = 10^2,8 = 630,957 veces menor, lo que se redondea al entero más próximo: 631 veces.", "options": ["Ninguna es correcta", "640", "631", "800", "630"], "correct": 2, "section": "practico"}, {"id": 164, "category": "BLOQUE 5: Perturbaciones y Diagrama de Ojo", "text": "La señal modulada en FM es mas inmune a ruidos impulsivos que la señal modulada en AM", "type": "tf", "explanation": "Verdadero. La modulación de frecuencia (FM) almacena la información en la frecuencia instantánea de la onda portadora y no en su amplitud. Por ello, los circuitos limitadores de amplitud del receptor eliminan eficazmente los picos de ruido impulsivo.", "options": ["Falso", "Verdadero"], "correct": 1, "section": "practico"}, {"id": 165, "category": "BLOQUE 5: Perturbaciones y Diagrama de Ojo", "text": "Un codigo de linea es un patron de [ OPCION 1], [ OPCION 2] o [ OPCION 3] utilizados para representar datos [ OPCION 4] transmitidos por [ OPCION 5]", "type": "grid", "explanation": "Definición normalizada de código de línea: 'Un código de línea es un patrón de tensión (Opción 1), corriente (Opción 2) o fotones (Opción 3) utilizados para representar datos digitales (Opción 4) transmitidos por una línea de transmisión (Opción 5)'.", "rows": ["Fotones", "Continua", "Un bus de datos", "Impedancia", "Digitales", "Analogicos", "Corriente", "Aleatorios", "Linea de transmisión", "Tensión ", "Un medio de almacenamiento", "Sincronismo", "Una canal de radiocomunicación", "Potencia"], "columns": ["OPCION 1", "OPCION 2", "OPCION 3", "OPCION 4", "OPCION 5", "NO CORRESPONDE"], "correct": [2, 5, 5, 5, 3, 5, 1, 5, 4, 0, 5, 5, 5, 5], "section": "practico"}, {"id": 166, "category": "BLOQUE 5: Perturbaciones y Diagrama de Ojo", "text": "Indique cual de las siguientes figuras corresponde al espectro de una señal digital constituida por un tren de pulsos rectangulares periodicos", "type": "single", "explanation": "El espectro de Fourier de un tren periódico de pulsos rectangulares en el tiempo es un espectro de líneas discretas (armónicas separadas por la frecuencia fundamental f0 = 1/T) moduladas por una envolvente en forma de función sinc (sin(x)/x), tal como se ilustra en la figura 'a'.", "image": "q_165_opt_a.png", "options": ["b", "c", "a", "Ninguna es correcta"], "correct": 2, "section": "practico", "images": ["q_165_opt_a.png", "q_165_opt_b.png", "q_165_opt_c.png"]}, {"id": 167, "category": "BLOQUE 5: Perturbaciones y Diagrama de Ojo", "text": "Una señal de comunicaciones, que viene caracterizada por la ecuacion: s(t): 10sen(2pi600t + fase) tiene una longitud de onda (en kilometros), de: (Indicar solo numeros, sin unidades; utilizar la coma como separador decimal)", "type": "single", "explanation": "Para una onda con frecuencia f = 600 Hz y velocidad de propagación v = c = 300.000 km/s, la longitud de onda en kilómetros es lambda = v / f = 300.000 / 600 = 500 km.", "options": ["500", "3000", "400", "50000", "Ninguna es correcta"], "correct": 0, "section": "practico"}, {"id": 168, "category": "BLOQUE 5: Perturbaciones y Diagrama de Ojo", "text": "Si en un circuito electronico encontramos un elemento cuya ecuacion es: R + jwL, decimos que la corriente adelanta respecto de la tension aplicada", "type": "tf", "explanation": "Falso. En un circuito inductivo con impedancia Z = R + jwL, la reactancia inductiva positiva provoca que la corriente atrase (lag) respecto a la tensión aplicada en un ángulo theta = arctan(wL / R).", "options": ["Verdadero", "Falso"], "correct": 1, "section": "practico"}, {"id": 169, "category": "BLOQUE 5: Perturbaciones y Diagrama de Ojo", "text": "Si quisiera sintonizar la emisora de FM de la UTN, necesitaria", "type": "single", "explanation": "La radiodifusión en FM comercial opera en la banda de 88 a 108 MHz con una canalización estándar de 200 kHz por emisora. Para sintonizar FM UTN (94.3 MHz) se requiere un filtro pasa banda variable de ancho de banda Bw = 200 kHz sintonizado en 94,3 MHz.", "image": "q_168_1IEA-1d4.png", "options": ["Un filtro paso banda variable de Bw = 3400 Hz, sintonizado en 94.3 Khz", "Un filtro paso bajos de Bw= 94.3 MHz", "Un filtro paso altos con frecuencia de corte en 94.3 MHz", "Un filtro paso banda de Bw = 200 KHz, sintonizado en 94.3 Hz", "Un filtro paso banda variable de Bw = 200 KHz, sintonizado en 94.3 Mhz"], "correct": 4, "section": "practico"}, {"id": 179, "category": "BLOQUE 5: Perturbaciones y Diagrama de Ojo", "text": "Si a la salida de un circuito de comunicaciones se mide que la tensión es 0,01veces la suministrada en la entrada, se dice que hubo una atenuación en dB, de (Indicar sólo valores numéricos, sin signos ni unidades)", "type": "single", "explanation": "Para relaciones de tensión, la atenuación en decibeles se calcula como A = 20 * log10(V_in / V_out). Si V_out = 0,01 * V_in, entonces V_in / V_out = 100, y A = 20 * log10(100) = 20 * 2 = 40 dB.", "options": ["321", "-40", "39", "40", "-400", "400"], "correct": 3, "section": "practico"}, {"id": 180, "category": "BLOQUE 5: Perturbaciones y Diagrama de Ojo", "text": "En el proceso de modulación PCM, si se desea cuantificar 256 niveles distintos de la señal a convertir, ¿cuántos bits se deberán utilizar para codificar dichas muestras?", "type": "single", "explanation": "En PCM, para codificar N = 256 niveles de cuantificación distintos se requieren n = log2(256) = 8 bits por muestra (estándar telefónico PCM de 8 bits a 8000 muestras/s = 64 kbps).", "options": ["Ninguna opcion es correcta", "8", "9", "7", "2", "1"], "correct": 1, "section": "practico"}, {"id": 181, "category": "BLOQUE 5: Perturbaciones y Diagrama de Ojo", "text": "La ganancia de tensión de un circuito es de 25 dB. Si la salida de tensión es de 5 voltios, ¿cuál es la tensión de entrada? (Indicar sólo valores numéricos, sin signos; utilizar la coma como separador de decimales)", "type": "single", "explanation": "La ganancia de tensión en dB es G_v = 20 * log10(V_out / V_in) = 25 dB. Por tanto, log10(V_out / V_in) = 25 / 20 = 1,25, lo que implica V_out / V_in = 10^1,25 = 17,7828. Con V_out = 5 V: V_in = 5 / 17,7828 = 0,28117 V =~ 0,2812 V.", "options": ["0,27", "0,2812", "0,287", "Ninguna es correcta"], "correct": 1, "section": "practico"}, {"id": 203, "category": "BLOQUE 5: Perturbaciones y Diagrama de Ojo", "text": "Los siguientes gráficos corresponden a distintos diagramas de ojos de señales analizadas con un osciloscopio. A cada uno le corresponde un determinado valor de roll-off:", "type": "grid", "explanation": "En filtros de coseno alzado de Nyquist: G1 (transiciones más abruptas y mayor rizado) corresponde a alfa = 0; G2 (apertura intermedia y menor dispersión) corresponde a alfa = 0.5; G3 (apertura más amplia y curvas más suaves) corresponde a alfa = 1. Los valores alfa = 0.25 y alfa = 1.43 no corresponden a las figuras presentadas.", "image": "q_202_1eTGVhh6.png", "rows": ["α=0", "α=0.25", "α=0.5", "α=1", "α=1.43"], "columns": ["G1", "G2", "G3", "No Corresponde"], "correct": [0, 3, 1, 2, 3], "section": "practico"}, {"id": 205, "category": "BLOQUE 5: Perturbaciones y Diagrama de Ojo", "text": "El diagrama de ojo de una señal con EMI se cierra en forma:", "type": "single", "explanation": "Las interferencias electromagnéticas externas (EMI) acoplan tanto ruido aleatorio en amplitud como distorsión de fase temporal, provocando que el diagrama de ojo se cierre simultáneamente en forma Horizontal y Vertical.", "options": ["Horizontal", "Horizontal y Vertical", "Vertical", "No tiene variación"], "correct": 1, "section": "practico"}, {"id": 206, "category": "BLOQUE 5: Perturbaciones y Diagrama de Ojo", "text": "El \"Jitter\" se produce por:", "type": "single", "explanation": "El Jitter (fluctuación de fase) se define rigurosamente como la desviación o variación temporal no deseada de los instantes significativos de transición de una señal digital respecto de sus posiciones ideales en el tiempo.", "options": ["El corrimiento de amplitud de los pulsos respecto de su posición original", "La variación de fase de la señal digital", "La atenuación de los pulsos", "La distorsión de los pulsos"], "correct": 1, "section": "practico"}, {"id": 1, "category": "BLOQUE 7: Detección de Errores y Criptografía", "text": "La distancia de Hamming sirve para:", "type": "single", "explanation": "La distancia mínima de Hamming (d_min) mide la capacidad de detección y corrección de errores de un código de canal (código de bloque o convolucional) respecto a otro: permite detectar hasta d_min - 1 errores y corregir hasta floor((d_min - 1) / 2) errores.", "options": ["Medir la capacidad de error de un codigo de linea con respecto a otro", "Medir de un codigo de linea con respecto a otro", "Medir la distancia de un codigo de linea con respecto a otro", "Medir la capacidad de error de un codigo de canal con respecto a otro", "Medir la fortaleza de un codigo de canal con respecto a otro", "Medir la distancia de un codigo de canal con respecto a otro"], "correct": 4, "section": "practico"}, {"id": 59, "category": "BLOQUE 7: Detección de Errores y Criptografía", "text": "Cuál será la palabra código transmitida para un sistema que utiliza código ASCII y transmite la letra k (6b)16 con polinomio generador x^3 +x + 1", "type": "single", "explanation": "La letra 'k' en ASCII es (6B)_16 = 01101011_2. Al agregar 3 ceros por el grado del polinomio generador G(x) = x^3 + x + 1 (1011_2) y realizar la división binaria módulo 2, el residuo (FCS) resultante es 110_2. La palabra código transmitida es 01101011110.", "options": ["01101011111", "01101011110", "0100101011110", "0110101111110"], "correct": 1, "section": "practico"}, {"id": 114, "category": "BLOQUE 7: Detección de Errores y Criptografía", "text": "Cual de los siguientes algoritmos de encriptado trabaja con distintas claves (de encriptado y desencriptado)?", "type": "single", "explanation": "RSA (Rivest-Shamir-Adleman) es un algoritmo de criptografía asimétrica o de clave pública que utiliza un par matemático de claves distintas: una clave pública para cifrar y una clave privada para descifrar.", "options": ["RSA", "Ethernet", "DES", "IDEA", "3DES"], "correct": 0, "section": "practico"}, {"id": 140, "category": "BLOQUE 7: Detección de Errores y Criptografía", "text": "Como se denomina el cifrado en donde un caracter se cambia por el otro del mismo alfabeto?", "type": "single", "explanation": "El cifrado por sustitución es la técnica criptográfica clásica en la cual cada carácter o grupo de caracteres del texto en claro es reemplazado por otro carácter del mismo alfabeto (siguiendo una regla fija o una clave).", "options": ["Por encriptado", "Por intercambio", "Por desplazamiento", "Por rotacion", "Por sustitucion"], "correct": 4, "section": "practico"}, {"id": 149, "category": "BLOQUE 7: Detección de Errores y Criptografía", "text": "Cual de las siguientes se considera una ventaja en la utilizacion de la firma digital", "type": "single", "explanation": "La firma digital proporciona principalmente tres servicios de seguridad indispensables: Autenticación del emisor, No Repudio y Protección de la Integridad de la información (garantiza que el mensaje no ha sido alterado).", "options": ["Protege frente ataque DoS", "Secreto de la informacion", "Protege la integridad de la informacion", "Evita la congestion", "Proteccion frente a accesos no deseados"], "correct": 2, "section": "practico"}, {"id": 172, "category": "BLOQUE 7: Detección de Errores y Criptografía", "text": "CRC es una conocida tecnica de deteccion de errores que trabaja como un codigo convolucional", "type": "tf", "explanation": "Falso. El control de redundancia cíclica (CRC) es una técnica de detección de errores basada en códigos de bloque lineales cíclicos mediante división polinómica binaria, no un código convolucional.", "options": ["Verdadero", "Falso"], "correct": 1, "section": "practico"}, {"id": 173, "category": "BLOQUE 7: Detección de Errores y Criptografía", "text": "Cual de los siguientes protocolos permite implementar VPN a nivel de enlace", "type": "single", "explanation": "L2TP (Layer 2 Tunneling Protocol) es un protocolo de túnel que opera en el Nivel de Enlace de Datos (Capa 2 del modelo OSI) para encapsular tramas PPP a través de redes IP.", "options": ["Ethernet", "IPv6", "RIP", "IPSec", "L2TP"], "correct": 4, "section": "practico"}, {"id": 188, "category": "BLOQUE 7: Detección de Errores y Criptografía", "text": "El CRC utiliza/es codigo convolucional", "type": "tf", "explanation": "Falso. El control de redundancia cíclica (CRC) no es un código convolucional; es un código de bloque lineal cíclico.", "options": ["Verdadero", "Falso"], "correct": 1, "section": "practico"}, {"id": 189, "category": "BLOQUE 7: Detección de Errores y Criptografía", "text": "Como logro proteger la informacion frente a escuchas indeseadas", "type": "single", "explanation": "La confidencialidad y la protección de la información contra interceptaciones o escuchas indebidas (eavesdropping) se logra mediante el Cifrado / Encriptado de los datos.", "options": ["Firmandola digitalmente", "Atenuandola", "Encriptando la informacion", "Digitalizandola", "Autenticandola"], "correct": 2, "section": "practico"}, {"id": 195, "category": "BLOQUE 7: Detección de Errores y Criptografía", "text": "Los códigos de redundancia cíclica (CRC):", "type": "multi", "explanation": "Propiedades de los códigos CRC: 1) Se implementan en hardware de forma sumamente económica y rápida utilizando registros de desplazamiento con retroalimentación (LFSR) y compuertas XOR; 2) Pueden aplicarse a bloques de datos de longitud arbitraria manteniendo una excelente tasa de detección de ráfagas de error.", "options": ["No tienen buena capacidad de detección de errores", "Su utilización lleva a incrementar de manera exponencial la cantidad de bits de redundancia", "Pueden ser implementados en hardware con configuraciones económicas y simples", "Su utilidad es popular solo en redes de baja velocidad", "Pueden ser aplicados a mensajes de longitud arbitraria"], "correct": [2, 4], "section": "practico"}, {"id": 198, "category": "BLOQUE 7: Detección de Errores y Criptografía", "text": "En una VPN site to site, quien crea el túnel en un extremo?", "type": "single", "explanation": "En una VPN sitio a sitio (Site-to-Site VPN), el túnel cifrado (IPsec) se establece y mantiene entre los routers de borde o gateways perimetrales de cada sede, de manera totalmente transparente para las estaciones de trabajo de la LAN interna.", "options": ["Los distintos usuarios que pertenecen a la LAN", "El modem de conexion a internet", "El router de conexion a internet", "El switch de cada departamento de trabajo que necesite seguridad", "Un SW especial en la estacion de trabajo"], "correct": 2, "section": "practico"}];
 
-// QUIZ ENGINE
 let shuffleQuestionsSetting = localStorage.getItem('com_p3_shuffle_questions') !== null 
   ? localStorage.getItem('com_p3_shuffle_questions') === 'true' : false;
 let shuffleOptionsSetting = localStorage.getItem('com_p3_shuffle_options') !== null 
@@ -639,7 +914,8 @@ let examTimerInterval = null;
 let examSeconds = 0;
 
 function init() {
-  document.getElementById('total-count').textContent = ALL_QUESTIONS.length;
+  const totEl = document.getElementById('total-count');
+  if (totEl) totEl.textContent = ALL_QUESTIONS.length;
   updateCounters();
   
   const mQ = document.getElementById('shuffle-questions-toggle');
@@ -683,12 +959,12 @@ function buildCategoryButtons() {
   categories.forEach(cat => {
     const count = ALL_QUESTIONS.filter(q => q.category === cat).length;
     html += `
-      <div class="card" style="display:flex; justify-content:space-between; align-items:center; gap:1rem; cursor:pointer;" onclick="startQuiz('category', '${escapeHtml(cat)}')">
+      <div class="card" style="display:flex; justify-content:space-between; align-items:center; gap:12px; cursor:pointer;" onclick="startQuiz('category', '${escapeHtml(cat)}')">
         <div>
-          <div style="font-weight:600; font-size:0.95rem; color:var(--text-main);">${escapeHtml(cat)}</div>
-          <div style="font-size:0.82rem; color:var(--text-muted); margin-top:0.2rem;">${count} preguntas</div>
+          <div style="font-weight:700; font-size:0.98rem; font-family:var(--font-terminal); color:#ffffff; text-transform:uppercase;">${escapeHtml(cat)}</div>
+          <div style="font-size:0.84rem; color:var(--neon-red); font-family:var(--font-terminal); margin-top:4px;">[ ${count} PREGUNTAS REGISTRADAS ]</div>
         </div>
-        <button class="btn btn-secondary btn-sm">Estudiar →</button>
+        <button class="btn btn-secondary btn-sm">INICIAR →</button>
       </div>
     `;
   });
@@ -705,8 +981,8 @@ function buildGroupButtons() {
     const start = i * 10 + 1;
     const end = Math.min((i + 1) * 10, ALL_QUESTIONS.length);
     html += `
-      <button class="btn btn-secondary btn-sm" onclick="startQuiz('group', ${i})" style="font-family:var(--font-mono);">
-        B${i+1} (${start}-${end})
+      <button class="btn btn-secondary btn-sm" onclick="startQuiz('group', ${i})" style="font-family:var(--font-terminal);">
+        BLOQUE ${i+1} [${start}-${end}]
       </button>
     `;
   }
@@ -745,8 +1021,8 @@ function updateTimerDisplay() {
 function formatDuration(totalSecs) {
   const mins = Math.floor(totalSecs / 60);
   const secs = totalSecs % 60;
-  if (mins === 0) return `${secs} seg`;
-  return `${mins} min ${secs} seg`;
+  if (mins === 0) return `${secs} SEG`;
+  return `${mins} MIN ${secs} SEG`;
 }
 
 function prepareQuestionData(q, shuffleOpts) {
@@ -788,13 +1064,13 @@ function startQuiz(mode, groupIndex) {
   } else if (mode === 'wrong') {
     rawQuestions = ALL_QUESTIONS.filter(q => wrongQuestions.includes(q.id));
     if (rawQuestions.length === 0) {
-      alert("No hay preguntas marcadas con error actualmente.");
+      alert("NO SE DETECTAN PREGUNTAS CON ERROR ACTUALMENTE.");
       return;
     }
   } else if (mode === 'bookmarks') {
     rawQuestions = ALL_QUESTIONS.filter(q => bookmarkedQuestions.includes(q.id));
     if (rawQuestions.length === 0) {
-      alert("No tienes preguntas guardadas en favoritos actualmente.");
+      alert("NO HAY PREGUNTAS GUARDADAS EN FAVORITOS.");
       return;
     }
   }
@@ -814,21 +1090,23 @@ function startQuiz(mode, groupIndex) {
   showPalette = false;
   
   let sectionName = '';
-  if (mode === 'exam') sectionName = 'Simulacro de Examen';
-  else if (mode === 'all') sectionName = 'Todas las Preguntas';
-  else if (mode === 'category') sectionName = groupIndex;
+  if (mode === 'exam') sectionName = '[ SIMULACRO // EXAMEN ]';
+  else if (mode === 'all') sectionName = '[ BANCO COMPLETO ]';
+  else if (mode === 'category') sectionName = `[ ${groupIndex} ]`;
   else if (mode === 'group') {
     const startNum = groupIndex * 10 + 1;
     const endNum = Math.min((groupIndex + 1) * 10, ALL_QUESTIONS.length);
-    sectionName = `Bloque ${groupIndex + 1} (${startNum}-${endNum})`;
-  } else if (mode === 'wrong') sectionName = 'Repaso de Falladas';
-  else if (mode === 'bookmarks') sectionName = 'Preguntas Favoritas';
+    sectionName = `[ BLOQUE ${groupIndex + 1} // ${startNum}-${endNum} ]`;
+  } else if (mode === 'wrong') sectionName = '[ REPASO DE FALLADAS ]';
+  else if (mode === 'bookmarks') sectionName = '[ PREGUNTAS GUARDADAS ]';
   
   document.getElementById('quiz-section-name').textContent = sectionName;
   
   document.getElementById('menu-view').style.display = 'none';
   document.getElementById('results-view').style.display = 'none';
   document.getElementById('quiz-view').style.display = 'block';
+  
+  window.scrollTo({ top: 0, behavior: 'smooth' });
   
   if (mode === 'exam') startTimer();
   else stopTimer();
@@ -882,31 +1160,41 @@ function renderQuestion() {
   const isStarred = bookmarkedQuestions.includes(q.id);
   const bookmarkBtn = document.getElementById('btn-bookmark');
   if (bookmarkBtn) {
-    bookmarkBtn.textContent = isStarred ? '★ Guardada' : '☆ Guardar';
-    bookmarkBtn.className = isStarred ? 'btn btn-amber btn-sm' : 'btn btn-outline btn-sm';
+    bookmarkBtn.textContent = isStarred ? '★ GUARDADA' : '☆ GUARDAR';
+    bookmarkBtn.className = isStarred ? 'btn btn-amber btn-sm' : 'btn btn-secondary btn-sm';
   }
   
-  let typeChipCls = 'chip-blue';
-  let typeText = 'Selección Única';
-  if (q.type === 'multi') { typeChipCls = 'chip-amber'; typeText = 'Selección Múltiple'; }
-  else if (q.type === 'grid') { typeChipCls = 'chip-rose'; typeText = 'Emparejamiento / Matriz'; }
+  let typeText = '[ SELECCIÓN ÚNICA ]';
+  if (q.type === 'multi') { typeText = '[ SELECCIÓN MÚLTIPLE ]'; }
+  else if (q.type === 'grid') { typeText = '[ EMPAREJAMIENTO / MATRIZ ]'; }
   
-  document.getElementById('q-type-chip').className = `chip ${typeChipCls}`;
   document.getElementById('q-type-chip').textContent = typeText;
   document.getElementById('q-category-chip').textContent = q.category;
-  document.getElementById('q-id-chip').textContent = `ID #${q.id}`;
+  document.getElementById('q-id-chip').textContent = `SYS // ID #${q.id}`;
   
   document.getElementById('q-prompt-text').textContent = q.text;
+  
+  const cardEl = document.getElementById('active-question-card');
+  const isChecked = !!userChecked[q.id];
+  const ans = answers[q.id];
+  
+  if (cardEl) {
+    cardEl.className = 'question-card';
+    if (isChecked) {
+      if (ans && ans.isCorrect) cardEl.classList.add('correct');
+      else cardEl.classList.add('wrong');
+    }
+  }
   
   const imgBox = document.getElementById('q-image-container');
   if (q.images && q.images.length > 0) {
     imgBox.style.display = 'block';
     imgBox.innerHTML = `
-      <div style="display:flex; flex-wrap:wrap; justify-content:center; align-items:flex-end; gap:1.25rem;">
+      <div style="display:flex; flex-wrap:wrap; justify-content:center; align-items:flex-end; gap:16px;">
         ${q.images.map((img, i) => `
           <div style="text-align:center; flex:1; min-width:180px;">
-            <div style="font-weight:700; font-size:0.85rem; color:#475569; margin-bottom:0.4rem; text-transform:uppercase;">Figura ${String.fromCharCode(97 + i)}</div>
-            <img src="${img}" alt="Figura ${String.fromCharCode(97 + i)}" style="max-height:240px; border-radius:6px; cursor:zoom-in;" onclick="openModal('${img}')">
+            <div style="font-weight:700; font-size:0.85rem; font-family:var(--font-terminal); color:#000000; margin-bottom:6px; text-transform:uppercase;">FIGURA ${String.fromCharCode(97 + i).toUpperCase()}</div>
+            <img src="${img}" alt="Figura ${String.fromCharCode(97 + i)}" style="max-height:240px; cursor:zoom-in;" onclick="openModal('${img}')">
           </div>
         `).join('')}
       </div>
@@ -920,7 +1208,6 @@ function renderQuestion() {
   }
   
   const optContainer = document.getElementById('options-container');
-  const isChecked = !!userChecked[q.id];
   const userSel = userSelections[q.id] || [];
   
   if (q.type === 'grid') {
@@ -929,7 +1216,7 @@ function renderQuestion() {
         <table class="grid-table">
           <thead>
             <tr>
-              <th>Elemento / Concepto</th>
+              <th>ELEMENTO / CONCEPTO</th>
               ${q.columns.map(c => `<th>${escapeHtml(c)}</th>`).join('')}
             </tr>
           </thead>
@@ -940,8 +1227,8 @@ function renderQuestion() {
       const correctCol = q.correct[rIdx];
       let rowStyle = '';
       if (isChecked) {
-        if (selectedCol === correctCol) rowStyle = 'background:rgba(16, 185, 129, 0.08);';
-        else rowStyle = 'background:rgba(244, 63, 94, 0.08);';
+        if (selectedCol === correctCol) rowStyle = 'background:rgba(0, 230, 118, 0.1);';
+        else rowStyle = 'background:rgba(255, 42, 95, 0.12);';
       }
       gridHtml += `<tr style="${rowStyle}"><td>${escapeHtml(rowName)}</td>`;
       q.columns.forEach((colName, cIdx) => {
@@ -978,7 +1265,7 @@ function renderQuestion() {
       optHtml += `
         <div class="${optClass}" onclick="onOptionClick(${q.id}, ${idx})">
           <div class="option-key-badge">${keyLetter}</div>
-          <div class="option-text">${escapeHtml(optText)}</div>
+          <div style="flex:1;">${escapeHtml(optText)}</div>
         </div>
       `;
     });
@@ -989,10 +1276,9 @@ function renderQuestion() {
   const expBox = document.getElementById('explanation-container');
   if (isChecked) {
     expBox.style.display = 'block';
-    const ans = answers[q.id];
-    let titleHtml = ans.isCorrect 
-      ? '<span style="color:var(--correct-text);">✓ ¡Respuesta Correcta!</span>'
-      : '<span style="color:var(--wrong-text);">✗ Respuesta Incorrecta</span>';
+    let titleHtml = (ans && ans.isCorrect) 
+      ? '<span style="color:var(--success);">✓ ¡RESPUESTA CORRECTA REGISTRADA!</span>'
+      : '<span style="color:var(--neon-red);">✗ RESPUESTA INCORRECTA DETECTADA</span>';
     
     expBox.innerHTML = `
       <div class="explanation-title">${titleHtml}</div>
@@ -1012,7 +1298,7 @@ function renderQuestion() {
   if (isChecked) {
     checkBtn.style.display = 'none';
     nextBtn.style.display = 'inline-flex';
-    nextBtn.textContent = (currentIndex === total - 1) ? 'Finalizar Módulo →' : 'Siguiente →';
+    nextBtn.textContent = (currentIndex === total - 1) ? 'FINALIZAR MÓDULO →' : 'SIGUIENTE →';
   } else {
     checkBtn.style.display = 'inline-flex';
     nextBtn.style.display = 'none';
@@ -1149,18 +1435,21 @@ function showResults() {
   
   const statusBadge = document.getElementById('results-badge');
   if (pct >= 80) {
-    statusBadge.textContent = '🌟 ¡Excelente nivel de aprobación!';
-    statusBadge.className = 'chip chip-emerald';
+    statusBadge.textContent = '🌟 [ ESTADO: EXCELENTE / APROBACIÓN DESTACADA ]';
+    statusBadge.style.borderColor = 'var(--success)';
+    statusBadge.style.color = 'var(--success)';
   } else if (pct >= 60) {
-    statusBadge.textContent = '👍 Aprobado regular';
-    statusBadge.className = 'chip chip-blue';
+    statusBadge.textContent = '👍 [ ESTADO: REGULAR / APROBADO ]';
+    statusBadge.style.borderColor = 'var(--neon-red)';
+    statusBadge.style.color = 'var(--neon-red)';
   } else {
-    statusBadge.textContent = '⚠️ Necesita más práctica';
-    statusBadge.className = 'chip chip-rose';
+    statusBadge.textContent = '⚠️ [ ALERTA: REQUIERE REFUERZO DE CONCEPTOS ]';
+    statusBadge.style.borderColor = 'var(--warning)';
+    statusBadge.style.color = 'var(--warning)';
   }
   
   if (examSeconds > 0) {
-    document.getElementById('results-time-text').textContent = `Tiempo invertido: ${formatDuration(examSeconds)}`;
+    document.getElementById('results-time-text').textContent = `TIEMPO REGISTRADO: ${formatDuration(examSeconds)}`;
   } else {
     document.getElementById('results-time-text').textContent = '';
   }
@@ -1171,6 +1460,7 @@ function backToMenu() {
   document.getElementById('quiz-view').style.display = 'none';
   document.getElementById('results-view').style.display = 'none';
   document.getElementById('menu-view').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
   updateCounters();
 }
 
