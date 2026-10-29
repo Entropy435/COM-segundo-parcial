@@ -625,6 +625,84 @@
     flex-shrink: 0;
   }
 
+  /* CONTROL INDICATORS (RADIO CIRCULITO & CHECKBOX CUADRITO) */
+  .cyber-indicator {
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #0d1117;
+    border: 2px solid var(--border-light);
+    flex-shrink: 0;
+    transition: all 0.15s ease;
+    font-size: 0.85rem;
+    font-weight: 900;
+    line-height: 1;
+    color: transparent;
+  }
+
+  /* Circulito para selección única (Radio) */
+  .cyber-radio {
+    border-radius: 50% !important;
+  }
+  .option-item:hover .cyber-radio {
+    border-color: var(--neon-red);
+  }
+  .cyber-radio.checked {
+    border-color: var(--neon-red);
+    box-shadow: 0 0 8px rgba(255, 42, 95, 0.4);
+  }
+  .cyber-radio.checked::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50% !important;
+    background: var(--neon-red);
+    display: block;
+    box-shadow: 0 0 6px var(--neon-red);
+  }
+
+  /* Cuadrito para selección múltiple (Checkbox) */
+  .cyber-checkbox {
+    border-radius: 0px !important;
+  }
+  .option-item:hover .cyber-checkbox {
+    border-color: var(--neon-red);
+  }
+  .cyber-checkbox.checked {
+    border-color: var(--neon-red);
+    background: rgba(255, 42, 95, 0.2);
+    color: var(--neon-red);
+    box-shadow: 0 0 8px rgba(255, 42, 95, 0.4);
+  }
+
+  /* Estados de corrección en verificación */
+  .option-item.correct .cyber-radio,
+  .option-item.correct .cyber-checkbox {
+    border-color: var(--success) !important;
+    background: var(--success) !important;
+    color: #000000 !important;
+    box-shadow: 0 0 10px rgba(0, 230, 118, 0.5) !important;
+  }
+  .option-item.correct .cyber-radio::after {
+    background: #000000 !important;
+    box-shadow: none !important;
+  }
+
+  .option-item.wrong .cyber-radio,
+  .option-item.wrong .cyber-checkbox {
+    border-color: var(--danger) !important;
+    background: var(--danger) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 10px rgba(255, 42, 95, 0.5) !important;
+  }
+  .option-item.wrong .cyber-radio::after {
+    background: #ffffff !important;
+    box-shadow: none !important;
+  }
+
   /* EXPLANATION BOX */
   .explanation-box {
     background: #111620;
@@ -874,7 +952,7 @@
       <div style="display:flex; align-items:center; gap:8px;">
         <span class="hud-badge-progress"><span id="current-idx-display">1</span> / <span id="total-idx-display">20</span></span>
         <button id="btn-bookmark" class="btn btn-secondary btn-sm" onclick="toggleBookmark()">☆ GUARDAR</button>
-        <button class="btn btn-secondary btn-sm" onclick="togglePaletteView()"># PALETA</button>
+        <button class="btn btn-secondary btn-sm" onclick="togglePaletteView()">📋 ÍNDICE</button>
         <button class="btn btn-secondary btn-sm" onclick="backToMenu()">✕ SALIR</button>
       </div>
     </div>
@@ -1347,8 +1425,9 @@ function renderQuestion() {
       let optClass = 'option-item';
       if (isSelected) optClass += ' selected';
       
+      let isCorrectOpt = false;
       if (isChecked) {
-        const isCorrectOpt = (q.type === 'single') 
+        isCorrectOpt = (q.type === 'single' || q.type === 'tf') 
           ? (idx === q.displayCorrect) 
           : (q.displayCorrect.includes(idx));
           
@@ -1356,11 +1435,32 @@ function renderQuestion() {
         else if (isSelected && !isCorrectOpt) optClass += ' wrong';
       }
       
+      const isMulti = (q.type === 'multi');
+      let indicatorHtml = '';
+      if (isMulti) {
+        let iconContent = '';
+        if (isChecked) {
+          if (isCorrectOpt) iconContent = '✓';
+          else if (isSelected) iconContent = '✕';
+        } else if (isSelected) {
+          iconContent = '✓';
+        }
+        indicatorHtml = `<div class="cyber-indicator cyber-checkbox ${isSelected ? 'checked' : ''}">${iconContent}</div>`;
+      } else {
+        let iconContent = '';
+        if (isChecked) {
+          if (isCorrectOpt) iconContent = '✓';
+          else if (isSelected && !isCorrectOpt) iconContent = '✕';
+        }
+        indicatorHtml = `<div class="cyber-indicator cyber-radio ${isSelected ? 'checked' : ''}">${iconContent}</div>`;
+      }
+      
       const keyLetter = (idx < 9) ? `${idx + 1}` : '';
       optHtml += `
         <div class="${optClass}" onclick="onOptionClick(${q.id}, ${idx})">
           <div class="option-key-badge">${keyLetter}</div>
-          <div style="flex:1;">${escapeHtml(optText)}</div>
+          ${indicatorHtml}
+          <div style="flex:1; margin-left:4px;">${escapeHtml(optText)}</div>
         </div>
       `;
     });
