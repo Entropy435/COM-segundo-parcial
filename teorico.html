@@ -397,6 +397,43 @@
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
   }
 
+  /* TACTICAL INTERMEDIATE GRID & CARDS */
+  .tactical-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 12px;
+  }
+  .tactical-card {
+    background: #161b22;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--neon-red);
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 104px;
+    user-select: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+  .tactical-card:hover {
+    background: #1c232e;
+    border-color: var(--neon-red);
+    box-shadow: 0 0 16px rgba(255, 42, 95, 0.35);
+    transform: translateY(-2px);
+  }
+  .tactical-card:active {
+    transform: translateY(0);
+  }
+  .tactical-card.tactical-amber {
+    border-left-color: var(--warning);
+  }
+  .tactical-card.tactical-amber:hover {
+    border-color: var(--warning);
+    box-shadow: 0 0 16px rgba(245, 158, 11, 0.35);
+  }
+
   /* BARRA TOP DE QUIZ (TACTICAL HUD) */
   .quiz-hud-bar {
     background: var(--bg-card);
@@ -716,6 +753,8 @@
     .question-card { padding: 16px; }
     .cyber-title { font-size: 1.5em; gap: 8px; }
     .header-logo { width: 34px; height: 34px; }
+    .tactical-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+    .tactical-card { padding: 12px; min-height: 95px; }
   }
 
 </style>
@@ -807,16 +846,16 @@
       </div>
     </div>
 
-    <!-- MODULES LIST -->
-    <div style="margin-bottom: 24px;">
-      <div class="section-title">⚡ BLOQUES TEMÁTICOS DE TEORÍA</div>
-      <div id="category-cards-container" style="display:flex; flex-direction:column; gap:10px;"></div>
+    <!-- SECCIÓN 1: BLOQUES RÁPIDOS DE 10 EN 10 (ARRIBA) -->
+    <div style="margin-bottom: 28px;">
+      <div class="section-title">📦 BLOQUES RÁPIDOS // DE 10 EN 10 PREGUNTAS (19 BLOQUES)</div>
+      <div id="group-buttons-container" class="tactical-grid"></div>
     </div>
 
-    <!-- BLOCKS OF 10 -->
-    <div style="margin-bottom: 24px;">
-      <div class="section-title">🔢 BLOQUES RÁPIDOS (DE 10 EN 10)</div>
-      <div id="group-buttons-container" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
+    <!-- SECCIÓN 2: EJES TEMÁTICOS DE TEORÍA (AL FONDO) -->
+    <div style="margin-bottom: 28px;">
+      <div class="section-title">📂 EJES TEMÁTICOS DE TEORÍA // POR CONTENIDO</div>
+      <div id="category-cards-container" class="tactical-grid"></div>
     </div>
 
     <div style="text-align:center; margin-top:25px; color:var(--text-dim); font-family:var(--font-terminal); font-size:0.84rem;">
@@ -969,18 +1008,35 @@ function buildCategoryButtons() {
   const container = document.getElementById('category-cards-container');
   if (!container) return;
   
+  const isAmber = window.location.pathname.includes('practico') || (document.title && document.title.includes('PRÁCTICO'));
+  const accentColor = isAmber ? 'var(--warning)' : 'var(--neon-red)';
+  const borderBg = isAmber ? 'rgba(245, 158, 11, 0.12)' : 'rgba(255, 42, 95, 0.08)';
+  const cardClass = isAmber ? 'tactical-card tactical-amber' : 'tactical-card';
+
   const categories = [...new Set(ALL_QUESTIONS.map(q => q.category))];
   let html = '';
   
   categories.forEach(cat => {
     const count = ALL_QUESTIONS.filter(q => q.category === cat).length;
     html += `
-      <div class="card" style="display:flex; justify-content:space-between; align-items:center; gap:12px; cursor:pointer;" onclick="startQuiz('category', '${escapeHtml(cat)}')">
+      <div class="${cardClass}" onclick="startQuiz('category', '${escapeHtml(cat)}')">
         <div>
-          <div style="font-weight:700; font-size:0.98rem; font-family:var(--font-terminal); color:#ffffff; text-transform:uppercase;">${escapeHtml(cat)}</div>
-          <div style="font-size:0.84rem; color:var(--neon-red); font-family:var(--font-terminal); margin-top:4px;">[ ${count} PREGUNTAS REGISTRADAS ]</div>
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px; margin-bottom:8px;">
+            <div style="font-weight:700; font-size:0.92rem; font-family:var(--font-terminal); color:#ffffff; line-height:1.3; text-transform:uppercase;">
+              ${escapeHtml(cat)}
+            </div>
+            <span style="font-family:var(--font-terminal); font-size:0.75rem; color:${accentColor}; border:1px solid ${accentColor}; padding:2px 6px; background:${borderBg}; white-space:nowrap;">
+              ${count} PREG
+            </span>
+          </div>
+          <div style="font-size:0.8rem; color:var(--text-muted); font-family:var(--font-terminal);">
+            BANCO TEMÁTICO
+          </div>
         </div>
-        <button class="btn btn-secondary btn-sm">INICIAR →</button>
+        <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid rgba(48,54,61,0.6); padding-top:8px; margin-top:12px;">
+          <span style="font-family:var(--font-terminal); font-size:0.75rem; color:var(--text-dim); text-transform:uppercase;">INICIAR TEMA</span>
+          <span style="color:${accentColor}; font-weight:bold; font-size:0.95rem;">→</span>
+        </div>
       </div>
     `;
   });
@@ -991,15 +1047,37 @@ function buildGroupButtons() {
   const container = document.getElementById('group-buttons-container');
   if (!container) return;
   
+  const isAmber = window.location.pathname.includes('practico') || (document.title && document.title.includes('PRÁCTICO'));
+  const accentColor = isAmber ? 'var(--warning)' : 'var(--neon-red)';
+  const borderBg = isAmber ? 'rgba(245, 158, 11, 0.12)' : 'rgba(255, 42, 95, 0.08)';
+  const cardClass = isAmber ? 'tactical-card tactical-amber' : 'tactical-card';
+
   const numGroups = Math.ceil(ALL_QUESTIONS.length / 10);
   let html = '';
   for (let i = 0; i < numGroups; i++) {
     const start = i * 10 + 1;
     const end = Math.min((i + 1) * 10, ALL_QUESTIONS.length);
+    const count = end - start + 1;
     html += `
-      <button class="btn btn-secondary btn-sm" onclick="startQuiz('group', ${i})" style="font-family:var(--font-terminal);">
-        BLOQUE ${i+1} [${start}-${end}]
-      </button>
+      <div class="${cardClass}" onclick="startQuiz('group', ${i})">
+        <div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <div style="font-weight:800; font-size:1.05rem; font-family:var(--font-terminal); color:#ffffff; letter-spacing:0.04em;">
+              BLOQUE ${String(i+1).padStart(2, '0')}
+            </div>
+            <span style="font-family:var(--font-terminal); font-size:0.75rem; color:${accentColor}; border:1px solid ${accentColor}; padding:2px 6px; background:${borderBg}; white-space:nowrap;">
+              ${count} PREG
+            </span>
+          </div>
+          <div style="font-size:0.82rem; color:var(--text-muted); font-family:var(--font-terminal);">
+            PREGUNTAS ${start} - ${end}
+          </div>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid rgba(48,54,61,0.6); padding-top:8px; margin-top:12px;">
+          <span style="font-family:var(--font-terminal); font-size:0.75rem; color:var(--text-dim); text-transform:uppercase;">INICIAR BLOQUE</span>
+          <span style="color:${accentColor}; font-weight:bold; font-size:0.95rem;">→</span>
+        </div>
+      </div>
     `;
   }
   container.innerHTML = html;
