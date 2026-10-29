@@ -211,6 +211,21 @@
     font-family: var(--font-terminal);
     letter-spacing: 0.06em;
     text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .header-logo {
+    width: 44px;
+    height: 44px;
+    object-fit: cover;
+    border-radius: 50% !important;
+    border: 2px solid var(--neon-red);
+    box-shadow: 0 0 14px rgba(255, 42, 95, 0.6);
+    vertical-align: middle;
+    display: inline-block;
   }
   .cyber-subtitle {
     color: #ff6b8b;
@@ -699,6 +714,8 @@
     .top-hud { flex-direction: column; align-items: flex-start; }
     .nav-links { width: 100%; overflow-x: auto; }
     .question-card { padding: 16px; }
+    .cyber-title { font-size: 1.5em; gap: 8px; }
+    .header-logo { width: 34px; height: 34px; }
   }
 
 </style>
@@ -727,106 +744,15 @@
   <div id="menu-view">
     
     <header class="cyber-header">
-      <div class="header-hud-top">
-        <span class="hud-tag">[ SISTEMA CENTRAL // COM 3ER PARCIAL ]</span>
-        <span class="stat-pill"><span class="blink-dot"></span> ESTADO: ACTIVO // LA BANDA DEL 81</span>
-        <span class="hud-tag">[ 219 PREGUNTAS TOTALES ]</span>
-      </div>
-      <h1 class="cyber-title">COMUNICACIONES // PARCIAL 3</h1>
+      <h1 class="cyber-title">
+        <img src="favicon.png?v=2" alt="Logo" class="header-logo">
+        <span>COMUNICACIONES // PARCIAL 3</span>
+      </h1>
       <div class="cyber-subtitle">[ EDICIÓN DE ESTUDIO TÁCTICA // BANCO AUDITADO Y SINCRONIZADO 100% ]</div>
-      
-      <div class="quick-stats-bar">
-        <div class="stat-pill">TOTAL GENERAL: <strong>219</strong></div>
-        <div class="stat-pill">TEÓRICAS: <strong>182</strong></div>
-        <div class="stat-pill">PRÁCTICAS: <strong>37</strong></div>
-        <div class="stat-pill">CORRECCIONES OFICIALES: <strong>24</strong></div>
-      </div>
     </header>
 
-    <!-- KEYBOARD HUD BANNER -->
-    <div style="background:#161b22; border:1px solid var(--border); border-left:4px solid var(--neon-red); padding:10px 16px; margin-bottom:20px; font-family:var(--font-terminal); font-size:0.84rem; text-transform:uppercase; color:#cbd5e1; display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;">
-      <span>⌨️ CONTROLES TÁCTICOS:</span>
-      <span><strong style="color:var(--neon-red);">[ 1 - 9 ]</strong> SELECCIONAR OPCIÓN</span>
-      <span><strong style="color:var(--neon-red);">[ ENTER / SPACE ]</strong> VERIFICAR / SIGUIENTE</span>
-      <span><strong style="color:var(--neon-red);">[ B ]</strong> GUARDAR FAVORITA</span>
-      <span><strong style="color:var(--neon-red);">[ ESC ]</strong> SALIR MODAL</span>
-    </div>
-
-    <!-- MAIN TWO GATEWAY CARDS (SEPARATE PAGES) -->
-    <div class="gateways-grid">
-      
-      <!-- GATEWAY TEORICO -->
-      <div class="gateway-terminal">
-        <div>
-          <div class="terminal-header">
-            <span>[ TERMINAL 01 // SECTOR TEÓRICO ]</span>
-            <span>182 PREGUNTAS</span>
-          </div>
-          <h2 class="terminal-title">📘 MODO TEÓRICO</h2>
-          <p style="color:var(--text-muted); font-size:0.92rem; line-height:1.6; margin-bottom:18px;">
-            Fundamentos y arquitectura: Modelo OSI y TCP/IP, redes de conmutación (circuitos, paquetes, mensajes y ATM), xDSL/FTTx, sistemas DOCSIS sobre CATV/HFC y medios de cableado estructurado.
-          </p>
-          <ul style="list-style:none; display:flex; flex-direction:column; gap:6px; font-family:var(--font-terminal); font-size:0.86rem; color:#d1d7e0; margin-bottom:22px;">
-            <li>✓ BLOQUE 1: MODELO OSI Y TCP/IP (45 PREG)</li>
-            <li>✓ BLOQUE 2: REDES DE CONMUTACIÓN Y ATM (21 PREG)</li>
-            <li>✓ BLOQUE 3: REDES DE ACCESO xDSL Y FTTx (63 PREG)</li>
-            <li>✓ BLOQUE 4: REDES HFC Y DOCSIS (14 PREG)</li>
-            <li>✓ BLOQUE 6: CABLEADO, LANS Y MEDIOS (39 PREG)</li>
-          </ul>
-        </div>
-        <div>
-          <a href="teorico.html" class="btn btn-primary btn-lg" style="width:100%;">
-            INGRESAR AL SECTOR TEÓRICO →
-          </a>
-        </div>
-      </div>
-
-      <!-- GATEWAY PRACTICO -->
-      <div class="gateway-terminal" style="border-left-color:var(--warning);">
-        <div>
-          <div class="terminal-header" style="color:var(--warning); border-bottom-color:var(--border);">
-            <span>[ TERMINAL 02 // SECTOR PRÁCTICO ]</span>
-            <span style="color:var(--warning);">37 PREGUNTAS</span>
-          </div>
-          <h2 class="terminal-title" style="color:#ffffff;">🛠️ MODO PRÁCTICO</h2>
-          <p style="color:var(--text-muted); font-size:0.92rem; line-height:1.6; margin-bottom:18px;">
-            Resolución de ejercicios prácticos: diagnóstico de diagramas de ojo y oscilogramas (ISI, ruido, jitter, factor roll-off α) y algoritmos de control de errores (distancia de Hamming, palabras de código y polinomios CRC).
-          </p>
-          <ul style="list-style:none; display:flex; flex-direction:column; gap:6px; font-family:var(--font-terminal); font-size:0.86rem; color:#d1d7e0; margin-bottom:22px;">
-            <li>✓ BLOQUE 5: DIAGRAMA DE OJO Y OSCILOSCOPIO (26 PREG)</li>
-            <li>✓ BLOQUE 7: DETECCIÓN DE ERRORES, HAMMING Y CRC (11 PREG)</li>
-            <li>✓ VISOR ZOOM EN ALTA RESOLUCIÓN PARA TODOS LOS DIAGRAMAS</li>
-            <li>✓ FORMULACIONES MATEMÁTICAS Y VERIFICACIONES TÉCNICAS</li>
-          </ul>
-        </div>
-        <div>
-          <a href="practico.html" class="btn btn-amber btn-lg" style="width:100%;">
-            INGRESAR AL SECTOR PRÁCTICO →
-          </a>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- GENERAL TOOLS & SIMULATOR -->
-    <div class="card">
-      <div style="font-weight:700; font-family:var(--font-terminal); font-size:1.05rem; margin-bottom:6px; color:#ffffff; text-transform:uppercase;">
-        🎯 SIMULADOR GENERAL // PRÁCTICA INTEGRADA EN VIVO
-      </div>
-      <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:16px;">
-        Ejecuta evaluaciones mixtas sobre el banco total de 219 preguntas o revisa preguntas falladas/guardadas.
-      </p>
-      
-      <div style="display:flex; flex-wrap:wrap; gap:10px;">
-        <button class="btn btn-primary" onclick="startQuiz('exam')">🎯 EXAMEN MIXTO (20 PREGUNTAS)</button>
-        <button class="btn btn-secondary" onclick="startQuiz('wrong')">🔄 REPASAR FALLADAS (<span id="wrong-count">0</span>)</button>
-        <button class="btn btn-secondary" onclick="startQuiz('bookmarks')">⭐ GUARDADAS (<span id="bookmark-count">0</span>)</button>
-        <button class="btn btn-secondary" onclick="startQuiz('all')">📚 BANCO TOTAL (219 PREG)</button>
-      </div>
-    </div>
-
-    <!-- SETTINGS -->
-    <div class="card">
+    <!-- CONFIGURACIÓN GLOBAL (ARRIBA DEL TODO) -->
+    <div class="card" style="margin-bottom: 20px;">
       <div style="font-weight:700; font-family:var(--font-terminal); font-size:0.95em; color:#ffffff; text-transform:uppercase; margin-bottom:12px;">
         ⚙️ CONFIGURACIÓN GLOBAL
       </div>
@@ -839,6 +765,55 @@
           <input type="checkbox" id="shuffle-options-toggle" onchange="toggleSetting('shuffleOptions')">
           Mezclar opciones de respuesta
         </label>
+      </div>
+    </div>
+
+    <!-- MAIN TWO GATEWAY CARDS (SEPARATE PAGES) -->
+    <div class="gateways-grid">
+      
+      <!-- GATEWAY TEORICO -->
+      <div class="gateway-terminal">
+        <div>
+          <div class="terminal-header" style="justify-content: flex-end;">
+            <span style="font-family:var(--font-terminal); color:var(--text-muted); font-size:0.88rem;">182 PREGUNTAS</span>
+          </div>
+          <h2 class="terminal-title" style="margin-bottom: 24px;">📘 MODO TEÓRICO</h2>
+        </div>
+        <div>
+          <a href="teorico.html" class="btn btn-primary btn-lg" style="width:100%;">
+            INGRESAR AL SECTOR TEÓRICO →
+          </a>
+        </div>
+      </div>
+
+      <!-- GATEWAY PRACTICO -->
+      <div class="gateway-terminal" style="border-left-color:var(--warning);">
+        <div>
+          <div class="terminal-header" style="justify-content: flex-end; border-bottom-color:var(--border);">
+            <span style="font-family:var(--font-terminal); color:var(--warning); font-size:0.88rem;">37 PREGUNTAS</span>
+          </div>
+          <h2 class="terminal-title" style="color:#ffffff; margin-bottom: 24px;">🛠️ MODO PRÁCTICO</h2>
+        </div>
+        <div>
+          <a href="practico.html" class="btn btn-amber btn-lg" style="width:100%;">
+            INGRESAR AL SECTOR PRÁCTICO →
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- GENERAL TOOLS & SIMULATOR -->
+    <div class="card">
+      <div style="font-weight:700; font-family:var(--font-terminal); font-size:1.05rem; margin-bottom:14px; color:#ffffff; text-transform:uppercase;">
+        🎯 SIMULADOR GENERAL // PRÁCTICA INTEGRADA EN VIVO
+      </div>
+      
+      <div style="display:flex; flex-wrap:wrap; gap:10px;">
+        <button class="btn btn-primary" onclick="startQuiz('exam')">🎯 EXAMEN MIXTO (20 PREGUNTAS)</button>
+        <button class="btn btn-secondary" onclick="startQuiz('wrong')">🔄 REPASAR FALLADAS (<span id="wrong-count">0</span>)</button>
+        <button class="btn btn-secondary" onclick="startQuiz('bookmarks')">⭐ GUARDADAS (<span id="bookmark-count">0</span>)</button>
+        <button class="btn btn-secondary" onclick="startQuiz('all')">📚 BANCO TOTAL (219 PREG)</button>
       </div>
     </div>
 
