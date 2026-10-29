@@ -924,8 +924,10 @@
       <div id="results-time-text" style="color: var(--text-muted); font-family: var(--font-terminal); font-size: 0.95rem; margin-bottom: 24px;"></div>
 
       <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
-        <button class="btn btn-primary" onclick="retryWrong()">REINTENTAR FALLADAS</button>
-        <button class="btn btn-secondary" onclick="backToMenu()">VOLVER AL HUB</button>
+        <button class="btn btn-secondary" onclick="restartQuiz()">🔁 Volver a intentar</button>
+        <button class="btn btn-danger" id="results-retry-btn" onclick="retryFailedQuestions()">🔄 Reintentar falladas</button>
+        <button class="btn btn-primary" id="results-next-block-btn" onclick="goToNextBlock()">⏩ Pasar al siguiente bloque →</button>
+        <button class="btn btn-secondary" onclick="backToMenu()">🏠 Volver al menú principal</button>
       </div>
     </div>
   </div>
@@ -1543,6 +1545,82 @@ function showResults() {
     document.getElementById('results-time-text').textContent = `TIEMPO REGISTRADO: ${formatDuration(examSeconds)}`;
   } else {
     document.getElementById('results-time-text').textContent = '';
+  }
+
+  const sessionWrong = currentQuestions.filter(q => {
+    const a = answers[q.id];
+    return !a || !a.isCorrect;
+  });
+  const retryBtn = document.getElementById('results-retry-btn');
+  if (retryBtn) {
+    retryBtn.textContent = `🔄 Reintentar falladas (${sessionWrong.length})`;
+  }
+
+  const nextBtn = document.getElementById('results-next-block-btn');
+  if (nextBtn) {
+    if (lastMode === 'group') {
+      const numGroups = Math.ceil(ALL_QUESTIONS.length / 10);
+      const nextIdx = (lastGroupIndex !== null && lastGroupIndex !== undefined) ? lastGroupIndex + 1 : 0;
+      if (nextIdx < numGroups) {
+        nextBtn.textContent = `⏩ Pasar al siguiente bloque (${nextIdx + 1}) →`;
+      } else {
+        nextBtn.textContent = `⏩ Pasar al siguiente bloque (1) →`;
+      }
+    } else {
+      nextBtn.textContent = `⏩ Pasar al siguiente bloque →`;
+    }
+  }
+}
+
+function restartQuiz() {
+  startQuiz(lastMode, lastGroupIndex);
+}
+
+function retryFailedQuestions() {
+  const sessionWrongIds = currentQuestions.filter(q => {
+    const a = answers[q.id];
+    return !a || !a.isCorrect;
+  }).map(q => q.id);
+
+  if (sessionWrongIds.length > 0) {
+    const rawQuestions = ALL_QUESTIONS.filter(q => sessionWrongIds.includes(q.id));
+    const shouldShuffleOpts = shuffleOptionsSetting;
+    currentQuestions = rawQuestions.map(q => prepareQuestionData(q, shouldShuffleOpts));
+    currentIndex = 0;
+    userSelections = {};
+    userChecked = {};
+    answers = {};
+    showPalette = false;
+    document.getElementById('quiz-section-name').textContent = '[ REPASO // FALLADAS DE ESTE MÓDULO ]';
+    document.getElementById('menu-view').style.display = 'none';
+    document.getElementById('results-view').style.display = 'none';
+    document.getElementById('quiz-view').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    stopTimer();
+    renderQuestion();
+  } else if (wrongQuestions.length > 0) {
+    startQuiz('wrong');
+  } else {
+    alert("¡Excelente! No tuviste preguntas falladas en este módulo.");
+  }
+}
+
+function goToNextBlock() {
+  if (lastMode === 'group') {
+    const numGroups = Math.ceil(ALL_QUESTIONS.length / 10);
+    const nextIdx = (lastGroupIndex !== null && lastGroupIndex !== undefined) ? lastGroupIndex + 1 : 0;
+    if (nextIdx < numGroups) {
+      startQuiz('group', nextIdx);
+    } else {
+      startQuiz('group', 0);
+    }
+  } else if (lastMode === 'category') {
+    const categories = [...new Set(ALL_QUESTIONS.map(q => q.category))];
+    const currIdx = categories.indexOf(lastGroupIndex);
+    const nextCat = (currIdx >= 0 && currIdx + 1 < categories.length) ? categories[currIdx + 1] : categories[0];
+    startQuiz('category', nextCat);
+  } else {
+    startQuiz('group', 0);
   }
 }
 
