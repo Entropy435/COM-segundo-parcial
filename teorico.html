@@ -251,20 +251,23 @@ body {
   word-break: break-word;
 }
 
+/* IMAGE BOX WITH CRISP CONTRAST */
 .question-image-box {
   text-align: center;
-  background: #000;
-  border: 1px solid var(--border-subtle);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: 10px;
-  padding: 0.5rem;
+  padding: 0.85rem;
   cursor: zoom-in;
   overflow: hidden;
 }
 .question-image-box img {
   max-width: 100%;
-  max-height: 380px;
-  border-radius: 6px;
+  max-height: 420px;
+  border-radius: 4px;
   object-fit: contain;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 /* OPTIONS */
@@ -408,12 +411,18 @@ body {
 /* MODAL */
 .modal-overlay {
   position: fixed; inset: 0; z-index: 100;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.88);
   display: flex; align-items: center; justify-content: center;
-  padding: 1.5rem; backdrop-filter: blur(4px);
+  padding: 1.5rem; backdrop-filter: blur(6px);
 }
-.modal-content { max-width: 90vw; max-height: 90vh; position: relative; }
-.modal-content img { max-width: 100%; max-height: 85vh; border-radius: 8px; object-fit: contain; }
+.modal-content {
+  max-width: 95vw; max-height: 90vh; position: relative;
+  background: #ffffff; padding: 0.75rem; border-radius: 10px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+}
+.modal-content img {
+  max-width: 100%; max-height: 80vh; border-radius: 6px; object-fit: contain; display: block;
+}
 .modal-close {
   position: absolute; top: -2.5rem; right: 0;
   color: #fff; background: transparent; border: none;
@@ -492,7 +501,7 @@ body {
       </div>
     </div>
 
-    <!-- MODULES ACCORDION / LIST -->
+    <!-- MODULES LIST -->
     <div style="margin-bottom: 2rem;">
       <h2 style="font-size:1.15rem; font-weight:600; margin-bottom:1rem; color:var(--text-main);">Bloques Temáticos</h2>
       <div id="category-cards-container" style="display:flex; flex-direction:column; gap:0.65rem;"></div>
@@ -890,7 +899,19 @@ function renderQuestion() {
   document.getElementById('q-prompt-text').textContent = q.text;
   
   const imgBox = document.getElementById('q-image-container');
-  if (q.image) {
+  if (q.images && q.images.length > 0) {
+    imgBox.style.display = 'block';
+    imgBox.innerHTML = `
+      <div style="display:flex; flex-wrap:wrap; justify-content:center; align-items:flex-end; gap:1.25rem;">
+        ${q.images.map((img, i) => `
+          <div style="text-align:center; flex:1; min-width:180px;">
+            <div style="font-weight:700; font-size:0.85rem; color:#475569; margin-bottom:0.4rem; text-transform:uppercase;">Figura ${String.fromCharCode(97 + i)}</div>
+            <img src="${img}" alt="Figura ${String.fromCharCode(97 + i)}" style="max-height:240px; border-radius:6px; cursor:zoom-in;" onclick="openModal('${img}')">
+          </div>
+        `).join('')}
+      </div>
+    `;
+  } else if (q.image) {
     imgBox.style.display = 'block';
     imgBox.innerHTML = `<img src="${q.image}" alt="Diagrama Pregunta ${q.id}" onclick="openModal('${q.image}')">`;
   } else {
