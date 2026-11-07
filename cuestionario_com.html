@@ -5511,7 +5511,7 @@ function formatDuration(totalSecs) {
 // ============================================================
 function prepareQuestionData(q, shuffleOpts) {
   const origCorrect = Array.isArray(q.correct) ? q.correct : (typeof q.correct === 'number' ? [q.correct] : []);
-  if (q.type === 'text' || q.type === 'grid' || !q.options || !shuffleOpts) {
+  if (q.type === 'text' || q.type === 'grid' || q.type === 'tf' || !q.options || !shuffleOpts) {
     return {
       ...q,
       displayOptions: q.options ? [...q.options] : [],

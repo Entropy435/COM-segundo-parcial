@@ -1298,11 +1298,11 @@ function formatDuration(totalSecs) {
 function prepareQuestionData(q, shuffleOpts) {
   if (q.type === 'grid') return { ...q };
   let indexed = q.options.map((opt, origIdx) => ({ opt, origIdx }));
-  if (shuffleOpts) {
+  if (shuffleOpts && q.type !== 'tf') {
     indexed = shuffle(indexed);
   }
   let newCorrect;
-  if (q.type === 'single') {
+  if (q.type === 'single' || q.type === 'tf') {
     newCorrect = indexed.findIndex(x => x.origIdx === q.correct);
   } else if (q.type === 'multi') {
     newCorrect = indexed.map((x, newIdx) => q.correct.includes(x.origIdx) ? newIdx : -1).filter(idx => idx !== -1);
@@ -1437,6 +1437,7 @@ function renderQuestion() {
   let typeText = '[ SELECCIÓN ÚNICA ]';
   if (q.type === 'multi') { typeText = '[ SELECCIÓN MÚLTIPLE ]'; }
   else if (q.type === 'grid') { typeText = '[ EMPAREJAMIENTO / MATRIZ ]'; }
+  else if (q.type === 'tf') { typeText = '[ VERDADERO / FALSO ]'; }
   
   document.getElementById('q-type-chip').textContent = typeText;
   document.getElementById('q-category-chip').textContent = q.category;
@@ -1681,7 +1682,7 @@ function onOptionClick(qId, optIdx) {
   const q = currentQuestions.find(x => x.id === qId);
   if (!q) return;
   
-  if (q.type === 'single') {
+  if (q.type === 'single' || q.type === 'tf') {
     userSelections[qId] = [optIdx];
   } else if (q.type === 'multi') {
     let sel = userSelections[qId] || [];
@@ -1712,7 +1713,7 @@ function checkCurrentQuestion() {
   let isCorrect = false;
   let score = 0;
   
-  if (q.type === 'single') {
+  if (q.type === 'single' || q.type === 'tf') {
     if (sel.length > 0 && sel[0] === q.displayCorrect) {
       isCorrect = true;
       score = 1;
