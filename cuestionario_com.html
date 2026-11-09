@@ -6278,8 +6278,14 @@ function backToMenu() {
 // ============================================================
 // NAVEGACIÓN POR TECLADO
 // ============================================================
+let keyboardNavInitialized = false;
+
 function setupKeyboardNavigation() {
+  if (keyboardNavInitialized) return;
+  keyboardNavInitialized = true;
+
   window.addEventListener('keydown', function(e) {
+    if (e.repeat) return;
     const quizArea = document.getElementById('quiz-area');
     if (!quizArea || quizArea.style.display !== 'block') return;
 

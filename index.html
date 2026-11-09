@@ -2413,8 +2413,21 @@ function closeModal() {
   if (m) m.classList.remove('active');
 }
 
+let keyboardNavInitialized = false;
+
 function setupKeyboardNavigation() {
+  if (keyboardNavInitialized) return;
+  keyboardNavInitialized = true;
+
   window.addEventListener('keydown', (e) => {
+    if (e.repeat) return;
+
+    const activeEl = document.activeElement;
+    if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA' || activeEl.isContentEditable)) {
+      if (activeEl.type === 'text' || activeEl.type === 'number') {
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') return;
+      }
+    }
     const m = document.getElementById('image-modal');
     if (m && m.classList.contains('active')) {
       if (e.key === 'Escape') closeModal();
