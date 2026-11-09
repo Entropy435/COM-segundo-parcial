@@ -1438,7 +1438,7 @@ function startDudosasSection(sec) {
   showPalette = false;
   const critContainer = document.getElementById('criteria-hud-container');
   if (critContainer) critContainer.style.display = 'inline-flex';
-  const label = (sec === 'teorico') ? 'TEÓRICAS (11)' : 'PRÁCTICAS (3)';
+  const label = (sec === 'teorico') ? 'TEÓRICAS (10)' : 'PRÁCTICAS (3)';
   const sName = (currentCriteria === 'banda81') 
     ? `⚠️ DUDOSAS ${label} // 🟡 BANDA DEL 81` 
     : `⚠️ DUDOSAS ${label} // 🔵 RIGOR TÉCNICO`;
@@ -2415,9 +2415,11 @@ function setupKeyboardNavigation() {
     } else if (e.key === 'Enter') {
       if (!isChecked) checkCurrentQuestion();
       else nextQuestion();
-    } else if (e.key === 'ArrowRight' && isChecked) {
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
       nextQuestion();
     } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
       prevQuestion();
     }
   });
